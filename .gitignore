@@ -1,3 +1,5 @@
+# Ignore Irrlicht - it should be downloaded from the Irrlicht website http://irrlicht.sourceforge.net/
+irrlicht*/
 
 # Created by https://www.gitignore.io/api/visualstudio,c++
 

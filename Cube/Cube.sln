@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cube", "Cube.vcxproj", "{B7
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeTest", "..\CubeTest\CubeTest.vcxproj", "{56F22EC9-2158-4F44-9070-8AC89CA20ECF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeDemo", "..\CubeDemo\CubeDemo.vcxproj", "{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,16 @@ Global
 		{56F22EC9-2158-4F44-9070-8AC89CA20ECF}.Release|x64.Build.0 = Release|x64
 		{56F22EC9-2158-4F44-9070-8AC89CA20ECF}.Release|x86.ActiveCfg = Release|Win32
 		{56F22EC9-2158-4F44-9070-8AC89CA20ECF}.Release|x86.Build.0 = Release|Win32
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Debug|x64.ActiveCfg = Debug|x64
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Debug|x64.Build.0 = Debug|x64
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Debug|x86.ActiveCfg = Debug|Win32
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Debug|x86.Build.0 = Debug|Win32
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|Any CPU.ActiveCfg = Release|Win32
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x64.ActiveCfg = Release|x64
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x64.Build.0 = Release|x64
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x86.ActiveCfg = Release|Win32
+		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
