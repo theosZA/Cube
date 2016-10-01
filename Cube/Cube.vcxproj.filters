@@ -6,6 +6,7 @@
     <ClInclude Include="StickerPosition.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cube2x2x2.h" />
+    <ClInclude Include="Solver2x2x2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -13,5 +14,6 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cube2x2x2.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
+    <ClCompile Include="Solver2x2x2.cpp" />
   </ItemGroup>
 </Project>

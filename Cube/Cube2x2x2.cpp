@@ -213,6 +213,16 @@ Cube2x2x2::Cube2x2x2()
 : state(181896)
 {}
 
+Cube2x2x2::Cube2x2x2(int key)
+: state(static_cast<std::uint32_t>(key))
+{}
+
+// Returns a unique key specifying the position.
+int Cube2x2x2::GetKey() const
+{
+  return static_cast<int>(state);
+}
+
 size_t Cube2x2x2::GetSize() const
 {
   return 2;

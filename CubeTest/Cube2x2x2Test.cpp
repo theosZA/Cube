@@ -268,3 +268,52 @@ TEST_CASE("Ensure we can apply a move sequence string", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 2 }]) == (StickerPosition{ Face::Right, 0 }));
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 2 }));
 }
+
+TEST_CASE("Ensure the default cube is solved", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  CHECK(cube.IsSolved());
+}
+
+TEST_CASE("Ensure the rotated cubes are solved", "[Cube2x2x2]")
+{
+  Cube2x2x2 cubeX;
+  cubeX += "R L'";
+  CHECK(cubeX.IsSolved());
+  Cube2x2x2 cubeX2;
+  cubeX2 += "R2 L2";
+  CHECK(cubeX2.IsSolved());
+  Cube2x2x2 cubeXPrime;
+  cubeXPrime += "R' L";
+  CHECK(cubeXPrime.IsSolved());
+  Cube2x2x2 cubeY;
+  cubeY += "U D'";
+  CHECK(cubeY.IsSolved());
+  Cube2x2x2 cubeY2;
+  cubeY2 += "U2 D2";
+  CHECK(cubeY2.IsSolved());
+  Cube2x2x2 cubeYPrime;
+  cubeYPrime += "U' D";
+  CHECK(cubeYPrime.IsSolved());
+  Cube2x2x2 cubeZ;
+  cubeZ += "F B'";
+  CHECK(cubeZ.IsSolved());
+  Cube2x2x2 cubeZ2;
+  cubeZ2 += "F2 B2";
+  CHECK(cubeZ2.IsSolved());
+  Cube2x2x2 cubeZPrime;
+  cubeZPrime += "F' B";
+  CHECK(cubeZPrime.IsSolved());
+}
+
+TEST_CASE("Ensure that scrambled cubes are not solved", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  CHECK(!(cube += "F").IsSolved());
+  CHECK(!(cube += "U'").IsSolved());
+  CHECK(!(cube += "R2").IsSolved());
+  CHECK(!(cube += "B2").IsSolved());
+  CHECK(!(cube += "L'").IsSolved());
+  CHECK(!(cube += "D").IsSolved());
+  CHECK((cube += "D' L B2 R2 U F'").IsSolved());
+}

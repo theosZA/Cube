@@ -126,6 +126,7 @@
     <ClInclude Include="Cube2x2x2.h" />
     <ClInclude Include="CubeMove.h" />
     <ClInclude Include="Face.h" />
+    <ClInclude Include="Solver2x2x2.h" />
     <ClInclude Include="StickerPosition.h" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +134,7 @@
     <ClCompile Include="Cube2x2x2.cpp" />
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />
+    <ClCompile Include="Solver2x2x2.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -141,6 +141,7 @@
     <ClCompile Include="Cube2x2x2Test.cpp" />
     <ClCompile Include="FaceTest.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Solver2x2x2Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

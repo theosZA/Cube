@@ -21,10 +21,20 @@ public:
   // Applies the move sequence provided in standard notation with whitespace to separate moves.
   Cube& operator+=(const std::string& moves);
 
+  // Applies the inverse of a move to this cube.
+  Cube& operator-=(const CubeMove& move);
+  // Applies the inverse of a move sequence to this cube.
+  Cube& operator-=(const std::vector<CubeMove>& moves);
+  // Applies the inverse of the given move sequence as provided in standard notation with whitespace to separate moves.
+  Cube& operator-=(const std::string& moves);
+
   // Looking at the specified position, which face of which cubie is in that position?
   StickerPosition operator[](StickerPosition) const;
   // Finds the position of the cubie that should go in a specified position.
   StickerPosition Find(StickerPosition) const;
+
+  // Returns true if each face of the cube is a single color.
+  bool IsSolved() const;
 
 protected:
   // Returns the number of cubies along each side.

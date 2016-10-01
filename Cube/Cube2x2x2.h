@@ -7,7 +7,13 @@
 class Cube2x2x2 : public Cube
 {
 public:
+  // Constructor starts from solved state with each face corresponding to their expected face.
   Cube2x2x2();
+  // Constructor from a unique key as returned by GetKey().
+  Cube2x2x2(int key);
+
+  // Returns a unique key specifying the position.
+  int GetKey() const;
 
 private:
   size_t GetSize() const override;
