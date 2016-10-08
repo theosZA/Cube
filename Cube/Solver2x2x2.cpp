@@ -1,6 +1,7 @@
 #include "Solver2x2x2.h"
 
 #include <array>
+#include <map>
 #include <queue>
 #include <stdexcept>
 #include <utility>
@@ -55,6 +56,17 @@ Solver2x2x2::Solver2x2x2(size_t maxMoves)
 
 std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
 {
+  std::map<Face, Face> faceMapping;
+  auto downFace = cube[StickerPosition{ Face::Down, 2 }].face;
+  auto backFace = cube[StickerPosition{ Face::Back, 3 }].face;
+  faceMapping[downFace] = Face::Down;
+  faceMapping[GetOppositeFace(downFace)] = Face::Up;
+  faceMapping[backFace] = Face::Back;
+  faceMapping[GetOppositeFace(backFace)] = Face::Front;
+  faceMapping[GetNextFaceClockwise(downFace, backFace)] = Face::Left;
+  faceMapping[GetOppositeFace(GetNextFaceClockwise(downFace, backFace))] = Face::Right;
+  cube.RemapFaces(faceMapping[Face::Front], faceMapping[Face::Up]);
+
   int initialMovesRequired = GetNumMovesToSolve(cube);
   if (initialMovesRequired < 0)
     throw std::runtime_error("Cube position is not in the solver's memory");

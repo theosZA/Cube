@@ -20,15 +20,15 @@ TEST_CASE("Ensure that all single move scrambles can be solved in one move on th
   CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "R")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, -1 } }));
   CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "R2")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, 2 } }));
   CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "R'")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, 1 } }));
-  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "B")) == (std::vector<CubeMove>{ CubeMove{ Face::Front, 1 } }));
+  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "B")) == (std::vector<CubeMove>{ CubeMove{ Face::Front, -1 } }));
   CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "B2")) == (std::vector<CubeMove>{ CubeMove{ Face::Front, 2 } }));
-  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "B'")) == (std::vector<CubeMove>{ CubeMove{ Face::Front, -1 } }));
-  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "D")) == (std::vector<CubeMove>{ CubeMove{ Face::Up, 1 } }));
+  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "B'")) == (std::vector<CubeMove>{ CubeMove{ Face::Front, 1 } }));
+  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "D")) == (std::vector<CubeMove>{ CubeMove{ Face::Up, -1 } }));
   CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "D2")) == (std::vector<CubeMove>{ CubeMove{ Face::Up, 2 } }));
-  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "D'")) == (std::vector<CubeMove>{ CubeMove{ Face::Up, -1 } }));
-  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "L")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, 1 } }));
+  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "D'")) == (std::vector<CubeMove>{ CubeMove{ Face::Up, 1 } }));
+  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "L")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, -1 } }));
   CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "L2")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, 2 } }));
-  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "L'")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, -1 } }));
+  CHECK(solver.Solve((Cube2x2x2&)(Cube2x2x2{} += "L'")) == (std::vector<CubeMove>{ CubeMove{ Face::Right, 1 } }));
 }
 
 TEST_CASE("Ensure we can solve a scramble of only F/U/R moves", "[Solver2x2x2]")
