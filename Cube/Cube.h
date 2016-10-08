@@ -36,6 +36,11 @@ public:
   // Returns true if each face of the cube is a single color.
   bool IsSolved() const;
 
+  // Remaps all existing faces such that Face::Front is replaced by the 1st face given
+  // and Face::Up is replaced by the 2nd face given. This has the effect that a default
+  // cube will now be in an orientation where the 2 faces are front and up respectively.
+  virtual void RemapFaces(Face newFront, Face newUp) = 0;
+
 protected:
   // Returns the number of cubies along each side.
   virtual size_t GetSize() const = 0;

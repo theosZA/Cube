@@ -15,6 +15,8 @@ public:
   // Returns a unique key specifying the position.
   int GetKey() const;
 
+  void RemapFaces(Face newFront, Face newUp) override;
+
 private:
   size_t GetSize() const override;
   void ApplyMove(Face, int quarterRotationsClockwise) override;
@@ -29,6 +31,9 @@ private:
   void SetCubie(std::uint32_t positionIndex, std::uint32_t cubie);
   // Sets the orientation of the cubie in the specified position. (0 = none, 1 = clockwise, 2 = anti-clockwise)
   void SetOrientation(std::uint32_t positionIndex, std::uint32_t orientation);
+
+  // Sets the cubie at the specified position to have the given faces and have the required orientation.
+  void SetCubieFaces(std::uint32_t positionIndex, const std::array<Face, 3>& newFaces);
 
   std::uint32_t state;
 };

@@ -16,6 +16,8 @@ enum class Face : size_t
 
 // Returns the face opposite the given face.
 Face GetOppositeFace(Face);
+// Returns the face that follows in a clockwise order around a corner.
+Face GetNextFaceClockwise(Face a, Face b);
 
 inline Face GetFace(char c)
 {

@@ -317,3 +317,76 @@ TEST_CASE("Ensure that scrambled cubes are not solved", "[Cube2x2x2]")
   CHECK(!(cube += "D").IsSolved());
   CHECK((cube += "D' L B2 R2 U F'").IsSolved());
 }
+
+TEST_CASE("Ensure that a default face remap on a solved cube leaves the cube unchanged", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  cube.RemapFaces(Face::Front, Face::Up);
+  CHECK(cube.IsSolved());
+  CHECK(cube.GetKey() == Cube2x2x2{}.GetKey());
+}
+
+TEST_CASE("Ensure that a face remap on a solved cube leaves the cube solved", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  cube.RemapFaces(Face::Left, Face::Down);
+  CHECK(cube.IsSolved());
+  CHECK(cube.GetKey() != Cube2x2x2{}.GetKey());
+}
+
+TEST_CASE("Ensure that a face remap can swap front and up faces", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  cube.RemapFaces(Face::Up, Face::Front);
+  CHECK(cube.IsSolved());
+  CHECK(cube.GetKey() != Cube2x2x2{}.GetKey());
+  cube += "F2 B2 R L'";
+  CHECK(cube.GetKey() == Cube2x2x2{}.GetKey());
+}
+
+TEST_CASE("Ensure that a default face remap on a scrambled cube leaves the cube unchanged", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  cube += "F R2 U' B";
+  Cube2x2x2 original = cube;
+  cube.RemapFaces(Face::Front, Face::Up);
+  CHECK(!cube.IsSolved());
+  CHECK(cube.GetKey() == original.GetKey());
+}
+
+TEST_CASE("Ensure that a face remap on a scrambled cube leaves the cube solvable with the inverse scramble", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  std::string scramble = "F R2 U' B";
+  cube += scramble;
+  Cube2x2x2 original = cube;
+  cube.RemapFaces(Face::Left, Face::Down);
+  CHECK(!cube.IsSolved());
+  CHECK(cube.GetKey() != original.GetKey());
+  cube += InvertMoveSequence(ParseMoveSequence(scramble));
+  CHECK(cube.IsSolved());
+  CHECK(cube.GetKey() != Cube2x2x2{}.GetKey());
+}
+
+TEST_CASE("Ensure that two face remaps that are the opposite of each other leave the cube unchanged", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  cube += "F R2 U' B";
+  Cube2x2x2 original = cube;
+  cube.RemapFaces(Face::Up, Face::Front);
+  cube.RemapFaces(Face::Up, Face::Front);
+  CHECK(!cube.IsSolved());
+  CHECK(cube.GetKey() == original.GetKey());
+}
+
+TEST_CASE("Ensure that a face remap with two of the same face is not allowed", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  CHECK_THROWS(cube.RemapFaces(Face::Left, Face::Left));
+}
+
+TEST_CASE("Ensure that a face remap with two opposite faces is not allowed", "[Cube2x2x2]")
+{
+  Cube2x2x2 cube;
+  CHECK_THROWS(cube.RemapFaces(Face::Up, Face::Down));
+}

@@ -1,6 +1,8 @@
 #include "Cube2x2x2.h"
 
+#include <algorithm>
 #include <array>
+#include <stdexcept>
 
 // The state is encoded as follows:
 // 3 bits: cubie in position DLF (0=DLF, 1=DFR, 2=DBL, 3=DRB, 4=ULB, 5=UBR, 6=UFL, 7=URF)
@@ -223,6 +225,32 @@ int Cube2x2x2::GetKey() const
   return static_cast<int>(state);
 }
 
+void Cube2x2x2::RemapFaces(Face newFront, Face newUp)
+{
+  std::array<Face, 6> newFace;
+  newFace[static_cast<size_t>(Face::Front)] = newFront;
+  newFace[static_cast<size_t>(Face::Back)] = GetOppositeFace(newFront);
+  newFace[static_cast<size_t>(Face::Up)] = newUp;
+  newFace[static_cast<size_t>(Face::Down)] = GetOppositeFace(newUp);
+  newFace[static_cast<size_t>(Face::Right)] = GetNextFaceClockwise(newFront, newUp);
+  newFace[static_cast<size_t>(Face::Left)] = GetOppositeFace(newFace[static_cast<size_t>(Face::Right)]);
+  
+  std::array<std::array<Face, 3>, 8> newCubieFaces;
+
+  for (std::uint32_t i = 0; i < 8; ++i)
+  {
+    auto cubie = GetCubie(i);
+    auto faces = cubieFace[cubie];
+    auto orientation = GetOrientation(i);
+    std::rotate(faces.begin(), faces.begin() + orientation, faces.end());
+    for (size_t j = 0; j < 3; ++j)
+      newCubieFaces[i][j] = newFace[static_cast<size_t>(faces[j])];
+  }
+
+  for (std::uint32_t i = 0; i < 8; ++i)
+    SetCubieFaces(i, newCubieFaces[i]);
+}
+
 size_t Cube2x2x2::GetSize() const
 {
   return 2;
@@ -392,4 +420,23 @@ void Cube2x2x2::SetOrientation(std::uint32_t positionIndex, std::uint32_t orient
   auto laterOrientations = oldOrientationState / powersOf3[positionIndex + 1];
   auto newOrientationState = (laterOrientations * 3 + orientation) * powersOf3[positionIndex] + earlierOrientations;
   state = (state & 0x0007ffff) | (newOrientationState << 19);
+}
+
+void Cube2x2x2::SetCubieFaces(std::uint32_t positionIndex, const std::array<Face, 3>& newFaces)
+{
+  for (std::uint32_t i = 0; i < cubieFace.size(); ++i)
+  {
+    auto compFaces = cubieFace[i];
+    for (std::uint32_t orientation = 0; orientation <= 2; ++orientation)
+    {
+      if (compFaces == newFaces)
+      {
+        SetCubie(positionIndex, i);
+        SetOrientation(positionIndex, orientation);
+        return;
+      }
+      std::rotate(compFaces.begin(), compFaces.begin() + 1, compFaces.end());
+    }
+  }
+  throw std::runtime_error("Invalid cubie faces");
 }
