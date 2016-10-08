@@ -21,6 +21,27 @@ video::SColor FaceToColor(Face face)
 
 CubeRenderer::CubeRenderer(const Cube2x2x2& cube, irr::scene::ISceneNode* parent, irr::scene::ISceneManager* sceneManager)
 {
+  static const std::array<std::array<float, 3>, 8> cubieOffsets
+  {
+    std::array<float, 3>{ +5.1f, -5.1f, +5.1f },
+    std::array<float, 3>{ -5.1f, -5.1f, +5.1f },
+    std::array<float, 3>{ +5.1f, -5.1f, -5.1f },
+    std::array<float, 3>{ -5.1f, -5.1f, -5.1f },
+    std::array<float, 3>{ +5.1f, +5.1f, -5.1f },
+    std::array<float, 3>{ -5.1f, +5.1f, -5.1f },
+    std::array<float, 3>{ +5.1f, +5.1f, +5.1f },
+    std::array<float, 3>{ -5.1f, +5.1f, +5.1f }
+  };
+
+  static int id = 1000;
+  for (size_t i = 0; i < 8; ++i)
+    cubies[i] = new CubieSceneNode(parent, sceneManager, id++, core::vector3df(cubieOffsets[i][0], cubieOffsets[i][1], cubieOffsets[i][2]));
+
+  SetCube(cube);
+}
+
+void CubeRenderer::SetCube(const Cube2x2x2& cube)
+{
   static const std::array<std::array<Face, 3>, 8> cubieFace
   {
     std::array<Face, 3>{ Face::Down, Face::Left,   Face::Front },
@@ -45,23 +66,7 @@ CubeRenderer::CubeRenderer(const Cube2x2x2& cube, irr::scene::ISceneNode* parent
     std::array<size_t, 3>{ 3, 0, 1 }
   };
 
-  static const std::array<std::array<float, 3>, 8> cubieOffsets
-  {
-    std::array<float, 3>{ +5.1f, -5.1f, +5.1f },
-    std::array<float, 3>{ -5.1f, -5.1f, +5.1f },
-    std::array<float, 3>{ +5.1f, -5.1f, -5.1f },
-    std::array<float, 3>{ -5.1f, -5.1f, -5.1f },
-    std::array<float, 3>{ +5.1f, +5.1f, -5.1f },
-    std::array<float, 3>{ -5.1f, +5.1f, -5.1f },
-    std::array<float, 3>{ +5.1f, +5.1f, +5.1f },
-    std::array<float, 3>{ -5.1f, +5.1f, +5.1f }
-  };
-
   for (size_t i = 0; i < 8; ++i)
-  {
-    static int id = 1000;
-    cubies[i] = new CubieSceneNode(parent, sceneManager, id++, core::vector3df(cubieOffsets[i][0], cubieOffsets[i][1], cubieOffsets[i][2]));
     for (size_t j = 0; j < 3; ++j)
       cubies[i]->SetFace(cubieFace[i][j], FaceToColor(cube[StickerPosition{ cubieFace[i][j], cubieIndex[i][j] }].face));
-  }
 }

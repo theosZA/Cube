@@ -137,11 +137,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CubeEventReceiver.cpp" />
     <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="CubieSceneNode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CubeEventReceiver.h" />
     <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="CubieSceneNode.h" />
   </ItemGroup>

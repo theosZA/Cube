@@ -13,6 +13,8 @@ class CubeRenderer
 public:
   CubeRenderer(const Cube2x2x2& cube, irr::scene::ISceneNode* parent, irr::scene::ISceneManager*);
 
+  void SetCube(const Cube2x2x2& cube);
+
 private:
   std::array<CubieSceneNode*, 8> cubies;
 };
