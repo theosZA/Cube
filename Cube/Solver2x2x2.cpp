@@ -1,6 +1,8 @@
 #include "Solver2x2x2.h"
 
+#include <algorithm>
 #include <array>
+#include <fstream>
 #include <map>
 #include <queue>
 #include <stdexcept>
@@ -20,8 +22,11 @@ const std::array<CubeMove, 9> possibleMoves
   CubeMove{ Face::Front, 2 }
 };
 
-Solver2x2x2::Solver2x2x2(size_t maxMoves)
+Solver2x2x2::Solver2x2x2(size_t maxMoves, const std::string& cacheFileName)
 {
+  if (ReadCacheFile(cacheFileName))
+    return;
+
   struct Position
   {
     int positionKey;
@@ -52,6 +57,8 @@ Solver2x2x2::Solver2x2x2(size_t maxMoves)
       }
     }
   }
+
+  WriteCacheFile(cacheFileName);
 }
 
 std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
@@ -80,6 +87,39 @@ std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
     solution.push_back(nextMove);
   }
   return solution;
+}
+
+void Solver2x2x2::WriteCacheFile(const std::string& cacheFileName)
+{
+  if (cacheFileName.empty())
+    return;
+
+  std::ofstream cacheFile(cacheFileName, std::ios::binary);
+  for (const auto& positionPair : movesToSolve)
+  {
+    auto buffer = reinterpret_cast<const char*>(&positionPair);
+    std::copy(buffer, buffer + sizeof(positionPair), std::ostream_iterator<char>(cacheFile));
+  }
+}
+
+bool Solver2x2x2::ReadCacheFile(const std::string& cacheFileName)
+{
+  if (cacheFileName.empty())
+    return false;
+
+  std::ifstream cacheFile(cacheFileName, std::ios::binary);
+  if (!cacheFile.good())
+    return false;
+
+  movesToSolve.clear();
+  const size_t bufferSize = sizeof(std::pair<int, int>);
+  char buffer[bufferSize];
+  while (cacheFile.good() && !cacheFile.eof())
+  {
+    cacheFile.read(buffer, bufferSize);
+    movesToSolve.insert(*reinterpret_cast<std::pair<int, int>*>(buffer));
+  }
+  return true;
 }
 
 int Solver2x2x2::SafeGetNumMovesToSolve(const Cube2x2x2& cube)
