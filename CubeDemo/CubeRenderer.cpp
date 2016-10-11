@@ -13,7 +13,7 @@ video::SColor FaceToColor(Face face)
     case Face::Front: return video::SColor(255, 0, 0, 255);
     case Face::Right: return video::SColor(255, 255, 0, 0);
     case Face::Back:  return video::SColor(255, 0, 255, 0);
-    case Face::Left:  return video::SColor(255, 180, 90, 0);
+    case Face::Left:  return video::SColor(255, 255, 127, 0);
     default:
       throw std::domain_error("Invalid face");
   }
