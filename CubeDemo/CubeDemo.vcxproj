@@ -139,13 +139,15 @@
   <ItemGroup>
     <ClCompile Include="CubeEventReceiver.cpp" />
     <ClCompile Include="CubeRenderer.cpp" />
-    <ClCompile Include="CubieSceneNode.cpp" />
+    <ClCompile Include="Cubie.cpp" />
+    <ClCompile Include="CubieFaceMesh.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeEventReceiver.h" />
     <ClInclude Include="CubeRenderer.h" />
-    <ClInclude Include="CubieSceneNode.h" />
+    <ClInclude Include="Cubie.h" />
+    <ClInclude Include="CubieFaceMesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

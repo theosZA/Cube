@@ -2,71 +2,34 @@
 
 #include <stdexcept>
 
+#include "..\Cube\Face.h"
+
 using namespace irr;
 
-video::SColor FaceToColor(Face face)
-{
-  switch (face)
+const auto cNone = video::SColor(255, 0, 0, 0);
+const auto cDown = video::SColor(255, 255, 255, 255);
+const auto cUp = video::SColor(255, 255, 255, 0);
+const auto cFront = video::SColor(255, 0, 0, 255);
+const auto cRight = video::SColor(255, 255, 0, 0);
+const auto cBack = video::SColor(255, 0, 255, 0);
+const auto cLeft = video::SColor(255, 255, 127, 0);
+
+CubeRenderer::CubeRenderer(scene::ISceneManager* manager, scene::ISceneNode* parent)
+: cubies
   {
-    case Face::Down:  return video::SColor(255, 255, 255, 255);
-    case Face::Up:    return video::SColor(255, 255, 255, 0);
-    case Face::Front: return video::SColor(255, 0, 0, 255);
-    case Face::Right: return video::SColor(255, 255, 0, 0);
-    case Face::Back:  return video::SColor(255, 0, 255, 0);
-    case Face::Left:  return video::SColor(255, 255, 127, 0);
-    default:
-      throw std::domain_error("Invalid face");
+    Cubie(manager, parent, core::vector3df{ +5.1f, -5.1f, +5.1f }, std::array<irr::video::SColor, 6>{ cDown, cNone, cFront, cNone, cNone, cLeft }),
+    Cubie(manager, parent, core::vector3df{ -5.1f, -5.1f, +5.1f }, std::array<irr::video::SColor, 6>{ cDown, cNone, cFront, cRight, cNone, cNone }),
+    Cubie(manager, parent, core::vector3df{ +5.1f, -5.1f, -5.1f }, std::array<irr::video::SColor, 6>{ cDown, cNone, cNone, cNone, cBack, cLeft }),
+    Cubie(manager, parent, core::vector3df{ -5.1f, -5.1f, -5.1f }, std::array<irr::video::SColor, 6>{ cDown, cNone, cNone, cRight, cBack, cNone }),
+    Cubie(manager, parent, core::vector3df{ +5.1f, +5.1f, -5.1f }, std::array<irr::video::SColor, 6>{ cNone, cUp, cNone, cNone, cBack, cLeft }),
+    Cubie(manager, parent, core::vector3df{ -5.1f, +5.1f, -5.1f }, std::array<irr::video::SColor, 6>{ cNone, cUp, cNone, cRight, cBack, cNone }),
+    Cubie(manager, parent, core::vector3df{ +5.1f, +5.1f, +5.1f }, std::array<irr::video::SColor, 6>{ cNone, cUp, cFront, cNone, cNone, cLeft }),
+    Cubie(manager, parent, core::vector3df{ -5.1f, +5.1f, +5.1f }, std::array<irr::video::SColor, 6>{ cNone, cUp, cFront, cRight, cNone, cNone })
   }
-}
+{}
 
-CubeRenderer::CubeRenderer(const Cube2x2x2& cube, irr::scene::ISceneNode* parent, irr::scene::ISceneManager* sceneManager)
+void CubeRenderer::ApplyMove(CubeMove move)
 {
-  static const std::array<std::array<float, 3>, 8> cubieOffsets
-  {
-    std::array<float, 3>{ +5.1f, -5.1f, +5.1f },
-    std::array<float, 3>{ -5.1f, -5.1f, +5.1f },
-    std::array<float, 3>{ +5.1f, -5.1f, -5.1f },
-    std::array<float, 3>{ -5.1f, -5.1f, -5.1f },
-    std::array<float, 3>{ +5.1f, +5.1f, -5.1f },
-    std::array<float, 3>{ -5.1f, +5.1f, -5.1f },
-    std::array<float, 3>{ +5.1f, +5.1f, +5.1f },
-    std::array<float, 3>{ -5.1f, +5.1f, +5.1f }
-  };
-
-  static int id = 1000;
-  for (size_t i = 0; i < 8; ++i)
-    cubies[i] = new CubieSceneNode(parent, sceneManager, id++, core::vector3df(cubieOffsets[i][0], cubieOffsets[i][1], cubieOffsets[i][2]));
-
-  SetCube(cube);
-}
-
-void CubeRenderer::SetCube(const Cube2x2x2& cube)
-{
-  static const std::array<std::array<Face, 3>, 8> cubieFace
-  {
-    std::array<Face, 3>{ Face::Down, Face::Left,   Face::Front },
-    std::array<Face, 3>{ Face::Down, Face::Front,  Face::Right },
-    std::array<Face, 3>{ Face::Down, Face::Back,   Face::Left },
-    std::array<Face, 3>{ Face::Down, Face::Right,  Face::Back },
-    std::array<Face, 3>{ Face::Up,   Face::Left,   Face::Back },
-    std::array<Face, 3>{ Face::Up,   Face::Back,   Face::Right },
-    std::array<Face, 3>{ Face::Up,   Face::Front,  Face::Left },
-    std::array<Face, 3>{ Face::Up,   Face::Right,  Face::Front }
-  };
-
-  static const std::array<std::array<size_t, 3>, 8> cubieIndex
-  {
-    std::array<size_t, 3>{ 0, 3, 2 },
-    std::array<size_t, 3>{ 1, 3, 2 },
-    std::array<size_t, 3>{ 2, 3, 2 },
-    std::array<size_t, 3>{ 3, 3, 2 },
-    std::array<size_t, 3>{ 0, 0, 1 },
-    std::array<size_t, 3>{ 1, 0, 1 },
-    std::array<size_t, 3>{ 2, 0, 1 },
-    std::array<size_t, 3>{ 3, 0, 1 }
-  };
-
-  for (size_t i = 0; i < 8; ++i)
-    for (size_t j = 0; j < 3; ++j)
-      cubies[i]->SetFace(cubieFace[i][j], FaceToColor(cube[StickerPosition{ cubieFace[i][j], cubieIndex[i][j] }].face));
+  for (auto& cubie : cubies)
+    cubie.ApplyMove(move);
 }

@@ -4,17 +4,17 @@
 
 #include <irrlicht.h>
 
-#include "..\Cube\Cube2x2x2.h"
+#include "Cubie.h"
 
-#include "CubieSceneNode.h"
+#include "..\Cube\CubeMove.h"
 
 class CubeRenderer
 {
 public:
-  CubeRenderer(const Cube2x2x2& cube, irr::scene::ISceneNode* parent, irr::scene::ISceneManager*);
+  CubeRenderer(irr::scene::ISceneManager*, irr::scene::ISceneNode* parent);
 
-  void SetCube(const Cube2x2x2& cube);
+  void ApplyMove(CubeMove);
 
 private:
-  std::array<CubieSceneNode*, 8> cubies;
+  std::array<Cubie, 8> cubies;
 };

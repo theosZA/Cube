@@ -38,7 +38,9 @@ int main()
   auto label = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(moves);
   guiEnvironment->addStaticText(label.c_str(), core::rect<s32>(10, 10, 360, 22), true);
 
-  CubeRenderer cubeRenderer(cube, sceneManager->getRootSceneNode(), sceneManager);
+  CubeRenderer cubeRenderer(sceneManager, sceneManager->getRootSceneNode());
+  for (const auto& move : ParseMoveSequence(moves))
+    cubeRenderer.ApplyMove(move);
 
   sceneManager->addCameraSceneNode(0, core::vector3df(-20, 20, 40), core::vector3df(0, 0, 0));
   {
@@ -51,7 +53,7 @@ int main()
   Solver2x2x2 solver(20, "solution.2x2");
   auto solution = solver.Solve(cube);
   size_t step = 0;
-  CubeEventReceiver cubeEventReceiver(device, cube, cubeRenderer, solution);
+  CubeEventReceiver cubeEventReceiver(device, cubeRenderer, solution);
   device->setEventReceiver(&cubeEventReceiver);
 
   while (device->run())
