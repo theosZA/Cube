@@ -2,7 +2,7 @@
 
 using namespace irr;
 
-Cubie::Cubie(scene::ISceneManager* manager, irr::scene::ISceneNode* parent, const irr::core::vector3df& position, const std::array<video::SColor, 6>& faces)
+Cubie::Cubie(scene::ISceneManager* manager, scene::ISceneNode* parent, const core::vector3df& position, const std::array<video::SColor, 6>& faces)
 : cubieFaces{ CubieFaceMesh{ faces[0] }, CubieFaceMesh{ faces[1] }, CubieFaceMesh{ faces[2] }, CubieFaceMesh{ faces[3] }, CubieFaceMesh{ faces[4] }, CubieFaceMesh{ faces[5] }}
 {
   positionNode = manager->addEmptySceneNode(parent);
@@ -12,12 +12,12 @@ Cubie::Cubie(scene::ISceneManager* manager, irr::scene::ISceneNode* parent, cons
 
   static const std::array<core::vector3df, 6> positions
   {
-    core::vector3df{ 0, -5, 0 },
-    core::vector3df{ 0, +5, 0 },
-    core::vector3df{ 0, 0, +5 },
-    core::vector3df{ -5, 0, 0 },
-    core::vector3df{ 0, 0, -5 },
-    core::vector3df{ +5, 0, 0 }
+    core::vector3df{ 0, -0.5f, 0 },
+    core::vector3df{ 0, +0.5f, 0 },
+    core::vector3df{ 0, 0, +0.5f },
+    core::vector3df{ -0.5f, 0, 0 },
+    core::vector3df{ 0, 0, -0.5f },
+    core::vector3df{ +0.5f, 0, 0 }
   };
   static const std::array<core::vector3df, 6> rotations
   {
@@ -35,57 +35,58 @@ Cubie::Cubie(scene::ISceneManager* manager, irr::scene::ISceneNode* parent, cons
   }
 }
 
-void Cubie::ApplyMove(CubeMove move)
+void Cubie::ApplyMove(Face face, int quarterRotationsClockwise, f32 minDistanceFromCentre)
 {
   auto position = positionNode->getPosition();
+  const f32 epsilon = 0.0001f;
 
-  switch (move.face)
+  switch (face)
   {
     case Face::Up:
-      if (positionNode->getPosition().Y > 0)
+      if (minDistanceFromCentre - positionNode->getPosition().Y < epsilon)
       {
-        position.rotateXZBy(-90 * move.quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, +90.0f * move.quarterRotationsClockwise, 0 });
+        position.rotateXZBy(-90 * quarterRotationsClockwise);
+        ApplyRotation(core::vector3df{ 0, +90.0f * quarterRotationsClockwise, 0 });
       }
       break;
 
     case Face::Down:
-      if (positionNode->getPosition().Y < 0)
+      if (minDistanceFromCentre + positionNode->getPosition().Y < epsilon)
       {
-        position.rotateXZBy(+90 * move.quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, -90.0f * move.quarterRotationsClockwise, 0 });
+        position.rotateXZBy(+90 * quarterRotationsClockwise);
+        ApplyRotation(core::vector3df{ 0, -90.0f * quarterRotationsClockwise, 0 });
       }
       break;
 
     case Face::Front:
-      if (positionNode->getPosition().Z > 0)
+      if (minDistanceFromCentre - positionNode->getPosition().Z < epsilon)
       {
-        position.rotateXYBy(90 * move.quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, 0, +90.0f * move.quarterRotationsClockwise });
+        position.rotateXYBy(90 * quarterRotationsClockwise);
+        ApplyRotation(core::vector3df{ 0, 0, +90.0f * quarterRotationsClockwise });
       }
       break;
 
     case Face::Right:
-      if (positionNode->getPosition().X < 0)
+      if (minDistanceFromCentre + positionNode->getPosition().X < epsilon)
       {
-        position.rotateYZBy(-90 * move.quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ -90.0f * move.quarterRotationsClockwise, 0, 0 });
+        position.rotateYZBy(-90 * quarterRotationsClockwise);
+        ApplyRotation(core::vector3df{ -90.0f * quarterRotationsClockwise, 0, 0 });
       }
       break;
 
     case Face::Back:
-      if (positionNode->getPosition().Z < 0)
+      if (minDistanceFromCentre + positionNode->getPosition().Z < epsilon)
       {
-        position.rotateXYBy(-90 * move.quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, 0, -90.0f * move.quarterRotationsClockwise });
+        position.rotateXYBy(-90 * quarterRotationsClockwise);
+        ApplyRotation(core::vector3df{ 0, 0, -90.0f * quarterRotationsClockwise });
       }
       break;
 
     case Face::Left:
-      if (positionNode->getPosition().X > 0)
+      if (minDistanceFromCentre - positionNode->getPosition().X < epsilon)
       {
-        position.rotateYZBy(+90 * move.quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ +90.0f * move.quarterRotationsClockwise, 0, 0 });
+        position.rotateYZBy(+90 * quarterRotationsClockwise);
+        ApplyRotation(core::vector3df{ +90.0f * quarterRotationsClockwise, 0, 0 });
       }
       break;
   }

@@ -38,11 +38,11 @@ int main()
   auto label = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(moves);
   guiEnvironment->addStaticText(label.c_str(), core::rect<s32>(10, 10, 360, 22), true);
 
-  CubeRenderer cubeRenderer(sceneManager, sceneManager->getRootSceneNode());
+  CubeRenderer cubeRenderer(sceneManager, sceneManager->getRootSceneNode(), 25.0f, 2);
   for (const auto& move : ParseMoveSequence(moves))
-    cubeRenderer.ApplyMove(move);
+    cubeRenderer.ApplyMove(move.face, move.quarterRotationsClockwise, 1);
 
-  sceneManager->addCameraSceneNode(0, core::vector3df(-20, 20, 40), core::vector3df(0, 0, 0));
+  sceneManager->addCameraSceneNode(0, core::vector3df(-20, 20, 30), core::vector3df(0, 0, 0));
   {
     driver->beginScene(true, true, video::SColor(255, 100, 101, 140));
     sceneManager->drawAll();
