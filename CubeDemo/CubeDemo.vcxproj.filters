@@ -3,13 +3,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CubeRenderer.cpp" />
-    <ClCompile Include="CubeEventReceiver.cpp" />
     <ClCompile Include="CubieFaceMesh.cpp" />
     <ClCompile Include="Cubie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeRenderer.h" />
-    <ClInclude Include="CubeEventReceiver.h" />
     <ClInclude Include="CubieFaceMesh.h" />
     <ClInclude Include="Cubie.h" />
   </ItemGroup>

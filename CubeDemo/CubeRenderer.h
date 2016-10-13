@@ -20,6 +20,7 @@ public:
   // The speed is measured in quarter rotations per second.
   void AnimateMove(Face, int quarterRotationsClockwise, int layers, double speed);
   void UpdateAnimate(bool forceEnd = false);
+  bool IsAnimating() const { return static_cast<bool>(currentAnimation); }
 
 private:
   void RotateDegrees(Face, irr::f32 degrees, int layers);
