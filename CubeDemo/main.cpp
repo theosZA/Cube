@@ -11,10 +11,20 @@
 #pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #endif
 
-using namespace irr;
-
 #include "CubeRenderer.h"
 #include "..\Cube\Solver2x2x2.h"
+
+using namespace irr;
+using namespace std::chrono_literals;
+
+const double scrambleSpeed = 10.0;
+const double solveSpeed = 3.0;
+const auto delayForSolve = 1500ms;
+const size_t cubeSize = 2;
+const size_t scrambleLength = 25;
+const f32 cubeRenderSize = 25.0f;
+const u32 windowWidth = 900;
+const u32 windowHeight = 900;
 
 void Render(video::IVideoDriver& driver, scene::ISceneManager& sceneManager, gui::IGUIEnvironment& guiEnvironment)
 {
@@ -44,11 +54,19 @@ std::vector<CubeMove> CreateRandomScramble(size_t length)
   return scramble;
 }
 
+std::vector<CubeMove> SolveScramble(const std::vector<CubeMove>& scramble)
+{
+  Solver2x2x2 solver(20, "solution.2x2");
+  Cube2x2x2 cube;
+  cube += scramble;
+  return solver.Solve(cube);
+}
+
 int main()
 {
   SIrrlichtCreationParameters createParameters;
   createParameters.DriverType = video::EDT_OPENGL;
-  createParameters.WindowSize = core::dimension2d<u32>(640, 480);
+  createParameters.WindowSize = core::dimension2d<u32>(windowWidth, windowHeight);
   createParameters.AntiAlias = 4;
   auto device = createDeviceEx(createParameters);
   if (!device)
@@ -58,22 +76,21 @@ int main()
   auto driver = device->getVideoDriver();
   auto sceneManager = device->getSceneManager();
   auto guiEnvironment = device->getGUIEnvironment();
-  CubeRenderer cubeRenderer(sceneManager, sceneManager->getRootSceneNode(), 25.0f, 2);
+  CubeRenderer cubeRenderer(sceneManager, sceneManager->getRootSceneNode(), cubeRenderSize, cubeSize);
 
   sceneManager->addCameraSceneNode(0, core::vector3df(-20, 20, 30), core::vector3df(0, 0, 0));
   Render(*driver, *sceneManager, *guiEnvironment);
 
-  auto scramble = CreateRandomScramble(25);
+  auto scramble = CreateRandomScramble(scrambleLength);
   auto scrambleIter = scramble.begin();
   auto scrambleStaticText = guiEnvironment->addStaticText(L"", core::rect<s32>(10, 10, 360, 22), true);
 
-  Solver2x2x2 solver(20, "solution.2x2");
-  Cube2x2x2 cube;
-  cube += scramble;
-  auto solution = solver.Solve(cube);
+  bool solved = false;
+  std::chrono::time_point<std::chrono::steady_clock> solveStartTime;
+
+  std::vector<CubeMove> solution;
   auto solutionIter = solution.begin();
   auto solutionStaticText = guiEnvironment->addStaticText(L"", core::rect<s32>(10, 26, 360, 38), true);
-  std::chrono::time_point<std::chrono::steady_clock> solveStartTime;
 
   while (device->run())
   {
@@ -84,17 +101,26 @@ int main()
       if (scrambleIter != scramble.end())
       {
         auto move = *scrambleIter;
-        cubeRenderer.AnimateMove(move.face, move.quarterRotationsClockwise, 1, 10.0);
+        cubeRenderer.AnimateMove(move.face, move.quarterRotationsClockwise, 1, scrambleSpeed);
         decltype(scramble) scrambleSoFar(scramble.begin(), scrambleIter);
         scrambleStaticText->setText(std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(MoveSequenceToText(scrambleSoFar)).c_str());
         ++scrambleIter;
         if (scrambleIter == scramble.end())
-          solveStartTime = std::chrono::high_resolution_clock::now() + std::chrono::milliseconds(1500);
+          solveStartTime = std::chrono::high_resolution_clock::now() + delayForSolve;
       }
-      else if (solutionIter != solution.end() && std::chrono::high_resolution_clock::now() >= solveStartTime)
+      else if (!solved)
+      {
+        if (std::chrono::high_resolution_clock::now() >= solveStartTime)
+        {
+          solution = SolveScramble(scramble);
+          solutionIter = solution.begin();
+          solved = true;
+        }
+      } 
+      else if (solutionIter != solution.end())
       {
         auto move = *solutionIter;
-        cubeRenderer.AnimateMove(move.face, move.quarterRotationsClockwise, 1, 3.0);
+        cubeRenderer.AnimateMove(move.face, move.quarterRotationsClockwise, 1, solveSpeed);
         decltype(solution) solutionSoFar(solution.begin(), solutionIter);
         solutionStaticText->setText(std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(MoveSequenceToText(solutionSoFar)).c_str());
         ++solutionIter;
