@@ -1,6 +1,7 @@
 #include <chrono>
 #include <codecvt>
 #include <locale>
+#include <random>
 #include <string>
 
 #include <irrlicht.h>
@@ -23,6 +24,26 @@ void Render(video::IVideoDriver& driver, scene::ISceneManager& sceneManager, gui
   driver.endScene();
 }
 
+std::vector<CubeMove> CreateRandomScramble(size_t length)
+{
+  std::random_device rd;
+  std::mt19937 generator(rd());
+  std::uniform_int_distribution<> faceDistribution(0, 5);
+  std::uniform_int_distribution<> rotationDistribution(0, 2);
+  std::vector<CubeMove> scramble(length);
+  for (size_t i = 0; i < length; ++i)
+  {
+    do
+      scramble[i].face = static_cast<Face>(faceDistribution(generator));
+    while (i > 0 && scramble[i].face == scramble[i - 1].face);
+
+    scramble[i].quarterRotationsClockwise = rotationDistribution(generator);
+    if (scramble[i].quarterRotationsClockwise == 0)
+      scramble[i].quarterRotationsClockwise = -1;
+  }
+  return scramble;
+}
+
 int main()
 {
   SIrrlichtCreationParameters createParameters;
@@ -42,8 +63,7 @@ int main()
   sceneManager->addCameraSceneNode(0, core::vector3df(-20, 20, 30), core::vector3df(0, 0, 0));
   Render(*driver, *sceneManager, *guiEnvironment);
 
-  std::string scrambleText = "D'  R2  B'  F  R  F  U2  F2  R'  U'  B2  L2  U2  R2  F'  D  B'  D  U2  L2  R'  F  L'  F'  R'";
-  auto scramble = ParseMoveSequence(scrambleText);
+  auto scramble = CreateRandomScramble(25);
   auto scrambleIter = scramble.begin();
   auto scrambleStaticText = guiEnvironment->addStaticText(L"", core::rect<s32>(10, 10, 360, 22), true);
 
