@@ -35,7 +35,7 @@ Cubie::Cubie(scene::ISceneManager* manager, scene::ISceneNode* parent, const cor
   }
 }
 
-void Cubie::ApplyMove(Face face, int quarterRotationsClockwise, f32 minDistanceFromCentre)
+void Cubie::ApplyMove(Face face, f32 degreesClockwise, f32 minDistanceFromCentre)
 {
   auto position = positionNode->getPosition();
   const f32 epsilon = 0.0001f;
@@ -45,48 +45,48 @@ void Cubie::ApplyMove(Face face, int quarterRotationsClockwise, f32 minDistanceF
     case Face::Up:
       if (minDistanceFromCentre - positionNode->getPosition().Y < epsilon)
       {
-        position.rotateXZBy(-90 * quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, +90.0f * quarterRotationsClockwise, 0 });
+        position.rotateXZBy(-degreesClockwise);
+        ApplyRotation(core::vector3df{ 0, +degreesClockwise, 0 });
       }
       break;
 
     case Face::Down:
       if (minDistanceFromCentre + positionNode->getPosition().Y < epsilon)
       {
-        position.rotateXZBy(+90 * quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, -90.0f * quarterRotationsClockwise, 0 });
+        position.rotateXZBy(+degreesClockwise);
+        ApplyRotation(core::vector3df{ 0, -degreesClockwise, 0 });
       }
       break;
 
     case Face::Front:
       if (minDistanceFromCentre - positionNode->getPosition().Z < epsilon)
       {
-        position.rotateXYBy(90 * quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, 0, +90.0f * quarterRotationsClockwise });
+        position.rotateXYBy(+degreesClockwise);
+        ApplyRotation(core::vector3df{ 0, 0, +degreesClockwise });
       }
       break;
 
     case Face::Right:
       if (minDistanceFromCentre + positionNode->getPosition().X < epsilon)
       {
-        position.rotateYZBy(-90 * quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ -90.0f * quarterRotationsClockwise, 0, 0 });
+        position.rotateYZBy(-degreesClockwise);
+        ApplyRotation(core::vector3df{ -degreesClockwise, 0, 0 });
       }
       break;
 
     case Face::Back:
       if (minDistanceFromCentre + positionNode->getPosition().Z < epsilon)
       {
-        position.rotateXYBy(-90 * quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ 0, 0, -90.0f * quarterRotationsClockwise });
+        position.rotateXYBy(-degreesClockwise);
+        ApplyRotation(core::vector3df{ 0, 0, -degreesClockwise });
       }
       break;
 
     case Face::Left:
       if (minDistanceFromCentre - positionNode->getPosition().X < epsilon)
       {
-        position.rotateYZBy(+90 * quarterRotationsClockwise);
-        ApplyRotation(core::vector3df{ +90.0f * quarterRotationsClockwise, 0, 0 });
+        position.rotateYZBy(+degreesClockwise);
+        ApplyRotation(core::vector3df{ +degreesClockwise, 0, 0 });
       }
       break;
   }

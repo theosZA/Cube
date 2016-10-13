@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <memory>
 #include <vector>
 
@@ -16,8 +17,25 @@ public:
 
   void ApplyMove(Face, int quarterRotationsClockwise, int layers);
 
+  // The speed is measured in quarter rotations per second.
+  void AnimateMove(Face, int quarterRotationsClockwise, int layers, double speed);
+  void UpdateAnimate(bool forceEnd = false);
+
 private:
+  void RotateDegrees(Face, irr::f32 degrees, int layers);
+
   size_t cubeSize;
   irr::scene::ISceneNode* scaleNode;
   std::vector<std::unique_ptr<Cubie>> cubies;
+
+  struct AnimatingMove
+  {
+    Face face;
+    int quarterRotationsClockwise;
+    int layers;
+    double speed;
+    std::chrono::time_point<std::chrono::steady_clock> timeEnd;
+    std::chrono::time_point<std::chrono::steady_clock> timeLastUpdate;
+  };
+  std::unique_ptr<AnimatingMove> currentAnimation;
 };

@@ -45,6 +45,46 @@ CubeRenderer::CubeRenderer(scene::ISceneManager* manager, scene::ISceneNode* par
 
 void CubeRenderer::ApplyMove(Face face, int quarterRotationsClockwise, int layers)
 {
+  RotateDegrees(face, 90.0f * quarterRotationsClockwise, layers);
+}
+
+void CubeRenderer::AnimateMove(Face face, int quarterRotationsClockwise, int layers, double speed)
+{
+  if (currentAnimation)
+    UpdateAnimate(true);
+
+  double totalNanoseconds = abs(quarterRotationsClockwise) * 1e9 / speed;
+
+  auto start = std::chrono::high_resolution_clock::now();
+  auto end = start + std::chrono::nanoseconds(static_cast<int>(totalNanoseconds));
+  currentAnimation.reset(new AnimatingMove{ face, quarterRotationsClockwise, layers, speed, end, start });
+}
+
+void CubeRenderer::UpdateAnimate(bool forceEnd)
+{
+  if (currentAnimation)
+  {
+    double speedInDegreesPerNanosecond = currentAnimation->speed * 90.0 / 1e9;
+    if (currentAnimation->quarterRotationsClockwise < 0)
+      speedInDegreesPerNanosecond = -speedInDegreesPerNanosecond;
+    auto now = std::chrono::high_resolution_clock::now();
+    if (now >= currentAnimation->timeEnd || forceEnd)
+    {
+      auto elapsedNanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(currentAnimation->timeEnd - currentAnimation->timeLastUpdate).count();
+      RotateDegrees(currentAnimation->face, static_cast<f32>(speedInDegreesPerNanosecond * elapsedNanoseconds), currentAnimation->layers);
+      currentAnimation.reset();
+    }
+    else
+    {
+      auto elapsedNanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(now - currentAnimation->timeLastUpdate).count();
+      RotateDegrees(currentAnimation->face, static_cast<f32>(speedInDegreesPerNanosecond * elapsedNanoseconds), currentAnimation->layers);
+      currentAnimation->timeLastUpdate = now;
+    }
+  }
+}
+
+void CubeRenderer::RotateDegrees(Face face, f32 degrees, int layers)
+{
   for (auto& cubie : cubies)
-    cubie->ApplyMove(face, quarterRotationsClockwise, (cubeSize - layers) - (cubeSize - 1) / 2.0f);
+    cubie->ApplyMove(face, degrees, (cubeSize - layers) - (cubeSize - 1) / 2.0f);
 }

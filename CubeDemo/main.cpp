@@ -58,6 +58,7 @@ int main()
 
   while (device->run())
   {
+    cubeRenderer.UpdateAnimate();
     driver->beginScene(true, true, video::SColor(255, 100, 101, 140));
     sceneManager->drawAll();
     guiEnvironment->drawAll();
