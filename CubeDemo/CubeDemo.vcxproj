@@ -138,12 +138,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubeRenderer.cpp" />
+    <ClCompile Include="CubeMoveSequenceAnimation.cpp" />
     <ClCompile Include="Cubie.cpp" />
     <ClCompile Include="CubieFaceMesh.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeRenderer.h" />
+    <ClInclude Include="CubeMoveSequenceAnimation.h" />
     <ClInclude Include="Cubie.h" />
     <ClInclude Include="CubieFaceMesh.h" />
   </ItemGroup>

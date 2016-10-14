@@ -5,10 +5,12 @@
     <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="CubieFaceMesh.cpp" />
     <ClCompile Include="Cubie.cpp" />
+    <ClCompile Include="CubeMoveSequenceAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="CubieFaceMesh.h" />
     <ClInclude Include="Cubie.h" />
+    <ClInclude Include="CubeMoveSequenceAnimation.h" />
   </ItemGroup>
 </Project>
