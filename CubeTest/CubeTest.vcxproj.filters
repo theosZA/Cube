@@ -9,5 +9,6 @@
     <ClCompile Include="FaceTest.cpp" />
     <ClCompile Include="Cube2x2x2Test.cpp" />
     <ClCompile Include="Solver2x2x2Test.cpp" />
+    <ClCompile Include="Cube3x3x3Test.cpp" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
 #include "Cube2x2x2.h"
 
-TEST_CASE("Ensure that the default position is correct", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that the default position is correct", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   CHECK((cube[StickerPosition{ Face::Up, 0 }]) == (StickerPosition{ Face::Up, 0 }));
@@ -31,7 +31,7 @@ TEST_CASE("Ensure that the default position is correct", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 3 }));
 }
 
-TEST_CASE("Ensure that we find the cubies in the correct place in the default position", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we find the cubies in the correct place in the default position", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   CHECK(cube.Find(StickerPosition{ Face::Up, 0 }) == (StickerPosition{ Face::Up, 0 }));
@@ -60,7 +60,7 @@ TEST_CASE("Ensure that we find the cubies in the correct place in the default po
   CHECK(cube.Find(StickerPosition{ Face::Right, 3 }) == (StickerPosition{ Face::Right, 3 }));
 }
 
-TEST_CASE("Ensure that we can apply a move: U", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we can apply a move: U", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += CubeMove { Face::Up, 1 };
@@ -74,7 +74,7 @@ TEST_CASE("Ensure that we can apply a move: U", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Down, 3 }]) == (StickerPosition{ Face::Down, 3 }));
 }
 
-TEST_CASE("Ensure that we can apply a move: L", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we can apply a move: L", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += CubeMove{ Face::Left, 1 };
@@ -88,7 +88,7 @@ TEST_CASE("Ensure that we can apply a move: L", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 3 }));
 }
 
-TEST_CASE("Ensure that we can apply a move: D2", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we can apply a move: D2", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += CubeMove{ Face::Down, 2 };
@@ -102,7 +102,7 @@ TEST_CASE("Ensure that we can apply a move: D2", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Up, 3 }]) == (StickerPosition{ Face::Up, 3 }));
 }
 
-TEST_CASE("Ensure that we can apply a move: B2", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we can apply a move: B2", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += CubeMove{ Face::Back, 2 };
@@ -116,7 +116,7 @@ TEST_CASE("Ensure that we can apply a move: B2", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Front, 3 }]) == (StickerPosition{ Face::Front, 3 }));
 }
 
-TEST_CASE("Ensure that we can apply a move: F'", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we can apply a move: F'", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += CubeMove{ Face::Front, -1 };
@@ -130,7 +130,7 @@ TEST_CASE("Ensure that we can apply a move: F'", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Back, 3 }]) == (StickerPosition{ Face::Back, 3 }));
 }
 
-TEST_CASE("Ensure that we can apply a move: R'", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that we can apply a move: R'", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += CubeMove{ Face::Right, -1 };
@@ -144,7 +144,7 @@ TEST_CASE("Ensure that we can apply a move: R'", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Left, 3 }]) == (StickerPosition{ Face::Left, 3 }));
 }
 
-TEST_CASE("Ensure we can apply an empty move sequence", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure we can apply an empty move sequence", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += std::vector<CubeMove>{};
@@ -174,7 +174,7 @@ TEST_CASE("Ensure we can apply an empty move sequence", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 3 }));
 }
 
-TEST_CASE("Ensure we can apply a move sequence", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure we can apply a move sequence", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += std::vector<CubeMove>
@@ -209,7 +209,7 @@ TEST_CASE("Ensure we can apply a move sequence", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 2 }));
 }
 
-TEST_CASE("Ensure we can apply an empty move sequence string", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure we can apply an empty move sequence string", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += "";
@@ -239,7 +239,7 @@ TEST_CASE("Ensure we can apply an empty move sequence string", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 3 }));
 }
 
-TEST_CASE("Ensure we can apply a move sequence string", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure we can apply a move sequence string", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += "L B2 R'";
@@ -269,13 +269,13 @@ TEST_CASE("Ensure we can apply a move sequence string", "[Cube2x2x2]")
   CHECK((cube[StickerPosition{ Face::Right, 3 }]) == (StickerPosition{ Face::Right, 2 }));
 }
 
-TEST_CASE("Ensure the default cube is solved", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure the default cube is solved", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   CHECK(cube.IsSolved());
 }
 
-TEST_CASE("Ensure the rotated cubes are solved", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure the rotated cubes are solved", "[Cube2x2x2]")
 {
   Cube2x2x2 cubeX;
   cubeX += "R L'";
@@ -306,7 +306,7 @@ TEST_CASE("Ensure the rotated cubes are solved", "[Cube2x2x2]")
   CHECK(cubeZPrime.IsSolved());
 }
 
-TEST_CASE("Ensure that scrambled cubes are not solved", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that scrambled cubes are not solved", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   CHECK(!(cube += "F").IsSolved());
@@ -318,7 +318,7 @@ TEST_CASE("Ensure that scrambled cubes are not solved", "[Cube2x2x2]")
   CHECK((cube += "D' L B2 R2 U F'").IsSolved());
 }
 
-TEST_CASE("Ensure that a default face remap on a solved cube leaves the cube unchanged", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a default face remap on a solved cube leaves the cube unchanged", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube.RemapFaces(Face::Front, Face::Up);
@@ -326,7 +326,7 @@ TEST_CASE("Ensure that a default face remap on a solved cube leaves the cube unc
   CHECK(cube.GetKey() == Cube2x2x2{}.GetKey());
 }
 
-TEST_CASE("Ensure that a face remap on a solved cube leaves the cube solved", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a face remap on a solved cube leaves the cube solved", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube.RemapFaces(Face::Left, Face::Down);
@@ -334,7 +334,7 @@ TEST_CASE("Ensure that a face remap on a solved cube leaves the cube solved", "[
   CHECK(cube.GetKey() != Cube2x2x2{}.GetKey());
 }
 
-TEST_CASE("Ensure that a face remap can swap front and up faces", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a face remap can swap front and up faces", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube.RemapFaces(Face::Up, Face::Front);
@@ -344,7 +344,7 @@ TEST_CASE("Ensure that a face remap can swap front and up faces", "[Cube2x2x2]")
   CHECK(cube.GetKey() == Cube2x2x2{}.GetKey());
 }
 
-TEST_CASE("Ensure that a default face remap on a scrambled cube leaves the cube unchanged", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a default face remap on a scrambled cube leaves the cube unchanged", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += "F R2 U' B";
@@ -354,7 +354,7 @@ TEST_CASE("Ensure that a default face remap on a scrambled cube leaves the cube 
   CHECK(cube.GetKey() == original.GetKey());
 }
 
-TEST_CASE("Ensure that a face remap on a scrambled cube leaves the cube solvable with the inverse scramble", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a face remap on a scrambled cube leaves the cube solvable with the inverse scramble", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   std::string scramble = "F R2 U' B";
@@ -368,7 +368,7 @@ TEST_CASE("Ensure that a face remap on a scrambled cube leaves the cube solvable
   CHECK(cube.GetKey() != Cube2x2x2{}.GetKey());
 }
 
-TEST_CASE("Ensure that two face remaps that are the opposite of each other leave the cube unchanged", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that two face remaps that are the opposite of each other leave the cube unchanged", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   cube += "F R2 U' B";
@@ -379,13 +379,13 @@ TEST_CASE("Ensure that two face remaps that are the opposite of each other leave
   CHECK(cube.GetKey() == original.GetKey());
 }
 
-TEST_CASE("Ensure that a face remap with two of the same face is not allowed", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a face remap with two of the same face is not allowed", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   CHECK_THROWS(cube.RemapFaces(Face::Left, Face::Left));
 }
 
-TEST_CASE("Ensure that a face remap with two opposite faces is not allowed", "[Cube2x2x2]")
+TEST_CASE("2x2x2 - Ensure that a face remap with two opposite faces is not allowed", "[Cube2x2x2]")
 {
   Cube2x2x2 cube;
   CHECK_THROWS(cube.RemapFaces(Face::Up, Face::Down));

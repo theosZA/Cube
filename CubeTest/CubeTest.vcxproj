@@ -137,6 +137,7 @@
     <ClInclude Include="catch.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Cube3x3x3Test.cpp" />
     <ClCompile Include="CubeMoveTest.cpp" />
     <ClCompile Include="Cube2x2x2Test.cpp" />
     <ClCompile Include="FaceTest.cpp" />
