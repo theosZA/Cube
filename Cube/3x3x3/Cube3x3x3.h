@@ -1,6 +1,8 @@
 #pragma once
 
 #include "..\Cube.h"
+#include "Corners3x3x3.h"
+#include "Edges3x3x3.h"
 
 class Cube3x3x3 : public Cube
 {
@@ -14,4 +16,7 @@ private:
   size_t GetSize() const override { return 3; }
   void ApplyMove(Face, int quarterRotationsClockwise) override;
   std::pair<Face, size_t> Get(Face, size_t index) const override;
+
+  Corners3x3x3 corners;
+  Edges3x3x3 edges;
 };

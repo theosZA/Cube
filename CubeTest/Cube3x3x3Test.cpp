@@ -23,7 +23,7 @@ TEST_CASE("3x3x3 - Ensure that we can apply a move: U", "[Cube3x3x3]")
   Cube3x3x3 cube;
   cube += CubeMove{ Face::Up, 1 };
   CHECK((cube[StickerPosition{ Face::Up, 0 }]) == (StickerPosition{ Face::Up, 6 }));
-  CHECK((cube[StickerPosition{ Face::Up, 1 }]) == (StickerPosition{ Face::Up, 4 }));
+  CHECK((cube[StickerPosition{ Face::Up, 1 }]) == (StickerPosition{ Face::Up, 3 }));
   CHECK((cube[StickerPosition{ Face::Up, 2 }]) == (StickerPosition{ Face::Up, 0 }));
   CHECK((cube[StickerPosition{ Face::Up, 3 }]) == (StickerPosition{ Face::Up, 7 }));
   CHECK((cube[StickerPosition{ Face::Up, 4 }]) == (StickerPosition{ Face::Up, 4 }));
@@ -53,7 +53,7 @@ TEST_CASE("3x3x3 - Ensure that we can apply a move: L", "[Cube3x3x3]")
   Cube3x3x3 cube;
   cube += CubeMove{ Face::Left, 1 };
   CHECK((cube[StickerPosition{ Face::Left, 0 }]) == (StickerPosition{ Face::Left, 6 }));
-  CHECK((cube[StickerPosition{ Face::Left, 1 }]) == (StickerPosition{ Face::Left, 4 }));
+  CHECK((cube[StickerPosition{ Face::Left, 1 }]) == (StickerPosition{ Face::Left, 3 }));
   CHECK((cube[StickerPosition{ Face::Left, 2 }]) == (StickerPosition{ Face::Left, 0 }));
   CHECK((cube[StickerPosition{ Face::Left, 3 }]) == (StickerPosition{ Face::Left, 7 }));
   CHECK((cube[StickerPosition{ Face::Left, 4 }]) == (StickerPosition{ Face::Left, 4 }));
@@ -190,13 +190,25 @@ TEST_CASE("3x3x3 - Ensure that we can apply a move: R'", "[Cube3x3x3]")
   CHECK((cube[StickerPosition{ Face::Left, 6 }]) == (StickerPosition{ Face::Left, 6 }));
   CHECK((cube[StickerPosition{ Face::Left, 7 }]) == (StickerPosition{ Face::Left, 7 }));
   CHECK((cube[StickerPosition{ Face::Left, 8 }]) == (StickerPosition{ Face::Left, 8 }));
-  CHECK((cube[StickerPosition{ Face::Up, 3 }]) == (StickerPosition{ Face::Up, 3 }));
+  CHECK((cube[StickerPosition{ Face::Up, 1 }]) == (StickerPosition{ Face::Up, 1 }));
   CHECK((cube[StickerPosition{ Face::Up, 4 }]) == (StickerPosition{ Face::Up, 4 }));
-  CHECK((cube[StickerPosition{ Face::Up, 5 }]) == (StickerPosition{ Face::Up, 5 }));
-  CHECK((cube[StickerPosition{ Face::Down, 3 }]) == (StickerPosition{ Face::Down, 3 }));
+  CHECK((cube[StickerPosition{ Face::Up, 7 }]) == (StickerPosition{ Face::Up, 7 }));
+  CHECK((cube[StickerPosition{ Face::Down, 1 }]) == (StickerPosition{ Face::Down, 1 }));
   CHECK((cube[StickerPosition{ Face::Down, 4 }]) == (StickerPosition{ Face::Down, 4 }));
-  CHECK((cube[StickerPosition{ Face::Down, 5 }]) == (StickerPosition{ Face::Down, 5 }));
+  CHECK((cube[StickerPosition{ Face::Down, 7 }]) == (StickerPosition{ Face::Down, 7 }));
+}
 
+TEST_CASE("3x3x3 - Ensure each move and its inverse return to the default cube", "[Cube3x3x3]")
+{
+  for (size_t rotatingFace = 0; rotatingFace < 6; ++rotatingFace)
+  {
+    Cube3x3x3 cube;
+    cube += CubeMove{ static_cast<Face>(rotatingFace), 1};
+    cube += CubeMove{ static_cast<Face>(rotatingFace), -1 };
+    for (size_t face = 0; face < 6; ++face)
+      for (size_t index = 0; index < 9; ++index)
+        CHECK((cube[StickerPosition{ static_cast<Face>(face), index }]) == (StickerPosition{ static_cast<Face>(face), index }));
+  }
 }
 
 TEST_CASE("3x3x3 - Ensure we can apply an empty move sequence", "[Cube3x3x3]")

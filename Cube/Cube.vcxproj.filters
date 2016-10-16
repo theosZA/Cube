@@ -10,6 +10,12 @@
     <ClInclude Include="3x3x3\Cube3x3x3.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\Corners3x3x3.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\Edges3x3x3.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -19,6 +25,12 @@
     <ClCompile Include="StickerPosition.cpp" />
     <ClCompile Include="Solver2x2x2.cpp" />
     <ClCompile Include="3x3x3\Cube3x3x3.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\Edges3x3x3.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\Corners3x3x3.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
