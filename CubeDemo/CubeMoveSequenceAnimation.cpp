@@ -2,6 +2,8 @@
 
 #include "..\Cube\Cube2x2x2.h"
 #include "..\Cube\Solver2x2x2.h"
+#include "..\Cube\3x3x3\Cube3x3x3.h"
+#include "..\Cube\3x3x3\Solver2x2x2Block.h"
 
 using namespace irr;
 
@@ -68,10 +70,10 @@ const std::vector<CubeMove>& CubeMoveSequenceAnimation::RandomScramble(int seed,
 
 const std::vector<CubeMove>& CubeMoveSequenceAnimation::SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete)
 {
-  Solver2x2x2 solver(20, "solution.2x2");
-  Cube2x2x2 cube;
+  Solver2x2x2Block blockSolver(20, "block.3x3");
+  Cube3x3x3 cube;
   cube += moves;
-  Start(solver.Solve(cube), quarterRotationsPerSecond, onComplete);
+  Start(blockSolver.Solve(cube), quarterRotationsPerSecond, onComplete);
   return moves;
 }
 
