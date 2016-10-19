@@ -1,5 +1,7 @@
 #include "catch.hpp"
 
+#include <sstream>
+
 #include "Graph/RootedGraph.h"
 
 int GetKey(int v)
@@ -92,4 +94,22 @@ TEST_CASE("Rooted graph - Ensure we can't find a path longer than maximum length
   const int root = 17;
   graph.Build(root, 6);
   CHECK_THROWS(graph.FindShortestPathToRoot(532));
+}
+
+TEST_CASE("Rooted graph - Ensure we can persist a graph", "[RootedGraph]")
+{
+  RootedGraph<int, int, int> graph(GetKey, GetThreeAdjacentVertices);
+  const int root = 17;
+  graph.Build(root, 6);
+
+  std::ostringstream store;
+  graph.WriteToStream(store);
+
+  RootedGraph<int, int, int> newGraph(GetKey, GetThreeAdjacentVertices);
+  newGraph.ReadFromStream(std::istringstream(store.str()));
+
+  CHECK(newGraph.FindShortestPathToRoot(17).empty());
+  CHECK(newGraph.FindShortestPathToRoot(32) == (std::vector<int>{ half, half, odd }));
+  CHECK(newGraph.FindShortestPathToRoot(266) == (std::vector<int>{ half, half, half, half, half, odd }));
+  CHECK_THROWS(newGraph.FindShortestPathToRoot(532));
 }

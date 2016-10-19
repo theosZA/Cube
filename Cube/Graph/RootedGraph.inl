@@ -6,14 +6,14 @@
 #include "RootedGraph.h"
 
 template <class Vertex, class Key, class DirectedEdge>
-void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, size_t maxPathLength)
+void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, std::uint32_t maxPathLength)
 {
-  std::queue<std::pair<Vertex, size_t>> vertexDistanceQueue;
+  std::queue<std::pair<Vertex, std::uint32_t>> vertexDistanceQueue;
 
   auto key = getKey(root);
   pathLengthFromVertexKey.clear();
-  pathLengthFromVertexKey.insert(std::pair<Key, size_t>{ key, 0 });
-  vertexDistanceQueue.push(std::pair<Vertex, size_t>{ root, 0 });
+  pathLengthFromVertexKey.insert(std::pair<Key, std::uint32_t>{ key, 0 });
+  vertexDistanceQueue.push(std::pair<Vertex, std::uint32_t>{ root, 0 });
 
   while (!vertexDistanceQueue.empty() && vertexDistanceQueue.front().second <= maxPathLength)
   {
@@ -30,8 +30,8 @@ void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, size_t ma
       if (findIter == pathLengthFromVertexKey.end())
       {
         auto newDistance = distance + 1;
-        pathLengthFromVertexKey.insert(std::pair<Key, size_t>{ newKey, newDistance });
-        vertexDistanceQueue.push(std::pair<Vertex, size_t>{ newVertex, newDistance });
+        pathLengthFromVertexKey.insert(std::pair<Key, std::uint32_t>{ newKey, newDistance });
+        vertexDistanceQueue.push(std::pair<Vertex, std::uint32_t>{ newVertex, newDistance });
       }
     }
   }
@@ -45,7 +45,7 @@ std::vector<DirectedEdge> RootedGraph<Vertex, Key, DirectedEdge>::FindShortestPa
   shortestPath.reserve(shortestPathLength);
 
   auto vertex = source;
-  for (int i = 0; i < shortestPathLength; ++i)
+  for (std::uint32_t i = 0; i < shortestPathLength; ++i)
   {
     auto edge = GetShortestPathEdge(vertex);
     shortestPath.push_back(edge.first);
@@ -56,17 +56,34 @@ std::vector<DirectedEdge> RootedGraph<Vertex, Key, DirectedEdge>::FindShortestPa
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-void RootedGraph<Vertex, Key, DirectedEdge>::ReadFromStream(std::istream&)
+bool RootedGraph<Vertex, Key, DirectedEdge>::ReadFromStream(std::istream& in)
 {
+  if (!in.good())
+    return false;
+
+  pathLengthFromVertexKey.clear();
+  const auto bufferSize = sizeof(std::pair<Key, std::uint32_t>);
+  char buffer[bufferSize];
+  while (in.good() && !in.eof())
+  {
+    in.read(buffer, bufferSize);
+    pathLengthFromVertexKey.insert(*reinterpret_cast<std::pair<Key, std::uint32_t>*>(buffer));
+  }
+  return true;
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-void RootedGraph<Vertex, Key, DirectedEdge>::WriteToStream(std::ostream&)
+void RootedGraph<Vertex, Key, DirectedEdge>::WriteToStream(std::ostream& out)
 {
+  for (const auto& vertexPair : pathLengthFromVertexKey)
+  {
+    auto buffer = reinterpret_cast<const char*>(&vertexPair);
+    std::copy(buffer, buffer + sizeof(vertexPair), std::ostream_iterator<char>(out));
+  }
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-size_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(const Vertex& vertex)
+std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(const Vertex& vertex)
 {
   auto findIter = pathLengthFromVertexKey.find(getKey(vertex));
   if (findIter == pathLengthFromVertexKey.end())
@@ -75,7 +92,7 @@ size_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(const V
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-size_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(const Vertex& vertex)
+std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(const Vertex& vertex)
 {
   auto length = SafeGetShortestPathLength(vertex);
   if (length == -1)

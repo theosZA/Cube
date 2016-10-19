@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <istream>
 #include <functional>
 #include <ostream>
@@ -24,26 +25,29 @@ public:
 
   // Creates the graph starting from the given root (or goal) vertex, adding the adjacent vertices
   // until there are no more unique vertices or the maximum path length has been reached.
-  void Build(const Vertex& root, size_t maxPathLength);
+  void Build(const Vertex& root, std::uint32_t maxPathLength);
 
   // Finds the shortest sequence of edges connecting source to root. If there is no such sequence
   // within the maximum path length specified in Build() then an exception is thrown.
   std::vector<DirectedEdge> FindShortestPathToRoot(const Vertex& source);
 
-  void ReadFromStream(std::istream&);
+  // Reads the graph path info from a stream as written by WriteToStream().
+  // Returns true only if the graph could be populated from the stream.
+  bool ReadFromStream(std::istream&);
+  // Writes the graph path info to a stream for persistence.
   void WriteToStream(std::ostream&);
 
 private:
   // Returns the path length to reach the root from the given vertex or -1 if no path is found.
-  size_t SafeGetShortestPathLength(const Vertex&);
+  std::uint32_t SafeGetShortestPathLength(const Vertex&);
   // Returns the path length to reach the root from the given vertex. Throws an exception if no path is found.
-  size_t GetShortestPathLength(const Vertex&);
+  std::uint32_t GetShortestPathLength(const Vertex&);
   // Returns the edge along the shortest path from the given vertex to the root. Throws an exception if no path is found.
   std::pair<DirectedEdge, Vertex> GetShortestPathEdge(const Vertex&);
 
   std::function<Key(const Vertex&)> getKey;
   std::function<std::vector<std::pair<DirectedEdge, Vertex>>(const Vertex&)> getAdjacentVertices;
-  std::unordered_map<Key, size_t> pathLengthFromVertexKey;
+  std::unordered_map<Key, std::uint32_t> pathLengthFromVertexKey;
 };
 
 #include "RootedGraph.inl"
