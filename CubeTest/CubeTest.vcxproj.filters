@@ -10,5 +10,6 @@
     <ClCompile Include="Cube2x2x2Test.cpp" />
     <ClCompile Include="Solver2x2x2Test.cpp" />
     <ClCompile Include="Cube3x3x3Test.cpp" />
+    <ClCompile Include="RootedGraphTest.cpp" />
   </ItemGroup>
 </Project>

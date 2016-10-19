@@ -19,6 +19,9 @@
     <ClInclude Include="3x3x3\Solver2x2x2Block.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="Graph\RootedGraph.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -44,5 +47,13 @@
     <Filter Include="3x3x3">
       <UniqueIdentifier>{d7a10f2b-ed96-4584-acf2-1b20d762f06c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graph">
+      <UniqueIdentifier>{590f5646-8a43-4cca-a473-31b0579ace81}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graph\RootedGraph.inl">
+      <Filter>Graph</Filter>
+    </None>
   </ItemGroup>
 </Project>
