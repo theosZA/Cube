@@ -122,31 +122,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="2x2x2\Cube2x2x2.h" />
+    <ClInclude Include="2x2x2\Solver2x2x2.h" />
     <ClInclude Include="3x3x3\Corners3x3x3.h" />
     <ClInclude Include="3x3x3\Cube3x3x3.h" />
     <ClInclude Include="3x3x3\Edges3x3x3.h" />
     <ClInclude Include="3x3x3\Solver2x2x2Block.h" />
     <ClInclude Include="Cube.h" />
-    <ClInclude Include="Cube2x2x2.h" />
     <ClInclude Include="CubeMove.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="Graph\CubeStateSolver.h" />
     <ClInclude Include="Graph\RootedGraph.h" />
     <ClInclude Include="Solver.h" />
-    <ClInclude Include="Solver2x2x2.h" />
     <ClInclude Include="SolverFactory.h" />
     <ClInclude Include="StickerPosition.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="2x2x2\Cube2x2x2.cpp" />
+    <ClCompile Include="2x2x2\Solver2x2x2.cpp" />
     <ClCompile Include="3x3x3\Corners3x3x3.cpp" />
     <ClCompile Include="3x3x3\Cube3x3x3.cpp" />
     <ClCompile Include="3x3x3\Edges3x3x3.cpp" />
     <ClCompile Include="3x3x3\Solver2x2x2Block.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="Cube2x2x2.cpp" />
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />
-    <ClCompile Include="Solver2x2x2.cpp" />
     <ClCompile Include="SolverFactory.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
   </ItemGroup>

@@ -5,8 +5,6 @@
     <ClInclude Include="Face.h" />
     <ClInclude Include="StickerPosition.h" />
     <ClInclude Include="Cube.h" />
-    <ClInclude Include="Cube2x2x2.h" />
-    <ClInclude Include="Solver2x2x2.h" />
     <ClInclude Include="3x3x3\Cube3x3x3.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
@@ -27,14 +25,18 @@
     </ClInclude>
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverFactory.h" />
+    <ClInclude Include="2x2x2\Cube2x2x2.h">
+      <Filter>2x2x2</Filter>
+    </ClInclude>
+    <ClInclude Include="2x2x2\Solver2x2x2.h">
+      <Filter>2x2x2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="Cube2x2x2.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
-    <ClCompile Include="Solver2x2x2.cpp" />
     <ClCompile Include="3x3x3\Cube3x3x3.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
@@ -48,6 +50,12 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="SolverFactory.cpp" />
+    <ClCompile Include="2x2x2\Cube2x2x2.cpp">
+      <Filter>2x2x2</Filter>
+    </ClCompile>
+    <ClCompile Include="2x2x2\Solver2x2x2.cpp">
+      <Filter>2x2x2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3x3x3">
@@ -55,6 +63,9 @@
     </Filter>
     <Filter Include="Graph">
       <UniqueIdentifier>{590f5646-8a43-4cca-a473-31b0579ace81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2x2x2">
+      <UniqueIdentifier>{6b5ff89e-88be-4a42-b0d7-8d4fa95b3607}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

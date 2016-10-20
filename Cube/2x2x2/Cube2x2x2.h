@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "Cube.h"
+#include "..\Cube.h"
 
 class Cube2x2x2 : public Cube
 {

@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
+#include "..\CubeMove.h"
+#include "..\Solver.h"
+#include "..\Graph\CubeStateSolver.h"
 #include "Cube2x2x2.h"
-#include "CubeMove.h"
-#include "Solver.h"
-#include "Graph\CubeStateSolver.h"
 
 // An optimal solver for 2x2x2 cubes.
 class Solver2x2x2 : public Solver

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "Solver2x2x2.h"
+#include "2x2x2\Solver2x2x2.h"
 #include "3x3x3\Solver2x2x2Block.h"
 
 namespace SolverFactory {
