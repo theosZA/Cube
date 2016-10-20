@@ -6,7 +6,7 @@
 
 #include "Cube2x2x2.h"
 #include "CubeMove.h"
-#include "Graph\RootedGraph.h"
+#include "Graph\CubeStateSolver.h"
 
 // An optimal solver for 2x2x2 cubes.
 class Solver2x2x2
@@ -22,11 +22,5 @@ public:
   std::vector<CubeMove> Solve(Cube2x2x2);
 
 private:
-  // Writes the set of positions to a cache file.
-  void WriteCacheFile(const std::string& cacheFileName);
-  // Reads the set of positions from a cache file written by WriteCacheFile().
-  // Returns true only if the file was found and the set of positions was populated.
-  bool ReadCacheFile(const std::string& cacheFileName);
-
-  RootedGraph<Cube2x2x2, int, CubeMove> graph;
+  CubeStateSolver<Cube2x2x2> solver;
 };

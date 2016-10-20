@@ -1,12 +1,10 @@
 #include "Solver2x2x2.h"
 
-#include <array>
-#include <fstream>
 #include <map>
 #include <utility>
 
 // We only include F, U and R moves since B, D and L are equivalent in a 2x2x2 by symmetry.
-const std::array<CubeMove, 9> possibleMoves
+const std::vector<CubeMove> possibleMoves
 {
   CubeMove{ Face::Right, 1 },
   CubeMove{ Face::Right, -1 },
@@ -20,32 +18,11 @@ const std::array<CubeMove, 9> possibleMoves
 };
 
 Solver2x2x2::Solver2x2x2(std::uint32_t maxMoves, const std::string& cacheFileName)
-: graph(
-    // Get key
-    [](const Cube2x2x2& cube) 
-    { 
-      return cube.GetKey(); 
-    },
-    // Get adjacent vertices
-    [](const Cube2x2x2& cube)
-    {
-      std::vector<std::pair<CubeMove, Cube2x2x2>> next;
-      next.reserve(possibleMoves.size());
-      for (const auto& move : possibleMoves)
-      {
-        auto nextCube = cube;
-        nextCube += move;
-        next.push_back(std::pair<CubeMove, Cube2x2x2>{ move, nextCube });
-      }
-      return next;
-    })
-{
-  if (!ReadCacheFile(cacheFileName))
-  {
-    graph.Build(Cube2x2x2{}, maxMoves);
-    WriteCacheFile(cacheFileName);
-  }
-}
+: solver(maxMoves, 
+         [](const Cube2x2x2& cube) { return cube.GetKey(); },
+         possibleMoves,
+         cacheFileName)
+{}
 
 std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
 {
@@ -60,16 +37,5 @@ std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
   faceMapping[GetOppositeFace(GetNextFaceClockwise(downFace, backFace))] = Face::Right;
   cube.RemapFaces(faceMapping[Face::Front], faceMapping[Face::Up]);
 
-  return graph.FindShortestPathToRoot(cube);
-}
-
-void Solver2x2x2::WriteCacheFile(const std::string& cacheFileName)
-{
-  if (!cacheFileName.empty())
-    graph.WriteToStream(std::ofstream(cacheFileName, std::ios::binary));
-}
-
-bool Solver2x2x2::ReadCacheFile(const std::string& cacheFileName)
-{
-  return !cacheFileName.empty() && graph.ReadFromStream(std::ifstream(cacheFileName, std::ios::binary));
+  return solver.Solve(cube);
 }

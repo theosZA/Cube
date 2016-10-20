@@ -1,7 +1,6 @@
 #include "Solver2x2x2Block.h"
 
 #include <array>
-#include <fstream>
 
 #include "..\StickerPosition.h"
 
@@ -13,7 +12,7 @@ static const std::array<StickerPosition, 4> blockCubies
   StickerPosition{ Face::Front, 2 }
 };
 
-static const std::array<CubeMove, 18> possibleMoves
+static const std::vector<CubeMove> possibleMoves
 {
   CubeMove{ Face::Right, 1 },
   CubeMove{ Face::Right, -1 },
@@ -36,47 +35,20 @@ static const std::array<CubeMove, 18> possibleMoves
 };
 
 Solver2x2x2Block::Solver2x2x2Block(std::uint32_t maxMoves, const std::string& cacheFileName)
-: graph(
+: solver(
+    maxMoves,
     // Get key
     [](const Cube3x3x3& cube)
     {
-       return Solver2x2x2Block::GetKeyValue(cube);
+        return Solver2x2x2Block::GetKeyValue(cube);
     },
-    // Get adjacent vertices
-    [](const Cube3x3x3& cube)
-    {
-      std::vector<std::pair<CubeMove, Cube3x3x3>> next;
-      next.reserve(possibleMoves.size());
-      for (const auto& move : possibleMoves)
-      {
-        auto nextCube = cube;
-        nextCube += move;
-        next.push_back(std::pair<CubeMove, Cube3x3x3>{ move, nextCube });
-      }
-      return next;
-    })
-{
-  if (!ReadCacheFile(cacheFileName))
-  {
-    graph.Build(Cube3x3x3{}, maxMoves);
-    WriteCacheFile(cacheFileName);
-  }
-}
+    possibleMoves,
+    cacheFileName)
+{}
 
 std::vector<CubeMove> Solver2x2x2Block::Solve(const Cube3x3x3& cube)
 {
-  return graph.FindShortestPathToRoot(cube);
-}
-
-void Solver2x2x2Block::WriteCacheFile(const std::string& cacheFileName)
-{
-  if (!cacheFileName.empty())
-    graph.WriteToStream(std::ofstream(cacheFileName, std::ios::binary));
-}
-
-bool Solver2x2x2Block::ReadCacheFile(const std::string& cacheFileName)
-{
-  return !cacheFileName.empty() && graph.ReadFromStream(std::ifstream(cacheFileName, std::ios::binary));
+  return solver.Solve(cube);
 }
 
 std::uint32_t Solver2x2x2Block::GetKeyValue(const Cube3x3x3& cube)

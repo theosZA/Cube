@@ -130,6 +130,7 @@
     <ClInclude Include="Cube2x2x2.h" />
     <ClInclude Include="CubeMove.h" />
     <ClInclude Include="Face.h" />
+    <ClInclude Include="Graph\CubeStateSolver.h" />
     <ClInclude Include="Graph\RootedGraph.h" />
     <ClInclude Include="Solver2x2x2.h" />
     <ClInclude Include="StickerPosition.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="StickerPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graph\CubeStateSolver.inl" />
     <None Include="Graph\RootedGraph.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

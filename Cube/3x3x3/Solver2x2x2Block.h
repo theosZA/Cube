@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "..\CubeMove.h"
-#include "..\Graph\RootedGraph.h"
+#include "..\Graph\CubeStateSolver.h"
 #include "Cube3x3x3.h"
 
 // An optimal solver for a 2x2x2 block on a 3x3x3 cube.
@@ -22,14 +22,8 @@ public:
   std::vector<CubeMove> Solve(const Cube3x3x3&);
 
 private:
-  // Writes the set of positions to a cache file.
-  void WriteCacheFile(const std::string& cacheFileName);
-  // Reads the set of positions from a cache file written by WriteCacheFile().
-  // Returns true only if the file was found and the set of positions was populated.
-  bool ReadCacheFile(const std::string& cacheFileName);
-
   // Returns a key value that distinguishes based on the cubies in the FUR block only.
   static std::uint32_t GetKeyValue(const Cube3x3x3&);
 
-  RootedGraph<Cube3x3x3, std::uint32_t, CubeMove> graph;
+  CubeStateSolver<Cube3x3x3> solver;
 };
