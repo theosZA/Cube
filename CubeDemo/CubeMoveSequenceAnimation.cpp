@@ -1,14 +1,12 @@
 #include "CubeMoveSequenceAnimation.h"
 
-#include "..\Cube\Cube2x2x2.h"
-#include "..\Cube\Solver2x2x2.h"
-#include "..\Cube\3x3x3\Cube3x3x3.h"
-#include "..\Cube\3x3x3\Solver2x2x2Block.h"
+#include "..\Cube\SolverFactory.h"
 
 using namespace irr;
 
 CubeMoveSequenceAnimation::CubeMoveSequenceAnimation(scene::ISceneManager* sceneManager, scene::ISceneNode* parent, f32 totalSize, size_t cubeSize)
-: cube(sceneManager, parent, totalSize, cubeSize),
+: cubeSize(cubeSize),
+  cube(sceneManager, parent, totalSize, cubeSize),
   currentMove(0)
 {}
 
@@ -70,10 +68,7 @@ const std::vector<CubeMove>& CubeMoveSequenceAnimation::RandomScramble(int seed,
 
 const std::vector<CubeMove>& CubeMoveSequenceAnimation::SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete)
 {
-  Solver2x2x2Block blockSolver(20, "block.3x3");
-  Cube3x3x3 cube;
-  cube += moves;
-  Start(blockSolver.Solve(cube), quarterRotationsPerSecond, onComplete);
+  Start(SolverFactory::CreateSolver(cubeSize)->Solve(moves), quarterRotationsPerSecond, onComplete);
   return moves;
 }
 

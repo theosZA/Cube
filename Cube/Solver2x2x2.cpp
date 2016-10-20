@@ -39,3 +39,10 @@ std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
 
   return solver.Solve(cube);
 }
+
+std::vector<CubeMove> Solver2x2x2::Solve(const std::vector<CubeMove>& scramble)
+{
+  Cube2x2x2 cube;
+  cube += scramble;
+  return Solve(cube);
+}

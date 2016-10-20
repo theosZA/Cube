@@ -51,6 +51,13 @@ std::vector<CubeMove> Solver2x2x2Block::Solve(const Cube3x3x3& cube)
   return solver.Solve(cube);
 }
 
+std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scramble)
+{
+  Cube3x3x3 cube;
+  cube += scramble;
+  return Solve(cube);
+}
+
 std::uint32_t Solver2x2x2Block::GetKeyValue(const Cube3x3x3& cube)
 {
   // 3 edges + corner, each:

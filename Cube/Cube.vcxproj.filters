@@ -25,6 +25,8 @@
     <ClInclude Include="Graph\CubeStateSolver.h">
       <Filter>Graph</Filter>
     </ClInclude>
+    <ClInclude Include="Solver.h" />
+    <ClInclude Include="SolverFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -45,6 +47,7 @@
     <ClCompile Include="3x3x3\Solver2x2x2Block.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
+    <ClCompile Include="SolverFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3x3x3">

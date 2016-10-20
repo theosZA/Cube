@@ -35,6 +35,7 @@ public:
 private:
   void StartMove(size_t index);
 
+  size_t cubeSize;
   CubeRenderer cube;
 
   double quarterRotationsPerSecond;
