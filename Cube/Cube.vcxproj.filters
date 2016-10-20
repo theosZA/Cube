@@ -31,6 +31,12 @@
     <ClInclude Include="2x2x2\Solver2x2x2.h">
       <Filter>2x2x2</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\Solver2x2x3Block.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\Solver3x3x3.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -55,6 +61,12 @@
     </ClCompile>
     <ClCompile Include="2x2x2\Solver2x2x2.cpp">
       <Filter>2x2x2</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\Solver2x2x3Block.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\Solver3x3x3.cpp">
+      <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
