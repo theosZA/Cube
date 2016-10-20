@@ -15,7 +15,7 @@ void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, std::uint
   pathLengthFromVertexKey.insert(std::pair<Key, std::uint32_t>{ key, 0 });
   vertexDistanceQueue.push(std::pair<Vertex, std::uint32_t>{ root, 0 });
 
-  while (!vertexDistanceQueue.empty() && vertexDistanceQueue.front().second <= maxPathLength)
+  while (!vertexDistanceQueue.empty() && vertexDistanceQueue.front().second < maxPathLength)
   {
     auto vertex = vertexDistanceQueue.front().first;
     auto distance = vertexDistanceQueue.front().second;
@@ -108,7 +108,7 @@ std::pair<DirectedEdge, Vertex> RootedGraph<Vertex, Key, DirectedEdge>::GetShort
   for (const auto& adjacentVertexPair : adjacentVertices)
   {
     const auto& nextVertex = adjacentVertexPair.second;
-    if (GetShortestPathLength(nextVertex) + 1 == length)
+    if (SafeGetShortestPathLength(nextVertex) + 1 == length)
       return adjacentVertexPair;
   }
 

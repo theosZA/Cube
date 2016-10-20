@@ -92,8 +92,8 @@ TEST_CASE("Rooted graph - Ensure we can't find a path longer than maximum length
 {
   RootedGraph<int, int, int> graph(GetKey, GetThreeAdjacentVertices);
   const int root = 17;
-  graph.Build(root, 6);
-  CHECK_THROWS(graph.FindShortestPathToRoot(532));
+  graph.Build(root, 2);
+  CHECK_THROWS(graph.FindShortestPathToRoot(32));
 }
 
 TEST_CASE("Rooted graph - Ensure we can persist a graph", "[RootedGraph]")
