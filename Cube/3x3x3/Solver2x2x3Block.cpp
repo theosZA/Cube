@@ -6,22 +6,22 @@
 
 static const std::array<StickerPosition, 3> extensionCubies
 {
-  StickerPosition{ Face::Front, 7 },
-  StickerPosition{ Face::Right, 7 },
-  StickerPosition{ Face::Front, 8 }
+  StickerPosition{ Face::Front, 3 },
+  StickerPosition{ Face::Front, 6 },
+  StickerPosition{ Face::Front, 7 }
 };
 
 static const std::vector<CubeMove> possibleMoves
 {
-  CubeMove{ Face::Left, 1 },
-  CubeMove{ Face::Left, -1 },
-  CubeMove{ Face::Left, 2 },
-  CubeMove{ Face::Down, 1 },
-  CubeMove{ Face::Down, -1 },
-  CubeMove{ Face::Down, 2 },
-  CubeMove{ Face::Back, 2 },
-  CubeMove{ Face::Back, -1 },
-  CubeMove{ Face::Back, 1 }
+  CubeMove{ Face::Right, 1 },
+  CubeMove{ Face::Right, -1 },
+  CubeMove{ Face::Right, 2 },
+  CubeMove{ Face::Up, 1 },
+  CubeMove{ Face::Up, -1 },
+  CubeMove{ Face::Up, 2 },
+  CubeMove{ Face::Front, 2 },
+  CubeMove{ Face::Front, -1 },
+  CubeMove{ Face::Front, 1 }
 };
 
 Solver2x2x3Block::Solver2x2x3Block(std::uint32_t maxMoves, const std::string& cacheFileName)

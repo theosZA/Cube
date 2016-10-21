@@ -58,6 +58,31 @@ std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scram
   return Solve(cube);
 }
 
+std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scramble, Face cornerFace, Face cornerFaceClockwise)
+{
+  std::array<Face, 6> forwardMapping;
+  forwardMapping[static_cast<size_t>(Face::Front)] = cornerFace;
+  forwardMapping[static_cast<size_t>(Face::Up)] = cornerFaceClockwise;
+  forwardMapping[static_cast<size_t>(Face::Right)] = GetNextFaceClockwise(cornerFace, cornerFaceClockwise);
+  forwardMapping[static_cast<size_t>(Face::Back)] = GetOppositeFace(cornerFace);
+  forwardMapping[static_cast<size_t>(Face::Down)] = GetOppositeFace(cornerFaceClockwise);
+  forwardMapping[static_cast<size_t>(Face::Left)] = GetOppositeFace(GetNextFaceClockwise(cornerFace, cornerFaceClockwise));
+
+  std::vector<CubeMove> proxyScramble;
+  for (const auto& move : scramble)
+    proxyScramble.push_back(CubeMove{ forwardMapping[static_cast<size_t>(move.face)], move.quarterRotationsClockwise });
+  auto proxySolution = Solve(proxyScramble);
+
+  std::array<Face, 6> backwardMapping;
+  for (size_t i = 0; i < 6; ++i)
+    backwardMapping[static_cast<size_t>(forwardMapping[i])] = static_cast<Face>(i);
+
+  std::vector<CubeMove> solution;
+  for (const auto& move : proxySolution)
+    solution.push_back(CubeMove{ backwardMapping[static_cast<size_t>(move.face)], move.quarterRotationsClockwise });
+  return solution;
+}
+
 std::uint32_t Solver2x2x2Block::GetKeyValue(const Cube3x3x3& cube)
 {
   // 3 edges + corner, each:

@@ -19,8 +19,6 @@ public:
   Solver3x3x3(const std::string& cache2x2x2FileName = "",
               const std::string& cache2x2x3FileName = "");
 
-  // Returns the move sequence that solve the given cube.
-  std::vector<CubeMove> Solve(const Cube3x3x3&);
   // Returns the move sequence that solve the given scramble.
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) override;
 

@@ -18,11 +18,12 @@ public:
   // solver generate the moves from scratch and then save to the cache file.
   Solver2x2x3Block(std::uint32_t maxMoves, const std::string& cacheFileName = "");
 
-  // Returns the move sequence that will create the UFRD 2x2x3 block for the given cube. If the block can't
+  // Returns the move sequence that will extend a BLD 2x2x2 block into a BLDF 2x2x3 block. If the block can't
   // be created within the number of moves specified in the constructor then an exception is thrown.
   std::vector<CubeMove> Solve(const Cube3x3x3&);
-  // Returns the move sequence that will create the UFRD 2x2x3 block from the given scramble. If the block
-  // can't be created within the number of moves specified in the constructor then an exception is thrown.
+  // Returns the move sequence that will extend a BLD 2x2x2 block into a BLDF 2x2x3 block from the given
+  // scramble. If the block can't be created within the number of moves specified in the constructor then
+  // an exception is thrown.
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) override;
 
 private:

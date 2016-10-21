@@ -25,6 +25,11 @@ public:
   // can't be created within the number of moves specified in the constructor then an exception is thrown.
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) override;
 
+  // Returns the move sequence that will create the 2x2x2 block around the given corner from the given scramble.
+  // If the block can't be created within the number of moves specified in the constructor then an exception
+  // is thrown.
+  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble, Face cornerFace, Face cornerFaceClockwise);
+
 private:
   // Returns a key value that distinguishes based on the cubies in the FUR block only.
   static std::uint32_t GetKeyValue(const Cube3x3x3&);
