@@ -35,6 +35,12 @@ std::vector<CubeMove> CubeStateSolver<CubeType>::Solve(const CubeType& cube) con
 }
 
 template<class CubeType>
+std::uint32_t CubeStateSolver<CubeType>::GetRequiredMoveCount(const CubeType& cube) const
+{
+  return graph.GetShortestPathLength(cube);
+}
+
+template<class CubeType>
 void CubeStateSolver<CubeType>::WriteCacheFile(const std::string& cacheFileName) const
 {
   if (!cacheFileName.empty())

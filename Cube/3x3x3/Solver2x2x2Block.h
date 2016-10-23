@@ -29,6 +29,16 @@ public:
   // is thrown.
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble, Face cornerFace, Face cornerFaceClockwise) const;
 
+  // Returns the number of moves that will create the FUR 2x2x2 block for the given cube. If the block can't
+  // be created within the number of moves specified in the constructor then an exception is thrown.
+  std::uint32_t GetRequiredMoveCount(const Cube3x3x3&) const;
+  // Returns the number of moves that will create the FUR 2x2x2 block from the given scramble. If the block can't
+  // be created within the number of moves specified in the constructor then an exception is thrown.
+  std::uint32_t GetRequiredMoveCount(const std::vector<CubeMove>& scramble) const;
+  // Returns the number of moves that will create the 2x2x2 block around the given corner from the given scramble.
+  // If the block can't be created within the number of moves specified in the constructor then an exception is thrown.
+  std::uint32_t GetRequiredMoveCount(const std::vector<CubeMove>& scramble, Face cornerFace, Face cornerFaceClockwise) const;
+
 private:
   // Returns a key value that distinguishes based on the cubies in the FUR block only.
   static std::uint32_t GetKeyValue(const Cube3x3x3&);

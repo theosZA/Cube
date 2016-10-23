@@ -130,6 +130,7 @@
     <ClInclude Include="3x3x3\Solver2x2x2Block.h" />
     <ClInclude Include="3x3x3\Solver2x2x3Block.h" />
     <ClInclude Include="3x3x3\Solver3x3x3.h" />
+    <ClInclude Include="3x3x3\TwoFaceEO.h" />
     <ClInclude Include="BinaryStream.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeMove.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="3x3x3\Solver2x2x2Block.cpp" />
     <ClCompile Include="3x3x3\Solver2x2x3Block.cpp" />
     <ClCompile Include="3x3x3\Solver3x3x3.cpp" />
+    <ClCompile Include="3x3x3\TwoFaceEO.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />

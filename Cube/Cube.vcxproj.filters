@@ -37,6 +37,9 @@
     <ClInclude Include="3x3x3\Solver3x3x3.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\TwoFaceEO.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
     <ClInclude Include="BinaryStream.h" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +70,9 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\Solver3x3x3.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\TwoFaceEO.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>

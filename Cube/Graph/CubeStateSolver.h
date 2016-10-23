@@ -25,6 +25,11 @@ public:
   // Returns the move sequence that will solve the given cube. If the cube can't be solved within the number
   // of moves specified in the constructor then an exception is thrown.
   std::vector<CubeMove> Solve(const CubeType&) const;
+  
+  // Returns the number of moves required to solve the given cube. If the cube can't be solved within the
+  // number of moves specified in the constructor then an exception is thrown.
+  std::uint32_t GetRequiredMoveCount(const CubeType&) const;
+
 
 private:
   // Writes the set of positions to a cache file.

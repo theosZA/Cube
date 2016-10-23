@@ -58,6 +58,15 @@ std::vector<DirectedEdge> RootedGraph<Vertex, Key, DirectedEdge>::FindShortestPa
 }
 
 template <class Vertex, class Key, class DirectedEdge>
+std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(const Vertex& vertex) const
+{
+  auto length = SafeGetShortestPathLength(vertex);
+  if (length == -1)
+    throw std::runtime_error("Vertex not connected to root in graph");
+  return length;
+}
+
+template <class Vertex, class Key, class DirectedEdge>
 bool RootedGraph<Vertex, Key, DirectedEdge>::ReadFromStream(std::istream& in)
 {
   if (!in.good())
@@ -83,15 +92,6 @@ std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(
   if (findIter == pathLengthFromVertexKey.end())
     return -1;
   return findIter->second;
-}
-
-template <class Vertex, class Key, class DirectedEdge>
-std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(const Vertex& vertex) const
-{
-  auto length = SafeGetShortestPathLength(vertex);
-  if (length == -1)
-    throw std::runtime_error("Vertex not connected to root in graph");
-  return length;
 }
 
 template <class Vertex, class Key, class DirectedEdge>

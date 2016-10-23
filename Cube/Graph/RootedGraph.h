@@ -31,6 +31,9 @@ public:
   // within the maximum path length specified in Build() then an exception is thrown.
   std::vector<DirectedEdge> FindShortestPathToRoot(const Vertex& source) const;
 
+  // Returns the path length to reach the root from the given vertex. Throws an exception if no path is found.
+  std::uint32_t GetShortestPathLength(const Vertex&) const;
+
   // Reads the graph path info from a stream as written by WriteToStream().
   // Returns true only if the graph could be populated from the stream.
   bool ReadFromStream(std::istream&);
@@ -40,8 +43,6 @@ public:
 private:
   // Returns the path length to reach the root from the given vertex or -1 if no path is found.
   std::uint32_t SafeGetShortestPathLength(const Vertex&) const;
-  // Returns the path length to reach the root from the given vertex. Throws an exception if no path is found.
-  std::uint32_t GetShortestPathLength(const Vertex&) const;
   // Returns the edge along the shortest path from the given vertex to the root. Throws an exception if no path is found.
   std::pair<DirectedEdge, Vertex> GetShortestPathEdge(const Vertex&) const;
 
