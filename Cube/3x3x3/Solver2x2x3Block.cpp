@@ -36,12 +36,12 @@ Solver2x2x3Block::Solver2x2x3Block(std::uint32_t maxMoves, const std::string& ca
     cacheFileName)
 {}
 
-std::vector<CubeMove> Solver2x2x3Block::Solve(const Cube3x3x3& cube)
+std::vector<CubeMove> Solver2x2x3Block::Solve(const Cube3x3x3& cube) const
 {
   return solver.Solve(cube);
 }
 
-std::vector<CubeMove> Solver2x2x3Block::Solve(const std::vector<CubeMove>& scramble)
+std::vector<CubeMove> Solver2x2x3Block::Solve(const std::vector<CubeMove>& scramble) const
 {
   Cube3x3x3 cube;
   cube += scramble;

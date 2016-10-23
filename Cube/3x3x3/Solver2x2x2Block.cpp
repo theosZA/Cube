@@ -46,19 +46,19 @@ Solver2x2x2Block::Solver2x2x2Block(std::uint32_t maxMoves, const std::string& ca
     cacheFileName)
 {}
 
-std::vector<CubeMove> Solver2x2x2Block::Solve(const Cube3x3x3& cube)
+std::vector<CubeMove> Solver2x2x2Block::Solve(const Cube3x3x3& cube) const
 {
   return solver.Solve(cube);
 }
 
-std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scramble)
+std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scramble) const
 {
   Cube3x3x3 cube;
   cube += scramble;
   return Solve(cube);
 }
 
-std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scramble, Face cornerFace, Face cornerFaceClockwise)
+std::vector<CubeMove> Solver2x2x2Block::Solve(const std::vector<CubeMove>& scramble, Face cornerFace, Face cornerFaceClockwise) const
 {
   std::array<Face, 6> forwardMapping;
   forwardMapping[static_cast<size_t>(Face::Front)] = cornerFace;

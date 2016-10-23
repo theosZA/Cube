@@ -12,7 +12,7 @@ Solver3x3x3::Solver3x3x3(const std::string& cache2x2x2FileName,
   solver2x2x3(20, cache2x2x3FileName)
 {}
 
-std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble)
+std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) const
 {
   auto scramblePlusSolution = scramble;
   std::vector<CubeMove> solution;

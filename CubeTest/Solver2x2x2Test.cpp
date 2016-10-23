@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "Solver2x2x2.h"
+#include "2x2x2\Solver2x2x2.h"
 
 TEST_CASE("Ensure that the solved cube can be solved", "[Solver2x2x2]")
 {

@@ -10,5 +10,5 @@ class Solver
 public:
   // Returns the move sequence that will solve the given scramble. If the scramble can't be solved within the
   // number of moves specified in the constructor then an exception is thrown.
-  virtual std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) = 0;
+  virtual std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const = 0;
 };

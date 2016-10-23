@@ -5,12 +5,11 @@
 #include <vector>
 
 #include "..\CubeMove.h"
-#include "..\Solver.h"
 #include "..\Graph\CubeStateSolver.h"
 #include "Cube3x3x3.h"
 
 // A solver that extends a 2x2x2 block to a 2x2x3 block on a 3x3x3 cube.
-class Solver2x2x3Block : public Solver
+class Solver2x2x3Block
 {
 public:
   // Initializes the solver with all possible positions that can be solved in the given number of moves.
@@ -20,11 +19,11 @@ public:
 
   // Returns the move sequence that will extend a BLD 2x2x2 block into a BLDF 2x2x3 block. If the block can't
   // be created within the number of moves specified in the constructor then an exception is thrown.
-  std::vector<CubeMove> Solve(const Cube3x3x3&);
+  std::vector<CubeMove> Solve(const Cube3x3x3&) const;
   // Returns the move sequence that will extend a BLD 2x2x2 block into a BLDF 2x2x3 block from the given
   // scramble. If the block can't be created within the number of moves specified in the constructor then
   // an exception is thrown.
-  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) override;
+  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const;
 
 private:
   // Returns a key value that distinguishes based on the cubies in the UFRD 2x2x3 block, but excludes

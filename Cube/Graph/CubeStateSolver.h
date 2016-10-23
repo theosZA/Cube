@@ -24,11 +24,11 @@ public:
 
   // Returns the move sequence that will solve the given cube. If the cube can't be solved within the number
   // of moves specified in the constructor then an exception is thrown.
-  std::vector<CubeMove> Solve(const CubeType&);
+  std::vector<CubeMove> Solve(const CubeType&) const;
 
 private:
   // Writes the set of positions to a cache file.
-  void WriteCacheFile(const std::string& cacheFileName);
+  void WriteCacheFile(const std::string& cacheFileName) const;
   // Reads the set of positions from a cache file written by WriteCacheFile().
   // Returns true only if the file was found and the set of positions was populated.
   bool ReadCacheFile(const std::string& cacheFileName);

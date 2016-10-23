@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "Cube2x2x2.h"
+#include "2x2x2\Cube2x2x2.h"
 
 TEST_CASE("2x2x2 - Ensure that the default position is correct", "[Cube2x2x2]")
 {

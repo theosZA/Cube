@@ -24,7 +24,7 @@ Solver2x2x2::Solver2x2x2(std::uint32_t maxMoves, const std::string& cacheFileNam
          cacheFileName)
 {}
 
-std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
+std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube) const
 {
   std::map<Face, Face> faceMapping;
   auto downFace = cube[StickerPosition{ Face::Down, 2 }].face;
@@ -40,7 +40,7 @@ std::vector<CubeMove> Solver2x2x2::Solve(Cube2x2x2 cube)
   return solver.Solve(cube);
 }
 
-std::vector<CubeMove> Solver2x2x2::Solve(const std::vector<CubeMove>& scramble)
+std::vector<CubeMove> Solver2x2x2::Solve(const std::vector<CubeMove>& scramble) const
 {
   Cube2x2x2 cube;
   cube += scramble;

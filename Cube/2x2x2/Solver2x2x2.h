@@ -20,10 +20,10 @@ public:
 
   // Returns the move sequence that will solve the given cube. If the cube can't be solved within the number
   // of moves specified in the constructor then an exception is thrown.
-  std::vector<CubeMove> Solve(Cube2x2x2);
+  std::vector<CubeMove> Solve(Cube2x2x2) const;
   // Returns the move sequence that will solve the given scramble. If the scramble can't be solved within the
   // number of moves specified in the constructor then an exception is thrown.
-  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) override;
+  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const override;
 
 private:
   CubeStateSolver<Cube2x2x2> solver;

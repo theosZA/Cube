@@ -29,13 +29,13 @@ CubeStateSolver<CubeType>::CubeStateSolver(std::uint32_t maxMoves, const std::fu
 }
 
 template<class CubeType>
-std::vector<CubeMove> CubeStateSolver<CubeType>::Solve(const CubeType& cube)
+std::vector<CubeMove> CubeStateSolver<CubeType>::Solve(const CubeType& cube) const
 {
   return graph.FindShortestPathToRoot(cube);
 }
 
 template<class CubeType>
-void CubeStateSolver<CubeType>::WriteCacheFile(const std::string& cacheFileName)
+void CubeStateSolver<CubeType>::WriteCacheFile(const std::string& cacheFileName) const
 {
   if (!cacheFileName.empty())
     graph.WriteToStream(std::ofstream(cacheFileName, std::ios::binary));

@@ -39,7 +39,7 @@ void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, std::uint
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-std::vector<DirectedEdge> RootedGraph<Vertex, Key, DirectedEdge>::FindShortestPathToRoot(const Vertex& source)
+std::vector<DirectedEdge> RootedGraph<Vertex, Key, DirectedEdge>::FindShortestPathToRoot(const Vertex& source) const
 {
   std::vector<DirectedEdge> shortestPath;
   auto shortestPathLength = GetShortestPathLength(source);
@@ -74,7 +74,7 @@ bool RootedGraph<Vertex, Key, DirectedEdge>::ReadFromStream(std::istream& in)
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-void RootedGraph<Vertex, Key, DirectedEdge>::WriteToStream(std::ostream& out)
+void RootedGraph<Vertex, Key, DirectedEdge>::WriteToStream(std::ostream& out) const
 {
   for (const auto& vertexPair : pathLengthFromVertexKey)
   {
@@ -84,7 +84,7 @@ void RootedGraph<Vertex, Key, DirectedEdge>::WriteToStream(std::ostream& out)
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(const Vertex& vertex)
+std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(const Vertex& vertex) const
 {
   auto findIter = pathLengthFromVertexKey.find(getKey(vertex));
   if (findIter == pathLengthFromVertexKey.end())
@@ -93,7 +93,7 @@ std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::SafeGetShortestPathLength(
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(const Vertex& vertex)
+std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(const Vertex& vertex) const
 {
   auto length = SafeGetShortestPathLength(vertex);
   if (length == -1)
@@ -102,7 +102,7 @@ std::uint32_t RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathLength(cons
 }
 
 template <class Vertex, class Key, class DirectedEdge>
-std::pair<DirectedEdge, Vertex> RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathEdge(const Vertex& vertex)
+std::pair<DirectedEdge, Vertex> RootedGraph<Vertex, Key, DirectedEdge>::GetShortestPathEdge(const Vertex& vertex) const
 {
   auto length = GetShortestPathLength(vertex);
   auto adjacentVertices = getAdjacentVertices(vertex);

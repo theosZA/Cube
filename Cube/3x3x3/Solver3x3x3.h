@@ -20,7 +20,7 @@ public:
               const std::string& cache2x2x3FileName = "");
 
   // Returns the move sequence that solve the given scramble.
-  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) override;
+  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const override;
 
 private:
   Solver2x2x2Block solver2x2x2;
