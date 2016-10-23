@@ -130,6 +130,7 @@
     <ClInclude Include="3x3x3\Solver2x2x2Block.h" />
     <ClInclude Include="3x3x3\Solver2x2x3Block.h" />
     <ClInclude Include="3x3x3\Solver3x3x3.h" />
+    <ClInclude Include="BinaryStream.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeMove.h" />
     <ClInclude Include="Face.h" />

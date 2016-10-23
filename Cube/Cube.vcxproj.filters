@@ -37,6 +37,7 @@
     <ClInclude Include="3x3x3\Solver3x3x3.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryStream.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />

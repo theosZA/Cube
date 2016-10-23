@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "RootedGraph.h"
+#include "..\BinaryStream.h"
 
 template <class Vertex, class Key, class DirectedEdge>
 void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, std::uint32_t maxPathLength)
@@ -63,13 +64,8 @@ bool RootedGraph<Vertex, Key, DirectedEdge>::ReadFromStream(std::istream& in)
     return false;
 
   pathLengthFromVertexKey.clear();
-  const auto bufferSize = sizeof(std::pair<Key, std::uint32_t>);
-  char buffer[bufferSize];
   while (in.good() && !in.eof())
-  {
-    in.read(buffer, bufferSize);
-    pathLengthFromVertexKey.insert(*reinterpret_cast<std::pair<Key, std::uint32_t>*>(buffer));
-  }
+    pathLengthFromVertexKey.insert(BinaryStream::Read<std::pair<Key, std::uint32_t>>(in));
   return true;
 }
 
@@ -77,10 +73,7 @@ template <class Vertex, class Key, class DirectedEdge>
 void RootedGraph<Vertex, Key, DirectedEdge>::WriteToStream(std::ostream& out) const
 {
   for (const auto& vertexPair : pathLengthFromVertexKey)
-  {
-    auto buffer = reinterpret_cast<const char*>(&vertexPair);
-    std::copy(buffer, buffer + sizeof(vertexPair), std::ostream_iterator<char>(out));
-  }
+    BinaryStream::Write(out, vertexPair);
 }
 
 template <class Vertex, class Key, class DirectedEdge>
