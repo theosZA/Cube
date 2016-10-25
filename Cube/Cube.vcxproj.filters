@@ -41,6 +41,9 @@
       <Filter>3x3x3</Filter>
     </ClInclude>
     <ClInclude Include="BinaryStream.h" />
+    <ClInclude Include="3x3x3\TwoFaceAB5C.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -73,6 +76,9 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\TwoFaceEO.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\TwoFaceAB5C.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
