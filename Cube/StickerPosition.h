@@ -23,6 +23,11 @@ struct StickerPosition
   {
     return !(*this == rhs);
   }
+
+  inline bool operator<(const StickerPosition& rhs) const
+  {
+    return face < rhs.face || (face == rhs.face && index < rhs.index);
+  }
 };
 
 std::ostream& operator<<(std::ostream&, const StickerPosition&);
