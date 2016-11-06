@@ -42,6 +42,14 @@ void Render(IrrlichtDevice& device)
   device.getVideoDriver()->endScene();
 }
 
+void DisplayMoveSequence(gui::IGUIStaticText& out, const std::vector<CubeMove> moves, bool showMoveCount = false)
+{
+  auto text = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(MoveSequenceToText(moves));
+  if (showMoveCount)
+    text += L" [" + std::to_wstring(moves.size()) + L"]";
+  out.setText(text.c_str());
+}
+
 enum State
 {
   Scrambling,
@@ -63,8 +71,8 @@ int main()
   sceneManager->addCameraSceneNode(0, core::vector3df(-20, 20, 30), core::vector3df(0, 0, 0));
   CubeMoveSequenceAnimation cube(sceneManager, sceneManager->getRootSceneNode(), cubeRenderSize, cubeSize);
 
-  auto scrambleStaticText = device->getGUIEnvironment()->addStaticText(L"", core::rect<s32>(10, 10, 360, 22), true);
-  auto solutionStaticText = device->getGUIEnvironment()->addStaticText(L"", core::rect<s32>(10, 26, 360, 38), true);
+  auto scrambleStaticText = device->getGUIEnvironment()->addStaticText(L"", core::rect<s32>(10, 10, 560, 22), true);
+  auto solutionStaticText = device->getGUIEnvironment()->addStaticText(L"", core::rect<s32>(10, 26, 560, 38), true);
 
   State state = State::Solved;
   auto stateStart = std::chrono::high_resolution_clock::now();
@@ -93,7 +101,7 @@ int main()
                 state = State::Solved;
                 stateStart = std::chrono::high_resolution_clock::now();
               });
-            solutionStaticText->setText(std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(MoveSequenceToText(solution)).c_str());
+            DisplayMoveSequence(*solutionStaticText, solution, true);
           }
         }
         break;
@@ -111,8 +119,8 @@ int main()
                 state = State::Scrambled;
                 stateStart = std::chrono::high_resolution_clock::now();
               });
-            scrambleStaticText->setText(std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t>().from_bytes(MoveSequenceToText(scramble)).c_str());
-            solutionStaticText->setText(L"");
+            DisplayMoveSequence(*scrambleStaticText, scramble);
+            DisplayMoveSequence(*solutionStaticText, std::vector<CubeMove>{});
           }
         }
         break;
