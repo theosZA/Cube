@@ -68,12 +68,12 @@ void TwoFaceEO::GenerateSolutions(std::uint8_t maxMoves, const std::string& cach
       auto key = GetKeyValue(cube);
       if (positions.find(key) != positions.end())
       { // We have found a scramble that reachs a position for which we don't yet have a solution.
-        // A solutiion is just the inverse of the scramble.
+        // A solution is just the inverse of the scramble.
         solutions.emplace(key, InvertMoveSequence(scramble));
         positions.erase(key);
       }
     }
-    // This move sequence is still good. Generate all successors to consider.
+    // Generate all successors to consider.
     for (size_t faceValue = 0; faceValue < 6; ++faceValue)
     {
       auto face = static_cast<Face>(faceValue);
@@ -83,8 +83,8 @@ void TwoFaceEO::GenerateSolutions(std::uint8_t maxMoves, const std::string& cach
           auto newScramble = scramble;
           newScramble.push_back(CubeMove{ face, quarterRotationsClockwise < 3 ? quarterRotationsClockwise : -1 });
           // Check that we can reach a 2-face case within the moves allowed.
-          if (newScramble.size() + solver2x2x2.GetRequiredMoveCount(scramble, Face::Back, Face::Left) <= maxMoves &&
-              newScramble.size() + solver2x2x2.GetRequiredMoveCount(scramble, Face::Front, Face::Down) <= maxMoves)
+          if (newScramble.size() + solver2x2x2.GetRequiredMoveCount(newScramble, Face::Back, Face::Left) <= maxMoves &&
+              newScramble.size() + solver2x2x2.GetRequiredMoveCount(newScramble, Face::Front, Face::Down) <= maxMoves)
             scrambles.push(std::move(newScramble));
         }
     }
