@@ -6,6 +6,7 @@
 
 #include "..\CubeMove.h"
 #include "..\Solver.h"
+#include "Corner3Cycle.h"
 #include "Cube3x3x3.h"
 #include "Solver2x2x2Block.h"
 #include "Solver2x2x3Block.h"

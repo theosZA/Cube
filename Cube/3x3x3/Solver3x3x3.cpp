@@ -5,6 +5,7 @@
 #include <map>
 
 #include "Cube3x3x3.h"
+#include "SolverCorners.h"
 
 Solver3x3x3::Solver3x3x3(const std::string& cache2x2x2FileName,
                          const std::string& cache2x2x3FileName,
@@ -36,6 +37,8 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
   auto step4 = solver2FaceAB5C.Solve(scramblePlusSolution);
   std::copy(step4.begin(), step4.end(), std::back_inserter(scramblePlusSolution));
   std::copy(step4.begin(), step4.end(), std::back_inserter(solution));
+
+  solution = SolverCorners::SolveCorners(scramble, solution);
 
   return solution;
 }

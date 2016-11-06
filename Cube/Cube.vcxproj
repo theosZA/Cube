@@ -124,12 +124,15 @@
   <ItemGroup>
     <ClInclude Include="2x2x2\Cube2x2x2.h" />
     <ClInclude Include="2x2x2\Solver2x2x2.h" />
+    <ClInclude Include="3x3x3\Corner3Cycle.h" />
     <ClInclude Include="3x3x3\Corners3x3x3.h" />
+    <ClInclude Include="3x3x3\CornerStructure.h" />
     <ClInclude Include="3x3x3\Cube3x3x3.h" />
     <ClInclude Include="3x3x3\Edges3x3x3.h" />
     <ClInclude Include="3x3x3\Solver2x2x2Block.h" />
     <ClInclude Include="3x3x3\Solver2x2x3Block.h" />
     <ClInclude Include="3x3x3\Solver3x3x3.h" />
+    <ClInclude Include="3x3x3\SolverCorners.h" />
     <ClInclude Include="3x3x3\TwoFaceAB5C.h" />
     <ClInclude Include="3x3x3\TwoFaceEO.h" />
     <ClInclude Include="BinaryStream.h" />
@@ -145,12 +148,15 @@
   <ItemGroup>
     <ClCompile Include="2x2x2\Cube2x2x2.cpp" />
     <ClCompile Include="2x2x2\Solver2x2x2.cpp" />
+    <ClCompile Include="3x3x3\Corner3Cycle.cpp" />
     <ClCompile Include="3x3x3\Corners3x3x3.cpp" />
+    <ClCompile Include="3x3x3\CornerStructure.cpp" />
     <ClCompile Include="3x3x3\Cube3x3x3.cpp" />
     <ClCompile Include="3x3x3\Edges3x3x3.cpp" />
     <ClCompile Include="3x3x3\Solver2x2x2Block.cpp" />
     <ClCompile Include="3x3x3\Solver2x2x3Block.cpp" />
     <ClCompile Include="3x3x3\Solver3x3x3.cpp" />
+    <ClCompile Include="3x3x3\SolverCorners.cpp" />
     <ClCompile Include="3x3x3\TwoFaceAB5C.cpp" />
     <ClCompile Include="3x3x3\TwoFaceEO.cpp" />
     <ClCompile Include="Cube.cpp" />
