@@ -30,3 +30,6 @@ std::string MoveSequenceToText(const std::vector<CubeMove>& moves);
 
 // Simplifies the move sequence by combining consecutive moves on the same face.
 std::vector<CubeMove> SimplifyMoveSequence(const std::vector<CubeMove>& moves);
+
+// Combines two move sequences into a simplified move sequence.
+std::vector<CubeMove> operator+(const std::vector<CubeMove>&, const std::vector<CubeMove>&);

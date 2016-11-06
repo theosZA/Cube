@@ -28,6 +28,12 @@ public:
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const override;
 
 private:
+  // Returns a solution for when all but 3 faces are solved (i.e. a 2x2x2 block has been created).
+  std::vector<CubeMove> Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+
+  // Returns a solution for when all but 2 faces are solved.
+  std::vector<CubeMove> Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+
   Solver2x2x2Block solver2x2x2;
   Solver2x2x3Block solver2x2x3;
   TwoFaceEO solver2FaceEO;

@@ -1,9 +1,5 @@
 #include "Solver3x3x3.h"
 
-#include <algorithm>
-#include <iterator>
-#include <map>
-
 #include "Cube3x3x3.h"
 #include "SolverCorners.h"
 
@@ -19,26 +15,21 @@ Solver3x3x3::Solver3x3x3(const std::string& cache2x2x2FileName,
 
 std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) const
 {
-  auto scramblePlusSolution = scramble;
-  std::vector<CubeMove> solution;
+  auto step2x2x2 = solver2x2x2.Solve(scramble, Face::Back, Face::Left);
 
-  auto step1 = solver2x2x2.Solve(scramble, Face::Back, Face::Left);
-  std::copy(step1.begin(), step1.end(), std::back_inserter(scramblePlusSolution));
-  solution = step1;
-
-  auto step2 = solver2x2x3.Solve(scramblePlusSolution);
-  std::copy(step2.begin(), step2.end(), std::back_inserter(scramblePlusSolution));
-  std::copy(step2.begin(), step2.end(), std::back_inserter(solution));
-
-  auto step3 = solver2FaceEO.Solve(scramblePlusSolution);
-  std::copy(step3.begin(), step3.end(), std::back_inserter(scramblePlusSolution));
-  std::copy(step3.begin(), step3.end(), std::back_inserter(solution));
-
-  auto step4 = solver2FaceAB5C.Solve(scramblePlusSolution);
-  std::copy(step4.begin(), step4.end(), std::back_inserter(scramblePlusSolution));
-  std::copy(step4.begin(), step4.end(), std::back_inserter(solution));
-
-  solution = SolverCorners::SolveCorners(scramble, solution);
-
-  return solution;
+  return Solve3Faces(scramble, step2x2x2);
 }
+
+std::vector<CubeMove> Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+{
+  return Solve2Faces(scramble, solutionSoFar + solver2x2x3.Solve(scramble + solutionSoFar));
+}
+
+std::vector<CubeMove> Solver3x3x3::Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+{
+  auto edgeOrientationStep = solver2FaceEO.Solve(scramble + solutionSoFar);
+  auto ab5cStep = solver2FaceAB5C.Solve(scramble + solutionSoFar + edgeOrientationStep);
+  auto skeleton = solutionSoFar + edgeOrientationStep + ab5cStep;
+  return SolverCorners::SolveCorners(scramble, skeleton);
+}
+

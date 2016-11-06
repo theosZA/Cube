@@ -1,6 +1,8 @@
 #include "CubeMove.h"
 
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 
 bool CubeMove::operator==(const CubeMove& move) const
@@ -151,4 +153,11 @@ std::vector<CubeMove> SimplifyMoveSequence(const std::vector<CubeMove>& moves)
   }
 
   return simplified;
+}
+
+std::vector<CubeMove> operator+(const std::vector<CubeMove>& a, const std::vector<CubeMove>& b)
+{
+  std::vector<CubeMove> sum = a;
+  std::copy(b.begin(), b.end(), std::back_inserter(sum));
+  return SimplifyMoveSequence(sum);
 }
