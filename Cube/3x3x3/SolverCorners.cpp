@@ -246,7 +246,7 @@ std::vector<CubeMove> SolveL2C(Cube3x3x3 scrambledCube, const std::vector<CubeMo
 
   for (const auto& cycleCornerB : cycleCornerBCandidates)
   {
-    auto solution = Corner3Cycle::SolveCorner3Cycle(scrambledCube, SolveCornersWith3Cycle(scrambledCube, skeleton, cycleCornerA, cycleCornerB, remainingCorners));
+    auto solution = SolveCornersWithPairOf3Cycles(scrambledCube, skeleton, cycleCornerA, cycleCornerB, remainingCorners);
     if (!haveSolution || solution.size() < bestSolution.size())
     {
       haveSolution = true;
