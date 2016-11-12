@@ -26,8 +26,6 @@ public:
   // Returns true if we are still in the middle of animating a started move sequence.
   bool IsAnimating() const;
 
-  // Randomly scrambles the rendered cube, playing it out as an animation. Returns the scramble sequence.
-  const std::vector<CubeMove>& RandomScramble(int seed, size_t scrambleLength, double quarterRotationsPerSecond, const std::function<void()>& onComplete);
   // Solves the last used scramble move sequence as provided by Start() or RandomScramble(), playing it out as an animation.
   // Returns the solution move sequence.
   const std::vector<CubeMove>& SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete);

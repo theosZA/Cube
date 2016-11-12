@@ -45,27 +45,6 @@ bool CubeMoveSequenceAnimation::IsAnimating() const
   return currentMove < moves.size();
 }
 
-const std::vector<CubeMove>& CubeMoveSequenceAnimation::RandomScramble(int seed, size_t scrambleLength, double quarterRotationsPerSecond, const std::function<void()>& onComplete)
-{
-  std::mt19937 generator(seed);
-  std::uniform_int_distribution<> faceDistribution(0, 5);
-  std::uniform_int_distribution<> rotationDistribution(0, 2);
-  std::vector<CubeMove> scramble(scrambleLength);
-  for (size_t i = 0; i < scrambleLength; ++i)
-  {
-    do
-      scramble[i].face = static_cast<Face>(faceDistribution(generator));
-    while (i > 0 && scramble[i].face == scramble[i - 1].face);
-
-    scramble[i].quarterRotationsClockwise = rotationDistribution(generator);
-    if (scramble[i].quarterRotationsClockwise == 0)
-      scramble[i].quarterRotationsClockwise = -1;
-  }
-  
-  Start(scramble, quarterRotationsPerSecond, onComplete);
-  return moves;
-}
-
 const std::vector<CubeMove>& CubeMoveSequenceAnimation::SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete)
 {
   Start(SolverFactory::CreateSolver(cubeSize)->Solve(moves), quarterRotationsPerSecond, onComplete);

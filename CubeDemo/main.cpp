@@ -1,5 +1,8 @@
+#include <algorithm>
 #include <chrono>
 #include <codecvt>
+#include <fstream>
+#include <iterator>
 #include <locale>
 #include <random>
 #include <string>
@@ -12,6 +15,7 @@
 #endif
 
 #include "CubeMoveSequenceAnimation.h"
+#include "Scrambler.h"
 
 using namespace irr;
 using namespace std::chrono_literals;
@@ -24,6 +28,8 @@ const size_t scrambleLength = 25;
 const f32 cubeRenderSize = 25.0f;
 const u32 windowWidth = 900;
 const u32 windowHeight = 900;
+
+const char* const fixedScrambleFileName = "scramble.txt";
 
 std::unique_ptr<IrrlichtDevice> CreateRenderDevice()
 {
@@ -61,6 +67,20 @@ enum State
 int main()
 {
   std::random_device randomSource;
+  Scrambler scrambler(randomSource());
+
+  int solvedCount = 0;
+
+  std::vector<CubeMove> fixedScramble;
+  std::ifstream scrambleFile(fixedScrambleFileName);
+  bool isFixedScramble = scrambleFile.good();
+  if (isFixedScramble)
+  {
+    scrambleFile >> std::noskipws;
+    std::string scrambleText;
+    std::copy(std::istream_iterator<char>(scrambleFile), std::istream_iterator<char>(), std::back_inserter(scrambleText));
+    fixedScramble = ParseMoveSequence(scrambleText);
+  }
 
   auto device = CreateRenderDevice();
   if (!device)
@@ -98,6 +118,7 @@ int main()
             auto solution = cube.SolveScramble(solveSpeed, 
               [&]
               {
+                ++solvedCount;
                 state = State::Solved;
                 stateStart = std::chrono::high_resolution_clock::now();
               });
@@ -109,18 +130,20 @@ int main()
       case State::Solved:
         {
           auto now = std::chrono::high_resolution_clock::now();
-          if (now - stateStart >= delayForSolve)
+          if (now - stateStart >= delayForSolve && !(isFixedScramble && solvedCount > 0))
           {
             state = State::Scrambling;
             stateStart = now;
-            auto scramble = cube.RandomScramble(randomSource(), 25, scrambleSpeed,
-              [&]
-              {
-                state = State::Scrambled;
-                stateStart = std::chrono::high_resolution_clock::now();
-              });
+
+            std::vector<CubeMove> scramble = isFixedScramble ? fixedScramble : scrambler.CreateRandomScramble(25);
             DisplayMoveSequence(*scrambleStaticText, scramble);
             DisplayMoveSequence(*solutionStaticText, std::vector<CubeMove>{});
+            cube.Start(scramble, scrambleSpeed,
+                [&]
+                {
+                  state = State::Scrambled;
+                  stateStart = std::chrono::high_resolution_clock::now();
+                });
           }
         }
         break;
