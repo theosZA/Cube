@@ -6,6 +6,7 @@
 #include <irrlicht.h>
 
 #include "CubeMoveSequenceAnimation.h"
+#include "RenderDevice.h"
 #include "Scrambler.h"
 #include "..\Cube\CubeMove.h"
 
@@ -17,8 +18,6 @@ public:
   // A demo that will run once with a fixed scramble.
   CubeDemo(const std::vector<CubeMove>& fixedScramble);
 
-  ~CubeDemo();
-
   // Runs the demo either with random scrambles or a fixed scramble as supplied in the constructor.
   void RunDemo();
 
@@ -27,7 +26,7 @@ private:
   std::vector<CubeMove> fixedScramble;
   int solvedCount;
 
-  std::unique_ptr<irr::IrrlichtDevice> device;
+  std::unique_ptr<RenderDevice> renderer;
   std::unique_ptr<CubeMoveSequenceAnimation> moveSequenceAnimator;
 
   irr::gui::IGUIStaticText* scrambleStaticText;
@@ -35,7 +34,5 @@ private:
 
   void SetupScene();
 
-  static std::unique_ptr<irr::IrrlichtDevice> CreateRenderDevice();
-  static void Render(irr::IrrlichtDevice& device);
-  static void DisplayMoveSequence(irr::gui::IGUIStaticText& out, const std::vector<CubeMove> moves, bool showMoveCount = false);
+  static void DisplayMoveSequence(irr::gui::IGUIStaticText& out, const std::vector<CubeMove>& moves, bool showMoveCount = false);
 };

@@ -15,7 +15,7 @@
 class CubeMoveSequenceAnimation
 {
 public:
-  CubeMoveSequenceAnimation(irr::scene::ISceneManager*, irr::scene::ISceneNode* parent, irr::f32 totalSize, size_t cubeSize);
+  CubeMoveSequenceAnimation(irr::scene::ISceneManager&, irr::scene::ISceneNode* parent, irr::f32 totalSize, size_t cubeSize);
 
   // Start an animation of the given move sequence. When the animation is completed the callback will be invoked.
   void Start(std::vector<CubeMove> moves, double quarterRotationsPerSecond, std::function<void()> onComplete);

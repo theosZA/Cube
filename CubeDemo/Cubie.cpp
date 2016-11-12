@@ -2,13 +2,13 @@
 
 using namespace irr;
 
-Cubie::Cubie(scene::ISceneManager* manager, scene::ISceneNode* parent, const core::vector3df& position, const std::array<video::SColor, 6>& faces)
+Cubie::Cubie(scene::ISceneManager& manager, scene::ISceneNode* parent, const core::vector3df& position, const std::array<video::SColor, 6>& faces)
 : cubieFaces{ CubieFaceMesh{ faces[0] }, CubieFaceMesh{ faces[1] }, CubieFaceMesh{ faces[2] }, CubieFaceMesh{ faces[3] }, CubieFaceMesh{ faces[4] }, CubieFaceMesh{ faces[5] }}
 {
-  positionNode = manager->addEmptySceneNode(parent);
+  positionNode = manager.addEmptySceneNode(parent);
   positionNode->setPosition(position);
 
-  rotationNode = manager->addEmptySceneNode(positionNode);
+  rotationNode = manager.addEmptySceneNode(positionNode);
 
   static const std::array<core::vector3df, 6> positions
   {
@@ -30,7 +30,7 @@ Cubie::Cubie(scene::ISceneManager* manager, scene::ISceneNode* parent, const cor
   };
   for (size_t i = 0; i < 6; ++i)
   {
-    faceSceneNodes[i] = manager->addMeshSceneNode(&cubieFaces[i].GetMesh(), rotationNode, -1, positions[i], rotations[i]);
+    faceSceneNodes[i] = manager.addMeshSceneNode(&cubieFaces[i].GetMesh(), rotationNode, -1, positions[i], rotations[i]);
     faceSceneNodes[i]->setMaterialFlag(video::EMF_LIGHTING, false);
   }
 }

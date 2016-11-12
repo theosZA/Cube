@@ -4,7 +4,7 @@
 
 using namespace irr;
 
-CubeMoveSequenceAnimation::CubeMoveSequenceAnimation(scene::ISceneManager* sceneManager, scene::ISceneNode* parent, f32 totalSize, size_t cubeSize)
+CubeMoveSequenceAnimation::CubeMoveSequenceAnimation(scene::ISceneManager& sceneManager, scene::ISceneNode* parent, f32 totalSize, size_t cubeSize)
 : cubeSize(cubeSize),
   cube(sceneManager, parent, totalSize, cubeSize),
   currentMove(0)

@@ -11,7 +11,7 @@
 class Cubie
 {
 public:
-  Cubie(irr::scene::ISceneManager*, irr::scene::ISceneNode* parent, const irr::core::vector3df& position, const std::array<irr::video::SColor, 6>& faces);
+  Cubie(irr::scene::ISceneManager&, irr::scene::ISceneNode* parent, const irr::core::vector3df& position, const std::array<irr::video::SColor, 6>& faces);
 
   void ApplyMove(Face, irr::f32 degreesClockwise, irr::f32 minDistanceFromCentre);
 

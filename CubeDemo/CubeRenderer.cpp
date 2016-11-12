@@ -14,11 +14,11 @@ const auto cLeft = video::SColor(255, 255, 127, 0);
 
 const f32 padding = 0.02f;
 
-CubeRenderer::CubeRenderer(scene::ISceneManager* manager, scene::ISceneNode* parent, f32 totalSize, size_t cubeSize)
+CubeRenderer::CubeRenderer(scene::ISceneManager& manager, scene::ISceneNode* parent, f32 totalSize, size_t cubeSize)
 : cubeSize(cubeSize)
 {
   auto scale = totalSize / cubeSize * (1 - padding);
-  scaleNode = manager->addEmptySceneNode(parent);
+  scaleNode = manager.addEmptySceneNode(parent);
   scaleNode->setScale(core::vector3df { scale, scale, scale });
 
   for (size_t x = 0; x < cubeSize; ++x)
