@@ -149,8 +149,8 @@ std::array<Face, 3> StickerPositionToCorner(StickerPosition sticker)
 {
   return std::array<Face, 3> {
     sticker.face,
-      GetAdjacentCornerStickerPosition(sticker, true).face,
-      GetAdjacentCornerStickerPosition(sticker, false).face
+    GetAdjacentCornerStickerPosition(sticker, true).face,
+    GetAdjacentCornerStickerPosition(sticker, false).face
   };
 }
 
