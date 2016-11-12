@@ -7,6 +7,7 @@
     <ClCompile Include="Cubie.cpp" />
     <ClCompile Include="CubeMoveSequenceAnimation.cpp" />
     <ClCompile Include="Scrambler.cpp" />
+    <ClCompile Include="CubeDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeRenderer.h" />
@@ -14,5 +15,6 @@
     <ClInclude Include="Cubie.h" />
     <ClInclude Include="CubeMoveSequenceAnimation.h" />
     <ClInclude Include="Scrambler.h" />
+    <ClInclude Include="CubeDemo.h" />
   </ItemGroup>
 </Project>

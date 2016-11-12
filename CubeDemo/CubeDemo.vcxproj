@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="CubeMoveSequenceAnimation.cpp" />
     <ClCompile Include="Cubie.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Scrambler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="CubeMoveSequenceAnimation.h" />
     <ClInclude Include="Cubie.h" />
