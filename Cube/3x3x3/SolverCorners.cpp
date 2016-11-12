@@ -305,10 +305,20 @@ std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::ve
     auto corner2 = cube[corner1];
     if (!CornerStructure::AreStickersOnSameCubie(corner1, corner2))
     {
-      std::set<StickerPosition> remainingCorners = wrongCorners;
-      RemoveCornerFromSet(remainingCorners, corner1);
-      RemoveCornerFromSet(remainingCorners, corner2);
-      auto solution = SolveCornersWith3Cycle(scrambledCube, skeleton, corner1, corner2, remainingCorners);
+      std::vector<CubeMove> solution;
+      auto corner3 = cube[corner2];
+      if (CornerStructure::AreStickersOnSameCubie(corner1, corner3))
+      { 
+        std::set<StickerPosition> remainingCorners = wrongCorners;
+        RemoveCornerFromSet(remainingCorners, corner1);
+        RemoveCornerFromSet(remainingCorners, corner2);
+        solution = SolveCornersWith3Cycle(scrambledCube, skeleton, corner1, corner2, remainingCorners);
+      }
+      else
+      {
+        auto cycle = std::array<StickerPosition, 3>{ corner1, corner2, corner3 };
+        solution = SolveCorners(scrambledCube, Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle));
+      }
       if (!haveSolution || solution.size() < bestSolution.size())
       {
         haveSolution = true;
