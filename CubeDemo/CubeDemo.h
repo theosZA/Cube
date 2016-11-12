@@ -5,6 +5,7 @@
 
 #include <irrlicht.h>
 
+#include "CubeDemoStateMachine.h"
 #include "CubeMoveSequenceAnimation.h"
 #include "RenderDevice.h"
 #include "Scrambler.h"
@@ -28,6 +29,7 @@ private:
 
   std::unique_ptr<RenderDevice> renderer;
   std::unique_ptr<CubeMoveSequenceAnimation> moveSequenceAnimator;
+  std::unique_ptr<CubeDemoStateMachine> stateMachine;
 
   irr::gui::IGUIStaticText* scrambleStaticText;
   irr::gui::IGUIStaticText* solutionStaticText;

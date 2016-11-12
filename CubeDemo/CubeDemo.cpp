@@ -28,68 +28,11 @@ CubeDemo::CubeDemo(const std::vector<CubeMove>& fixedScramble)
 void CubeDemo::RunDemo()
 {
   SetupScene();
-
-  enum State
-  {
-    Scrambling,
-    Scrambled,
-    Solving,
-    Solved
-  };
-  State state = State::Solved;
-  auto stateStart = std::chrono::high_resolution_clock::now();
-
+  stateMachine->Start();
   while (renderer->Run())
   {
     renderer->RenderScene();
-
-    switch (state)
-    {
-      case State::Scrambling:
-      case State::Solving:
-        moveSequenceAnimator->Update();
-        break;
-
-      case State::Scrambled:
-      {
-        auto now = std::chrono::high_resolution_clock::now();
-        if (now - stateStart >= delayForSolve)
-        {
-          state = State::Solving;
-          stateStart = now;
-          auto solution = moveSequenceAnimator->SolveScramble(solveSpeed,
-              [&]
-              {
-                ++solvedCount;
-                state = State::Solved;
-                stateStart = std::chrono::high_resolution_clock::now();
-              });
-          DisplayMoveSequence(*solutionStaticText, solution, true);
-        }
-      }
-      break;
-
-      case State::Solved:
-      {
-        auto now = std::chrono::high_resolution_clock::now();
-        if (now - stateStart >= delayForSolve && (randomScrambler || solvedCount == 0))
-        {
-          state = State::Scrambling;
-          stateStart = now;
-
-          std::vector<CubeMove> scramble = randomScrambler ? randomScrambler->CreateRandomScramble(25) : fixedScramble;
-          DisplayMoveSequence(*scrambleStaticText, scramble);
-          DisplayMoveSequence(*solutionStaticText, std::vector<CubeMove>{});
-          moveSequenceAnimator->Start(scramble, scrambleSpeed,
-              [&]
-              {
-                state = State::Scrambled;
-                stateStart = std::chrono::high_resolution_clock::now();
-              });
-        }
-      }
-      break;
-    }
+    stateMachine->Step();
   }
 }
 
@@ -102,6 +45,24 @@ void CubeDemo::SetupScene()
 
   scrambleStaticText = &renderer->CreateStaticText(10, 10, 560, 22);
   solutionStaticText = &renderer->CreateStaticText(10, 26, 560, 38);
+
+  stateMachine.reset(new CubeDemoStateMachine(*moveSequenceAnimator, delayForSolve, scrambleSpeed, solveSpeed, 
+      [=]
+      {
+        std::vector<CubeMove> scramble;
+        if (randomScrambler || solvedCount == 0)
+        {
+          scramble = randomScrambler ? randomScrambler->CreateRandomScramble(25) : fixedScramble;
+          DisplayMoveSequence(*scrambleStaticText, scramble);
+          DisplayMoveSequence(*solutionStaticText, std::vector<CubeMove>{});
+        }
+        return scramble;          
+      },
+      [=](const std::vector<CubeMove>& solution)
+      {
+        ++solvedCount;
+        DisplayMoveSequence(*solutionStaticText, solution, true);
+      }));
 }
 
 void CubeDemo::DisplayMoveSequence(irr::gui::IGUIStaticText& out, const std::vector<CubeMove>& moves, bool showMoveCount)

@@ -9,6 +9,7 @@
     <ClCompile Include="Scrambler.cpp" />
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="RenderDevice.cpp" />
+    <ClCompile Include="CubeDemoStateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeRenderer.h" />
@@ -18,5 +19,6 @@
     <ClInclude Include="Scrambler.h" />
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="RenderDevice.h" />
+    <ClInclude Include="CubeDemoStateMachine.h" />
   </ItemGroup>
 </Project>

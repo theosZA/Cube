@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubeDemo.cpp" />
+    <ClCompile Include="CubeDemoStateMachine.cpp" />
     <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="CubeMoveSequenceAnimation.cpp" />
     <ClCompile Include="Cubie.cpp" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
+    <ClInclude Include="CubeDemoStateMachine.h" />
     <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="CubeMoveSequenceAnimation.h" />
     <ClInclude Include="Cubie.h" />
