@@ -34,7 +34,7 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
   std::vector<CubeMove> bestSolution;
   for (const auto& corner : corners)
   {
-    auto newScramble = RemapFaces(scramble, std::make_pair(Face::Back, Face::Left), corner);
+    auto newScramble = RemapFaces(scramble, corner, std::make_pair(Face::Back, Face::Left));
     auto solution = Solve3Faces(newScramble, solver2x2x2.Solve(newScramble, Face::Back, Face::Left));
     if (!haveSolution || solution.size() < bestSolution.size())
     {
