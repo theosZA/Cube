@@ -35,20 +35,22 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
     std::pair<Face,Face>{ Face::Back, Face::Right }
   };
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
   for (const auto& corner : corners)
   {
     auto newScramble = RemapFaces(scramble, corner, std::make_pair(Face::Back, Face::Left));
-    auto solution = Solve3Faces(newScramble, solver2x2x2.Solve(newScramble, Face::Back, Face::Left));
-    if (!haveSolution || solution.size() < bestSolution.size())
+    auto step = solver2x2x2.Solve(newScramble, Face::Back, Face::Left);
+    auto solution = Solve3Faces(newScramble, step);
+    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
     {
       haveSolution = true;
+      solution.InsertStep("2x2x2", step);
       bestSolution = RemapFaces(solution, std::make_pair(Face::Back, Face::Left), corner);
     }
   }
 
   solutionLogger.LogSolution(bestSolution);
-  return bestSolution;
+  return bestSolution.moves;
 }
 
 std::vector<CubeMove> Solver3x3x3::RemapFaces(const std::vector<CubeMove>& moves, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces)
@@ -72,21 +74,37 @@ std::vector<CubeMove> Solver3x3x3::RemapFaces(const std::vector<CubeMove>& moves
   return newMoves;
 }
 
-std::vector<CubeMove> Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+Solution Solver3x3x3::RemapFaces(const Solution& solution, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces)
+{
+  Solution newSolution;
+  newSolution.moves = RemapFaces(solution.moves, oldFaces, newFaces);
+  for (auto& step : solution.steps)
+    newSolution.steps.push_back(Solution::Step{ 
+      step.description,
+      RemapFaces(step.moves, oldFaces, newFaces),
+      RemapFaces(step.skeletonPreceedingMoves, oldFaces, newFaces),
+      RemapFaces(step.skeletonSucceedingMoves, oldFaces, newFaces)
+    });
+  return newSolution;
+}
+
+Solution Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
 {
   // Consider the 3 possible orientations of the solved 2x2x2 BLD block and see which leads to the best solution.
   std::array<Face, 3> newBackFaces { Face::Back, Face::Left, Face::Down };
   std::array<Face, 3> newLeftFaces { Face::Left, Face::Down, Face::Back };
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
   for (size_t i = 0; i < 3; ++i)
   {
     auto newScramble = RemapFaces(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
     auto newSolutionSoFar = RemapFaces(solutionSoFar, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto solution = Solve2Faces(newScramble, newSolutionSoFar + solver2x2x3.Solve(newScramble + newSolutionSoFar));
-    if (!haveSolution || solution.size() < bestSolution.size())
+    auto step = solver2x2x3.Solve(newScramble + newSolutionSoFar);
+    auto solution = Solve2Faces(newScramble, newSolutionSoFar + step);
+    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
     {
       haveSolution = true;
+      solution.InsertStep("2x2x3", step);
       bestSolution = RemapFaces(solution, std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
     }
   }
@@ -94,10 +112,16 @@ std::vector<CubeMove> Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scra
   return bestSolution;
 }
 
-std::vector<CubeMove> Solver3x3x3::Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+Solution Solver3x3x3::Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
 {
   auto edgeOrientationStep = solver2FaceEO.Solve(scramble + solutionSoFar);
+  auto solution = Solve2FacesEdgesOriented(scramble, solutionSoFar + edgeOrientationStep);
+  solution.InsertStep("EO", edgeOrientationStep);
+  return solution;
+}
 
+Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+{
   const std::array<std::pair<Face, Face>, 6> corners{
     std::pair<Face, Face>{ Face::Right, Face::Back },
     std::pair<Face, Face>{ Face::Right, Face::Down },
@@ -107,19 +131,19 @@ std::vector<CubeMove> Solver3x3x3::Solve2Faces(const std::vector<CubeMove>& scra
     std::pair<Face, Face>{ Face::Up, Face::Left }
   };
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
   for (const auto& corner : corners)
   {
-    auto ab5cStep = solver2FaceAB5C.Solve(scramble + solutionSoFar + edgeOrientationStep, corner.first, corner.second);
-    auto skeleton = solutionSoFar + edgeOrientationStep + ab5cStep;
+    auto ab5cStep = solver2FaceAB5C.Solve(scramble + solutionSoFar, corner.first, corner.second);
+    auto skeleton = solutionSoFar + ab5cStep;
     auto solution = SolverCorners::SolveCorners(scramble, skeleton);
-    if (!haveSolution || solution.size() < bestSolution.size())
+    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
     {
       haveSolution = true;
+      solution.InsertStep("AB5C", ab5cStep);
       bestSolution = solution;
     }
   }
-
+  
   return bestSolution;
 }
-

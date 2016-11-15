@@ -466,15 +466,15 @@ std::vector<CubeMove> SolveThreeCorners(const std::array<StickerPosition, 3>& co
   return moveSequence;
 }
 
-std::vector<CubeMove> InsertCorner3CycleInSkeleton(const std::vector<CubeMove>& skeleton,
-                                                   const std::array<StickerPosition, 3>& skeletonCornerPositions)
+Solution InsertCorner3CycleInSkeleton(const std::vector<CubeMove>& skeleton,
+                                      const std::array<StickerPosition, 3>& skeletonCornerPositions)
 {
   if (skeleton.empty())
-    return std::vector<CubeMove>{};
+    return Solution();
 
   auto inverseSkeleton = InvertMoveSequence(skeleton);
 
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
 
   for (size_t insertionIndex = 0; insertionIndex <= skeleton.size(); ++insertionIndex)
   {
@@ -495,16 +495,26 @@ std::vector<CubeMove> InsertCorner3CycleInSkeleton(const std::vector<CubeMove>& 
     std::copy(insertionSequence.begin(), insertionSequence.end(), std::back_inserter(candidateSolution));
     std::copy(skeleton.begin() + insertionIndex, skeleton.end(), std::back_inserter(candidateSolution));
     candidateSolution = SimplifyMoveSequence(candidateSolution);
-    if (bestSolution.empty() || candidateSolution.size() < bestSolution.size())
+    if (bestSolution.moves.empty() || candidateSolution.size() < bestSolution.moves.size())
     {
-      bestSolution = candidateSolution;
+      bestSolution = Solution{
+        candidateSolution,
+        std::deque<Solution::Step>{
+          Solution::Step{
+            "Corner cycle",
+            insertionSequence,
+            std::vector<CubeMove>(skeleton.begin(), skeleton.begin() + insertionIndex),
+            std::vector<CubeMove>(skeleton.begin() + insertionIndex, skeleton.end()) 
+          }
+        }
+      };
     }
   }
 
   return bestSolution;
 }
 
-std::vector<CubeMove> SolveCorner3Cycle(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
+Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
 {
   scrambledCube += skeleton;
   return InsertCorner3CycleInSkeleton(skeleton, FindCorner3Cycle(scrambledCube));

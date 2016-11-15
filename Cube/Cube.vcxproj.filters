@@ -54,6 +54,7 @@
       <Filter>3x3x3</Filter>
     </ClInclude>
     <ClInclude Include="SolutionLogger.h" />
+    <ClInclude Include="Solution.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />

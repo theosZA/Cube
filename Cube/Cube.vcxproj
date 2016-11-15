@@ -141,6 +141,7 @@
     <ClInclude Include="Face.h" />
     <ClInclude Include="Graph\CubeStateSolver.h" />
     <ClInclude Include="Graph\RootedGraph.h" />
+    <ClInclude Include="Solution.h" />
     <ClInclude Include="SolutionLogger.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverFactory.h" />

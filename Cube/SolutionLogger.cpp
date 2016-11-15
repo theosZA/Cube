@@ -12,14 +12,18 @@ void SolutionLogger::LogScramble(const std::vector<CubeMove>& scramble)
   log.flush();
 }
 
-void SolutionLogger::LogStep(const std::string& stepDescription)
+void SolutionLogger::LogSolution(const Solution& solution)
 {
-  log << stepDescription << '\n';
-}
+  for (const auto& step : solution.steps)
+  {
+    if (step.skeletonPreceedingMoves.empty() && step.skeletonSucceedingMoves.empty())
+      log << step.description << ": " << MoveSequenceToText(step.moves) << '\n';
+    else
+      log << step.description << ": Skeleton = " << MoveSequenceToText(step.skeletonPreceedingMoves) << " * " << MoveSequenceToText(step.skeletonSucceedingMoves)
+          << "\n  Insert at * = " << MoveSequenceToText(step.moves) << '\n';
+  }
 
-void SolutionLogger::LogSolution(const std::vector<CubeMove>& solution)
-{
-  log << "Final solution (" << solution.size() << " moves): " << MoveSequenceToText(solution)
+  log << "\nFinal solution (" << solution.moves.size() << " moves): " << MoveSequenceToText(solution.moves)
       << "\n\n-----------------------------------------------\n\n";
   log.flush();
 }

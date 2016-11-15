@@ -14,7 +14,7 @@
 
 namespace SolverCorners {
 
-std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton);
+Solution SolveCorners(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton);
 
 static const std::set<StickerPosition> allCorners
 {
@@ -80,12 +80,12 @@ bool AreCornersCorrectlyPermuted(Cube3x3x3 cube, const std::set<StickerPosition>
 }
 
 // Finds the best solution that starts with a corner 3-cycle: A -> B -> one of the remaining corners (in some orientation)
-std::vector<CubeMove> SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton,
-                                             StickerPosition cycleCornerA, StickerPosition cycleCornerB,
-                                             const std::set<StickerPosition>& remainingCorners)
+Solution SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton,
+                                StickerPosition cycleCornerA, StickerPosition cycleCornerB,
+                                const std::set<StickerPosition>& remainingCorners)
 {
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
 
   for (const auto& orientedCycleCornerC : remainingCorners)
   {
@@ -97,11 +97,13 @@ std::vector<CubeMove> SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, con
     for (const auto& cycleCornerC : cycleCornerCCandidates)
     {
       auto cycle = std::array<StickerPosition, 3>{ cycleCornerA, cycleCornerB, cycleCornerC };
-      auto solution = SolveCorners(scrambledCube, Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle));
-      if (!haveSolution || solution.size() < bestSolution.size())
+      auto cycleSolution = Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle);
+      auto solution = SolveCorners(scrambledCube, cycleSolution.moves);
+      if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
       {
         haveSolution = true;
         bestSolution = solution;
+        std::copy(cycleSolution.steps.begin(), cycleSolution.steps.end(), std::front_inserter(bestSolution.steps));
       }
     }
   }
@@ -113,11 +115,11 @@ std::vector<CubeMove> SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, con
 
 // Finds the best solution that starts with a corner 3-cycle involving the given corner.
 // A -> one of the remaining corners (in some orientation) -> one of the other remaining corners (in some orientation)
-std::vector<CubeMove> SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton,
-                                             StickerPosition cycleCorner, const std::set<StickerPosition>& remainingCorners)
+Solution SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton,
+                                StickerPosition cycleCorner, const std::set<StickerPosition>& remainingCorners)
 {
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
 
   for (const auto& orientedNextCycleCorner : remainingCorners)
   {
@@ -131,7 +133,7 @@ std::vector<CubeMove> SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, con
       std::set<StickerPosition> finalCycleCorners = remainingCorners;
       RemoveCornerFromSet(finalCycleCorners, nextCycleCorner);
       auto solution = SolveCornersWith3Cycle(scrambledCube, skeleton, cycleCorner, nextCycleCorner, finalCycleCorners);
-      if (!haveSolution || solution.size() < bestSolution.size())
+      if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
       {
         haveSolution = true;
         bestSolution = solution;
@@ -145,15 +147,15 @@ std::vector<CubeMove> SolveCornersWith3Cycle(const Cube3x3x3& scrambledCube, con
 }
 
 // Finds the best solution consisting of exactly 2 corner 3-cycles, starting with a 3-cycle: A -> B -> one of the remaining corners (in some orientation)
-std::vector<CubeMove> SolveCornersWithPairOf3Cycles(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton,
-                                                    StickerPosition cycleCornerA, StickerPosition cycleCornerB,
-                                                    const std::set<StickerPosition>& remainingCorners)
+Solution SolveCornersWithPairOf3Cycles(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton,
+                                       StickerPosition cycleCornerA, StickerPosition cycleCornerB,
+                                       const std::set<StickerPosition>& remainingCorners)
 {
   Cube3x3x3 cube = scrambledCube;
   cube += skeleton;
 
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
 
   for (const auto& orientedCycleCornerC : remainingCorners)
   {
@@ -173,11 +175,13 @@ std::vector<CubeMove> SolveCornersWithPairOf3Cycles(const Cube3x3x3& scrambledCu
       if (newWrongCorners.size() == 3 && !AreCornersCorrectlyPermuted(newCube, newWrongCorners))
       {
         // This 3-cycle works. Get the best insert for it and then solve the last 3-cycle.
-        auto solution = Corner3Cycle::SolveCorner3Cycle(scrambledCube, Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle));
-        if (!haveSolution || solution.size() < bestSolution.size())
+        auto cycleSolution = Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle);
+        auto solution = Corner3Cycle::SolveCorner3Cycle(scrambledCube, cycleSolution.moves);
+        if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
         {
           haveSolution = true;
           bestSolution = solution;
+          std::copy(cycleSolution.steps.begin(), cycleSolution.steps.end(), std::front_inserter(bestSolution.steps));
         }
       }
     }
@@ -191,7 +195,7 @@ std::vector<CubeMove> SolveCornersWithPairOf3Cycles(const Cube3x3x3& scrambledCu
 // Solves the last 4 corners as 2 corner 3-cycles inserted into the skeleton.
 // Must have exactly 4 wrong corners not all of which are correctly permuted but misoriented.
 // Returns the new solution.
-std::vector<CubeMove> SolveL4C(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
+Solution SolveL4C(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
 {
   auto wrongCorners = FindWrongCorners(scrambledCube, skeleton);
   if (wrongCorners.size() != 4)
@@ -201,7 +205,7 @@ std::vector<CubeMove> SolveL4C(Cube3x3x3 scrambledCube, const std::vector<CubeMo
   cube += skeleton;
 
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
 
   for (const auto& wrongCorner : wrongCorners)
   {
@@ -209,7 +213,7 @@ std::vector<CubeMove> SolveL4C(Cube3x3x3 scrambledCube, const std::vector<CubeMo
     if (!CornerStructure::AreStickersOnSameCubie(nextCorner, wrongCorner))
     {
       auto solution = SolveCornersWithPairOf3Cycles(scrambledCube, skeleton, wrongCorner, nextCorner, GetAllCornersExcept(wrongCorner, nextCorner));
-      if (!haveSolution || solution.size() < bestSolution.size())
+      if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
       {
         haveSolution = true;
         bestSolution = solution;
@@ -225,7 +229,7 @@ std::vector<CubeMove> SolveL4C(Cube3x3x3 scrambledCube, const std::vector<CubeMo
 // Solves the last 2 corners as 2 corner 3-cycles inserted into the skeleton.
 // Must have exactly 2 wrong corners. They will be correctly permuted but misoriented.
 // Returns the new solution.
-std::vector<CubeMove> SolveL2C(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
+Solution SolveL2C(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
 {
   auto wrongCorners = FindWrongCorners(scrambledCube, skeleton);
   if (wrongCorners.size() != 2)
@@ -242,12 +246,12 @@ std::vector<CubeMove> SolveL2C(Cube3x3x3 scrambledCube, const std::vector<CubeMo
   std::set<StickerPosition> remainingCorners = GetAllCornersExcept(cycleCornerA, orientedCycleCornerB);
   
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
 
   for (const auto& cycleCornerB : cycleCornerBCandidates)
   {
     auto solution = SolveCornersWithPairOf3Cycles(scrambledCube, skeleton, cycleCornerA, cycleCornerB, remainingCorners);
-    if (!haveSolution || solution.size() < bestSolution.size())
+    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
     {
       haveSolution = true;
       bestSolution = solution;
@@ -261,11 +265,11 @@ std::vector<CubeMove> SolveL2C(Cube3x3x3 scrambledCube, const std::vector<CubeMo
 
 // Solves the corners in as few corner 3-cycles as possible, all inserted into the skeleton.
 // Returns the new solution.
-std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton)
+Solution SolveCorners(const Cube3x3x3& scrambledCube, const std::vector<CubeMove>& skeleton)
 {
   auto wrongCorners = FindWrongCorners(scrambledCube, skeleton);
   if (wrongCorners.empty())
-    return skeleton;
+    return Solution{ skeleton, std::deque<Solution::Step>() };
   if (wrongCorners.size() == 2)
     return SolveL2C(scrambledCube, skeleton);
 
@@ -274,13 +278,13 @@ std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::ve
   if (AreCornersCorrectlyPermuted(cube, wrongCorners))
   { // All corners are correctly positioned but wrongly oriented. We need to cycle 3 of these corners.
     bool haveSolution = false;
-    std::vector<CubeMove> bestSolution;
+    Solution bestSolution;
     for (const auto& corner : wrongCorners)
     {
       std::set<StickerPosition> remainingCorners = wrongCorners;
       RemoveCornerFromSet(remainingCorners, corner);
       auto solution = SolveCornersWith3Cycle(scrambledCube, skeleton, corner, remainingCorners);
-      if (!haveSolution || solution.size() < bestSolution.size())
+      if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
       {
         haveSolution = true;
         bestSolution = solution;
@@ -299,13 +303,13 @@ std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::ve
   // More than 4 wrong corners.
   // Try all 3-cycles among our wrong corners that fix at least one corner.
   bool haveSolution = false;
-  std::vector<CubeMove> bestSolution;
+  Solution bestSolution;
   for (const auto& corner1 : wrongCorners)
   {
     auto corner2 = cube[corner1];
     if (!CornerStructure::AreStickersOnSameCubie(corner1, corner2))
     {
-      std::vector<CubeMove> solution;
+      Solution solution;
       auto corner3 = cube[corner2];
       if (CornerStructure::AreStickersOnSameCubie(corner1, corner3))
       { 
@@ -317,9 +321,11 @@ std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::ve
       else
       {
         auto cycle = std::array<StickerPosition, 3>{ corner1, corner2, corner3 };
-        solution = SolveCorners(scrambledCube, Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle));
+        auto cycleSolution = Corner3Cycle::InsertCorner3CycleInSkeleton(skeleton, cycle);
+        solution = SolveCorners(scrambledCube, cycleSolution.moves);
+        std::copy(cycleSolution.steps.begin(), cycleSolution.steps.end(), std::front_inserter(solution.steps));
       }
-      if (!haveSolution || solution.size() < bestSolution.size())
+      if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
       {
         haveSolution = true;
         bestSolution = solution;
@@ -331,7 +337,7 @@ std::vector<CubeMove> SolveCorners(const Cube3x3x3& scrambledCube, const std::ve
   return bestSolution;
 }
 
-std::vector<CubeMove> SolveCorners(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& skeleton)
+Solution SolveCorners(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& skeleton)
 {
   Cube3x3x3 cube;
   cube += scramble;

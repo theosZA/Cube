@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "..\CubeMove.h"
+#include "..\Solution.h"
 #include "..\SolutionLogger.h"
 #include "..\Solver.h"
 #include "Corner3Cycle.h"
@@ -35,12 +36,19 @@ private:
   // faces and all other faces are mapped to correspond. Neither the old face nor the new face pairs
   // can be opposite faces.
   static std::vector<CubeMove> RemapFaces(const std::vector<CubeMove>& moves, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces);
+  // Remaps all faces in the solution such that the old faces are replaced by the new
+  // faces and all other faces are mapped to correspond. Neither the old face nor the new face pairs
+  // can be opposite faces.
+  static Solution RemapFaces(const Solution&, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces);
 
   // Returns a solution for when all but 3 faces, F, U and R, are solved (i.e. a 2x2x2 block has been created).
-  std::vector<CubeMove> Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
   // Returns a solution for when all but 2 faces, U and R, are solved.
-  std::vector<CubeMove> Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+
+  // Returns a solution for when all but 2 faces, U and R, are solved, with U and R edges oriented correctly.
+  Solution Solve2FacesEdgesOriented(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
   mutable SolutionLogger solutionLogger;
   Solver2x2x2Block solver2x2x2;
