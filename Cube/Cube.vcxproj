@@ -141,6 +141,7 @@
     <ClInclude Include="Face.h" />
     <ClInclude Include="Graph\CubeStateSolver.h" />
     <ClInclude Include="Graph\RootedGraph.h" />
+    <ClInclude Include="SolutionLogger.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverFactory.h" />
     <ClInclude Include="StickerPosition.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />
+    <ClCompile Include="SolutionLogger.cpp" />
     <ClCompile Include="SolverFactory.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
   </ItemGroup>

@@ -1,11 +1,13 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <random>
 #include <vector>
 
 #include <irrlicht.h>
 
+#include "..\Cube\Solver.h"
 #include "..\Cube\CubeMove.h"
 
 #include "CubeRenderer.h"
@@ -40,5 +42,7 @@ private:
   std::vector<CubeMove> moves;
   size_t currentMove;
   std::function<void()> onComplete;
+
+  std::unique_ptr<Solver> solver;
 };
 

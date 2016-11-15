@@ -7,11 +7,13 @@
 #include "Cube3x3x3.h"
 #include "SolverCorners.h"
 
-Solver3x3x3::Solver3x3x3(const std::string& cache2x2x2FileName,
+Solver3x3x3::Solver3x3x3(const std::string& solutionLogFileName,
+                         const std::string& cache2x2x2FileName,
                          const std::string& cache2x2x3FileName,
                          const std::string& cache2FaceEOFileName,
                          const std::string& cache2FaceAB5CFileName)
-: solver2x2x2(20, cache2x2x2FileName),
+: solutionLogger(solutionLogFileName),
+  solver2x2x2(20, cache2x2x2FileName),
   solver2x2x3(20, cache2x2x3FileName),
   solver2FaceEO(cache2FaceEOFileName, cache2x2x2FileName),
   solver2FaceAB5C(20, cache2FaceAB5CFileName)
@@ -19,6 +21,8 @@ Solver3x3x3::Solver3x3x3(const std::string& cache2x2x2FileName,
 
 std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) const
 {
+  solutionLogger.LogScramble(scramble);
+
   // Consider the 8 possible starting 2x2x2s (by corner) and see which leads to the best solution.
   const std::array<std::pair<Face, Face>, 8> corners {
     std::pair<Face,Face>{ Face::Back, Face::Left },
@@ -43,6 +47,7 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
     }
   }
 
+  solutionLogger.LogSolution(bestSolution);
   return bestSolution;
 }
 

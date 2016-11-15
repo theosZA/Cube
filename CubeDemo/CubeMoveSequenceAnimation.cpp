@@ -47,7 +47,10 @@ bool CubeMoveSequenceAnimation::IsAnimating() const
 
 const std::vector<CubeMove>& CubeMoveSequenceAnimation::SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete)
 {
-  Start(SolverFactory::CreateSolver(cubeSize)->Solve(moves), quarterRotationsPerSecond, onComplete);
+  if (!solver)
+    solver = SolverFactory::CreateSolver(cubeSize);
+
+  Start(solver->Solve(moves), quarterRotationsPerSecond, onComplete);
   return moves;
 }
 

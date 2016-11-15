@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "..\CubeMove.h"
+#include "..\SolutionLogger.h"
 #include "..\Solver.h"
 #include "Corner3Cycle.h"
 #include "Cube3x3x3.h"
@@ -20,7 +21,8 @@ class Solver3x3x3 : public Solver
 {
 public:
   // Initializes the solver using the specified cache files.
-  Solver3x3x3(const std::string& cache2x2x2FileName = "",
+  Solver3x3x3(const std::string& solutionLogFileName = "",
+              const std::string& cache2x2x2FileName = "",
               const std::string& cache2x2x3FileName = "",
               const std::string& cache2FaceEOFileName = "",
               const std::string& cache2FaceAB5CFileName = "");
@@ -40,6 +42,7 @@ private:
   // Returns a solution for when all but 2 faces, U and R, are solved.
   std::vector<CubeMove> Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
+  mutable SolutionLogger solutionLogger;
   Solver2x2x2Block solver2x2x2;
   Solver2x2x3Block solver2x2x3;
   TwoFaceEO solver2FaceEO;
