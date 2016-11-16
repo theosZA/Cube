@@ -1,5 +1,6 @@
 #include "CubeMove.h"
 
+#include <array>
 #include <algorithm>
 #include <iostream>
 #include <iterator>
@@ -160,4 +161,23 @@ std::vector<CubeMove> operator+(const std::vector<CubeMove>& a, const std::vecto
   std::vector<CubeMove> sum = a;
   std::copy(b.begin(), b.end(), std::back_inserter(sum));
   return SimplifyMoveSequence(sum);
+}
+
+std::vector<CubeMove> Rotate(const std::vector<CubeMove>& moves, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces)
+{
+  auto oldFace3 = GetNextFaceClockwise(oldFaces.first, oldFaces.second);
+  auto newFace3 = GetNextFaceClockwise(newFaces.first, newFaces.second);
+
+  std::array<Face, 6> newFace;
+  newFace[static_cast<size_t>(oldFaces.first)] = newFaces.first;
+  newFace[static_cast<size_t>(oldFaces.second)] = newFaces.second;
+  newFace[static_cast<size_t>(oldFace3)] = newFace3;
+  newFace[static_cast<size_t>(GetOppositeFace(oldFaces.first))] = GetOppositeFace(newFaces.first);
+  newFace[static_cast<size_t>(GetOppositeFace(oldFaces.second))] = GetOppositeFace(newFaces.second);
+  newFace[static_cast<size_t>(GetOppositeFace(oldFace3))] = GetOppositeFace(newFace3);
+
+  auto newMoves = moves;
+  for (auto& move : newMoves)
+    move.face = newFace[static_cast<size_t>(move.face)];
+  return newMoves;
 }

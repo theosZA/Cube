@@ -164,6 +164,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />
+    <ClCompile Include="Solution.cpp" />
     <ClCompile Include="SolutionLogger.cpp" />
     <ClCompile Include="SolverFactory.cpp" />
     <ClCompile Include="StickerPosition.cpp" />

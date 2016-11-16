@@ -102,6 +102,7 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="SolutionLogger.cpp" />
+    <ClCompile Include="Solution.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3x3x3">

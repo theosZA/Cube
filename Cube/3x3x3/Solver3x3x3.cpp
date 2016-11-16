@@ -38,54 +38,19 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
   Solution bestSolution;
   for (const auto& corner : corners)
   {
-    auto newScramble = RemapFaces(scramble, corner, std::make_pair(Face::Back, Face::Left));
+    auto newScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
     auto step = solver2x2x2.Solve(newScramble, Face::Back, Face::Left);
     auto solution = Solve3Faces(newScramble, step);
     if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
     {
       haveSolution = true;
       solution.InsertStep("2x2x2", step);
-      bestSolution = RemapFaces(solution, std::make_pair(Face::Back, Face::Left), corner);
+      bestSolution = solution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
     }
   }
 
   solutionLogger.LogSolution(bestSolution);
   return bestSolution.moves;
-}
-
-std::vector<CubeMove> Solver3x3x3::RemapFaces(const std::vector<CubeMove>& moves, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces)
-{
-  std::array<Face, 6> newFace;
-  newFace[static_cast<size_t>(oldFaces.first)] = newFaces.first;
-  newFace[static_cast<size_t>(oldFaces.second)] = newFaces.second;
-  newFace[static_cast<size_t>(GetNextFaceClockwise(oldFaces.first, oldFaces.second))] = GetNextFaceClockwise(newFaces.first, newFaces.second);
-  newFace[static_cast<size_t>(GetOppositeFace(oldFaces.first))] = GetOppositeFace(newFaces.first);
-  newFace[static_cast<size_t>(GetOppositeFace(oldFaces.second))] = GetOppositeFace(newFaces.second);
-  newFace[static_cast<size_t>(GetOppositeFace(GetNextFaceClockwise(oldFaces.first, oldFaces.second)))] = GetOppositeFace(GetNextFaceClockwise(newFaces.first, newFaces.second));
-
-  std::vector<CubeMove> newMoves;
-  newMoves.reserve(moves.size());
-  std::transform(moves.begin(), moves.end(), std::back_inserter(newMoves),
-      [&](const CubeMove& move)
-      {
-        return CubeMove{ newFace[static_cast<size_t>(move.face)], move.quarterRotationsClockwise };
-      });
-
-  return newMoves;
-}
-
-Solution Solver3x3x3::RemapFaces(const Solution& solution, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces)
-{
-  Solution newSolution;
-  newSolution.moves = RemapFaces(solution.moves, oldFaces, newFaces);
-  for (auto& step : solution.steps)
-    newSolution.steps.push_back(Solution::Step{ 
-      step.description,
-      RemapFaces(step.moves, oldFaces, newFaces),
-      RemapFaces(step.skeletonPreceedingMoves, oldFaces, newFaces),
-      RemapFaces(step.skeletonSucceedingMoves, oldFaces, newFaces)
-    });
-  return newSolution;
 }
 
 Solution Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
@@ -97,15 +62,15 @@ Solution Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scramble, const s
   Solution bestSolution;
   for (size_t i = 0; i < 3; ++i)
   {
-    auto newScramble = RemapFaces(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newSolutionSoFar = RemapFaces(solutionSoFar, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto newScramble = Rotate(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto newSolutionSoFar = Rotate(solutionSoFar, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
     auto step = solver2x2x3.Solve(newScramble + newSolutionSoFar);
     auto solution = Solve2Faces(newScramble, newSolutionSoFar + step);
     if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
     {
       haveSolution = true;
       solution.InsertStep("2x2x3", step);
-      bestSolution = RemapFaces(solution, std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
+      bestSolution = solution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
     }
   }
 

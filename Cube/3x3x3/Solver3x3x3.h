@@ -32,15 +32,6 @@ public:
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const override;
 
 private:
-  // Remaps all faces in the move sequence such that the old faces are replaced by the new
-  // faces and all other faces are mapped to correspond. Neither the old face nor the new face pairs
-  // can be opposite faces.
-  static std::vector<CubeMove> RemapFaces(const std::vector<CubeMove>& moves, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces);
-  // Remaps all faces in the solution such that the old faces are replaced by the new
-  // faces and all other faces are mapped to correspond. Neither the old face nor the new face pairs
-  // can be opposite faces.
-  static Solution RemapFaces(const Solution&, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces);
-
   // Returns a solution for when all but 3 faces, F, U and R, are solved (i.e. a 2x2x2 block has been created).
   Solution Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
