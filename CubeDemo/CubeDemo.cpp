@@ -20,8 +20,8 @@ CubeDemo::CubeDemo(int randomSeed)
   solvedCount(0)
 {}
 
-CubeDemo::CubeDemo(const std::vector<CubeMove>& fixedScramble)
-: fixedScramble(fixedScramble),
+CubeDemo::CubeDemo(const std::vector<std::vector<CubeMove>>& fixedScrambles)
+: fixedScrambles(fixedScrambles),
   solvedCount(0)
 {}
 
@@ -50,9 +50,9 @@ void CubeDemo::SetupScene()
       [=]
       {
         std::vector<CubeMove> scramble;
-        if (randomScrambler || solvedCount == 0)
+        if (randomScrambler || solvedCount < fixedScrambles.size())
         {
-          scramble = randomScrambler ? randomScrambler->CreateRandomScramble(25) : fixedScramble;
+          scramble = randomScrambler ? randomScrambler->CreateRandomScramble(25) : fixedScrambles[solvedCount];
           DisplayMoveSequence(*scrambleStaticText, scramble);
           DisplayMoveSequence(*solutionStaticText, std::vector<CubeMove>{});
         }

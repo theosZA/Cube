@@ -16,16 +16,16 @@ class CubeDemo
 public:
   // A demo that will run with random scrambles seeded with the given value.
   CubeDemo(int randomSeed);
-  // A demo that will run once with a fixed scramble.
-  CubeDemo(const std::vector<CubeMove>& fixedScramble);
+  // A demo that will run a sequence of fixed scrambles.
+  CubeDemo(const std::vector<std::vector<CubeMove>>& fixedScrambles);
 
   // Runs the demo either with random scrambles or a fixed scramble as supplied in the constructor.
   void RunDemo();
 
 private:
   std::unique_ptr<Scrambler> randomScrambler;
-  std::vector<CubeMove> fixedScramble;
-  int solvedCount;
+  std::vector<std::vector<CubeMove>> fixedScrambles;
+  size_t solvedCount;
 
   std::unique_ptr<RenderDevice> renderer;
   std::unique_ptr<CubeMoveSequenceAnimation> moveSequenceAnimator;

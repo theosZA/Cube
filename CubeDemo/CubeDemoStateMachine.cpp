@@ -37,7 +37,10 @@ void CubeDemoStateMachine::Step()
 
     case State::Scrambled:
       if (IsReadyForNextState() && hasSolution)
+      {
+        solvingThread.join();
         AdvanceState();
+      }
       break;
 
     case State::Solved:
