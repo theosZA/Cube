@@ -1,7 +1,5 @@
 #include "CubeMoveSequenceAnimation.h"
 
-#include "..\Cube\SolverFactory.h"
-
 using namespace irr;
 
 CubeMoveSequenceAnimation::CubeMoveSequenceAnimation(scene::ISceneManager& sceneManager, scene::ISceneNode* parent, f32 totalSize, size_t cubeSize)
@@ -43,15 +41,6 @@ void CubeMoveSequenceAnimation::JumpToEnd()
 bool CubeMoveSequenceAnimation::IsAnimating() const
 {
   return currentMove < moves.size();
-}
-
-const std::vector<CubeMove>& CubeMoveSequenceAnimation::SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete)
-{
-  if (!solver)
-    solver = SolverFactory::CreateSolver(cubeSize);
-
-  Start(solver->Solve(moves), quarterRotationsPerSecond, onComplete);
-  return moves;
 }
 
 void CubeMoveSequenceAnimation::StartMove(size_t index)

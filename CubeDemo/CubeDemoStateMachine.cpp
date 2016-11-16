@@ -1,15 +1,18 @@
 #include "CubeDemoStateMachine.h"
 
+#include "..\Cube\SolverFactory.h"
 #include "CubeMoveSequenceAnimation.h"
 
 CubeDemoStateMachine::CubeDemoStateMachine(
+    size_t cubeSize,
     CubeMoveSequenceAnimation& moveSequenceAnimator,
     std::chrono::milliseconds solveDelay,
     double scrambleSpeedQuarterRotationsPerSecond,
     double solveSpeedQuarterRotationsPerSecond,
     std::function<std::vector<CubeMove>()> getScramble,
     std::function<void(const std::vector<CubeMove>&)> onSolving)
-: moveSequenceAnimator(moveSequenceAnimator),
+: cubeSize(cubeSize),
+  moveSequenceAnimator(moveSequenceAnimator),
   scrambleSpeedQuarterRotationsPerSecond(scrambleSpeedQuarterRotationsPerSecond),
   solveSpeedQuarterRotationsPerSecond(solveSpeedQuarterRotationsPerSecond),
   solveDelay(solveDelay),
@@ -33,6 +36,10 @@ void CubeDemoStateMachine::Step()
       break;
 
     case State::Scrambled:
+      if (IsReadyForNextState() && hasSolution)
+        AdvanceState();
+      break;
+
     case State::Solved:
       if (IsReadyForNextState())
         AdvanceState();
@@ -55,23 +62,43 @@ void CubeDemoStateMachine::AdvanceState()
       StartScramble();
       break;
 
+    case State::Scrambled:
+      Solve();
+      break;
+
     case State::Solving:
-      StartSolve();
+      PlaySolve();
       break;
   }
 }
 
 void CubeDemoStateMachine::StartScramble()
 {
-  std::vector<CubeMove> scramble = getScramble();
+  hasSolution = false;
+  solution.clear();
+  scramble = getScramble();
   if (scramble.empty())
     state = State::Finished;
   else
     moveSequenceAnimator.Start(scramble, scrambleSpeedQuarterRotationsPerSecond, [=] { AdvanceState(); });
 }
 
-void CubeDemoStateMachine::StartSolve()
+void CubeDemoStateMachine::Solve()
 {
-  auto solution = moveSequenceAnimator.SolveScramble(solveSpeedQuarterRotationsPerSecond, [=] { AdvanceState(); });
+  if (!solver)
+    solver = SolverFactory::CreateSolver(cubeSize);
+
+  solvingThread = std::thread{
+    [this]
+    {
+      solution = solver->Solve(scramble);
+      hasSolution = true;
+    }
+  };
+}
+
+void CubeDemoStateMachine::PlaySolve()
+{
+  moveSequenceAnimator.Start(solution, solveSpeedQuarterRotationsPerSecond, [=] { AdvanceState(); });
   onSolving(solution);
 }

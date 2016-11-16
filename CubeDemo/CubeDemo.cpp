@@ -46,7 +46,7 @@ void CubeDemo::SetupScene()
   scrambleStaticText = &renderer->CreateStaticText(10, 10, 560, 22);
   solutionStaticText = &renderer->CreateStaticText(10, 26, 560, 38);
 
-  stateMachine.reset(new CubeDemoStateMachine(*moveSequenceAnimator, delayForSolve, scrambleSpeed, solveSpeed, 
+  stateMachine.reset(new CubeDemoStateMachine(cubeSize, *moveSequenceAnimator, delayForSolve, scrambleSpeed, solveSpeed, 
       [=]
       {
         std::vector<CubeMove> scramble;

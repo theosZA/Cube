@@ -7,7 +7,6 @@
 
 #include <irrlicht.h>
 
-#include "..\Cube\Solver.h"
 #include "..\Cube\CubeMove.h"
 
 #include "CubeRenderer.h"
@@ -28,10 +27,6 @@ public:
   // Returns true if we are still in the middle of animating a started move sequence.
   bool IsAnimating() const;
 
-  // Solves the last used scramble move sequence as provided by Start() or RandomScramble(), playing it out as an animation.
-  // Returns the solution move sequence.
-  const std::vector<CubeMove>& SolveScramble(double quarterRotationsPerSecond, const std::function<void()>& onComplete);
-
 private:
   void StartMove(size_t index);
 
@@ -42,7 +37,5 @@ private:
   std::vector<CubeMove> moves;
   size_t currentMove;
   std::function<void()> onComplete;
-
-  std::unique_ptr<Solver> solver;
 };
 

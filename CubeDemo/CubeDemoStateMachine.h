@@ -1,10 +1,14 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <functional>
+#include <memory>
+#include <thread>
 #include <vector>
 
 #include "..\Cube\CubeMove.h"
+#include "..\Cube\Solver.h"
 
 class CubeMoveSequenceAnimation;
 
@@ -13,7 +17,7 @@ class CubeMoveSequenceAnimation;
 class CubeDemoStateMachine
 {
 public:
-  CubeDemoStateMachine(CubeMoveSequenceAnimation& moveSequenceAnimator, std::chrono::milliseconds solveDelay,
+  CubeDemoStateMachine(size_t cubeSize, CubeMoveSequenceAnimation& moveSequenceAnimator, std::chrono::milliseconds solveDelay,
                        double scrambleSpeedQuarterRotationsPerSecond, double solveSpeedQuarterRotationsPerSecond,
                        std::function<std::vector<CubeMove>()> getScramble,
                        std::function<void(const std::vector<CubeMove>&)> onSolving);
@@ -32,8 +36,12 @@ private:
 
   // Begins the animation of a scramble using a scramble from the callback in the constructor.
   void StartScramble();
+  // Calculates the solution for the current scramble in a seperate thread.
+  void Solve();
   // Begins the animation of the solve and provides the solution to the callback in the constructor.
-  void StartSolve();
+  void PlaySolve();
+
+  size_t cubeSize;
 
   CubeMoveSequenceAnimation& moveSequenceAnimator;
   double scrambleSpeedQuarterRotationsPerSecond;
@@ -52,4 +60,10 @@ private:
 
   std::function<std::vector<CubeMove>()> getScramble;
   std::function<void(const std::vector<CubeMove>&)> onSolving;
+
+  std::unique_ptr<Solver> solver;
+  std::thread solvingThread;
+  std::vector<CubeMove> scramble;
+  std::vector<CubeMove> solution;
+  std::atomic<bool> hasSolution;
 };
