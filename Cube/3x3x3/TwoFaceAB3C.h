@@ -29,10 +29,7 @@ public:
 
     bool operator<(const Corner&) const;
   };
-  // Returns the move sequence that will take a 2x2x3+EO state to an AB3C state. The specified 3 corners
-  // are the ones that are solved. If the state can't be reached within the number of moves specified in the
-  // constructor then an exception is thrown.
-  std::vector<CubeMove> Solve(const Cube3x3x3&, const std::array<Corner, 3>& corners) const;
+
   // Returns the move sequence that will take a 2x2x3+EO state to an AB3C state from the given scramble.
   // The specified corners are the ones that are solved. If the state can't be reached within the number of
   // moves specified in the constructor then an exception is thrown.

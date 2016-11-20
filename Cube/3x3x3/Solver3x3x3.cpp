@@ -101,7 +101,7 @@ Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& scra
   Solution bestSolution;
 
   // Try AB3C
-  for (size_t i = 2; i < corners.size(); ++i)
+  for (size_t i = 0; i < corners.size(); ++i)
     for (size_t j = i + 1; j < corners.size(); ++j)
       for (size_t k = j + 1; k < corners.size(); ++k)
       {

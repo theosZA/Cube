@@ -57,29 +57,41 @@ TwoFaceAB3C::TwoFaceAB3C(std::uint32_t maxMoves, const std::string& cacheFileNam
       }
 }
 
-std::vector<CubeMove> TwoFaceAB3C::Solve(const Cube3x3x3& cube, const std::array<Corner, 3>& corners) const
+std::vector<CubeMove> TwoFaceAB3C::Solve(const std::vector<CubeMove>& scramble, const std::array<Corner, 3>& corners) const
 {
   auto solverIter = solversByCorner.find(GetCornersName(corners));
   if (solverIter != solversByCorner.end())
   {
+    Cube3x3x3 cube;
+    cube += scramble;
     return solverIter->second.Solve(cube);
   }
-  solverIter = solversByCorner.find(GetCornersNameSwapFaces(corners));
-  return Rotate(solverIter->second.Solve(cube), std::pair<Face, Face>{ Face::Up, Face::Right }, std::pair<Face, Face>{ Face::Right, Face::Up });
-}
 
-std::vector<CubeMove> TwoFaceAB3C::Solve(const std::vector<CubeMove>& scramble, const std::array<Corner, 3>& corners) const
-{
+  // Don't have this corner set. Rotate swapping U and R and we should have the new corner set.
+  solverIter = solversByCorner.find(GetCornersNameSwapFaces(corners));
+  auto newScramble = Rotate(scramble, std::pair<Face, Face>{ Face::Up, Face::Right }, std::pair<Face, Face>{ Face::Right, Face::Up });
   Cube3x3x3 cube;
-  cube += scramble;
-  return Solve(cube, corners);
+  cube += newScramble;
+  auto solution = solverIter->second.Solve(cube);
+  return Rotate(solution, std::pair<Face, Face>{ Face::Up, Face::Right }, std::pair<Face, Face>{ Face::Right, Face::Up });
 }
 
 bool TwoFaceAB3C::CanSolve(const std::vector<CubeMove>& scramble, const std::array<Corner, 3>& corners) const
 {
+  auto solverIter = solversByCorner.find(GetCornersName(corners));
+  if (solverIter != solversByCorner.end())
+  {
+    Cube3x3x3 cube;
+    cube += scramble;
+    return solverIter->second.CanSolve(cube);
+  }
+
+  // Don't have this corner set. Rotate swapping U and R and we should have the new corner set.
+  solverIter = solversByCorner.find(GetCornersNameSwapFaces(corners));
+  auto newScramble = Rotate(scramble, std::pair<Face, Face>{ Face::Up, Face::Right }, std::pair<Face, Face>{ Face::Right, Face::Up });
   Cube3x3x3 cube;
-  cube += scramble;
-  return solversByCorner.find(GetCornersName(corners))->second.CanSolve(cube);
+  cube += newScramble;
+  return solverIter->second.CanSolve(cube);
 }
 
 std::uint32_t TwoFaceAB3C::GetKeyValue(const Cube3x3x3& cube, const std::array<Corner, 3>& corners)
