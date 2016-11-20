@@ -18,7 +18,7 @@ TwoFaceAB5C::TwoFaceAB5C(std::uint32_t maxMoves, const std::string& cacheFileNam
     StickerPosition{ Face::Up, 6 }
   };
   auto dotPos = cacheFileNamePrefix.rfind('.');
-  auto prefix = cacheFileNamePrefix.substr(0, dotPos - 1);
+  auto prefix = cacheFileNamePrefix.substr(0, dotPos);
   auto extension = cacheFileNamePrefix.substr(dotPos);
   for (const auto& cornerSticker : cornerStickers)
   {
@@ -38,7 +38,7 @@ TwoFaceAB5C::TwoFaceAB5C(std::uint32_t maxMoves, const std::string& cacheFileNam
         CubeMove{ Face::Up, -1 },
         CubeMove{ Face::Up, 2 }
       },
-      prefix + GetCornerName(corner[0], corner[1]) + extension));
+      prefix + "-" + GetCornerName(corner[0], corner[1]) + extension));
   }
 }
 
