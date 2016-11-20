@@ -30,6 +30,8 @@ public:
   // number of moves specified in the constructor then an exception is thrown.
   std::uint32_t GetRequiredMoveCount(const CubeType&) const;
 
+  // Returns true if the given cube can be solved within the number of moves specified in the constructor.
+  bool CanSolve(const CubeType&) const;
 
 private:
   // Writes the set of positions to a cache file.

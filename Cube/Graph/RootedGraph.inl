@@ -40,6 +40,12 @@ void RootedGraph<Vertex, Key, DirectedEdge>::Build(const Vertex& root, std::uint
 }
 
 template <class Vertex, class Key, class DirectedEdge>
+bool RootedGraph<Vertex, Key, DirectedEdge>::ContainsVertex(const Vertex& v) const
+{
+  return pathLengthFromVertexKey.find(getKey(v)) != pathLengthFromVertexKey.end();
+}
+
+template <class Vertex, class Key, class DirectedEdge>
 std::vector<DirectedEdge> RootedGraph<Vertex, Key, DirectedEdge>::FindShortestPathToRoot(const Vertex& source) const
 {
   std::vector<DirectedEdge> shortestPath;

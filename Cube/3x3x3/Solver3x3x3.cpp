@@ -11,12 +11,14 @@ Solver3x3x3::Solver3x3x3(const std::string& solutionLogFileName,
                          const std::string& cache2x2x2FileName,
                          const std::string& cache2x2x3FileName,
                          const std::string& cache2FaceEOFileName,
-                         const std::string& cache2FaceAB5CFileName)
+                         const std::string& cache2FaceAB5CFileName,
+                         const std::string& cache2FaceAB3CFileName)
 : solutionLogger(solutionLogFileName),
   solver2x2x2(20, cache2x2x2FileName),
   solver2x2x3(20, cache2x2x3FileName),
   solver2FaceEO(cache2FaceEOFileName, cache2x2x2FileName),
-  solver2FaceAB5C(20, cache2FaceAB5CFileName)
+  solver2FaceAB5C(20, cache2FaceAB5CFileName),
+  solver2FaceAB3C(20, cache2FaceAB3CFileName)
 {}
 
 std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) const
@@ -97,6 +99,32 @@ Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& scra
   };
   bool haveSolution = false;
   Solution bestSolution;
+
+  // Try AB3C
+  for (size_t i = 2; i < corners.size(); ++i)
+    for (size_t j = i + 1; j < corners.size(); ++j)
+      for (size_t k = j + 1; k < corners.size(); ++k)
+      {
+        std::array<TwoFaceAB3C::Corner, 3> currentCorners{
+          TwoFaceAB3C::Corner{ corners[i].first, corners[i].second },
+          TwoFaceAB3C::Corner{ corners[j].first, corners[j].second },
+          TwoFaceAB3C::Corner{ corners[k].first, corners[k].second },
+        };
+        if (solver2FaceAB3C.CanSolve(scramble + solutionSoFar, currentCorners))
+        {
+          auto ab3cStep = solver2FaceAB3C.Solve(scramble + solutionSoFar, currentCorners);
+          auto skeleton = solutionSoFar + ab3cStep;
+          auto solution = SolverCorners::SolveCorners(scramble, skeleton);
+          if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+          {
+            haveSolution = true;
+            solution.InsertStep("AB3C", ab3cStep);
+            bestSolution = solution;
+          }
+        }
+      }
+
+  // Try AB5C
   for (const auto& corner : corners)
   {
     auto ab5cStep = solver2FaceAB5C.Solve(scramble + solutionSoFar, corner.first, corner.second);
@@ -109,6 +137,6 @@ Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& scra
       bestSolution = solution;
     }
   }
-  
+
   return bestSolution;
 }

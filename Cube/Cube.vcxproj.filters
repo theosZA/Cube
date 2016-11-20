@@ -55,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="SolutionLogger.h" />
     <ClInclude Include="Solution.h" />
+    <ClInclude Include="3x3x3\TwoFaceAB3C.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="SolutionLogger.cpp" />
     <ClCompile Include="Solution.cpp" />
+    <ClCompile Include="3x3x3\TwoFaceAB3C.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3x3x3">

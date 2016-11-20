@@ -18,6 +18,10 @@ StickerPosition GetAdjacentCornerStickerPosition(StickerPosition, bool clockwise
 // in clockwise order starting from the specified sticker position.
 std::array<Face, 3> StickerPositionToCorner(StickerPosition sticker);
 
+// Returns the corner sticker position corresponding to one face of a corner with a
+// second face provided that is clockwise of the first face to uniquely indentify the corner.
+StickerPosition CornerToStickerPosition(Face cornerFace, Face cornerFaceClockwise);
+
 // Returns true if the two positions specified are actually the same cubie.
 bool AreStickersOnSameCubie(StickerPosition, StickerPosition);
 

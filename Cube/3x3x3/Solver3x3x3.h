@@ -14,6 +14,7 @@
 #include "Solver2x2x2Block.h"
 #include "Solver2x2x3Block.h"
 #include "TwoFaceEO.h"
+#include "TwoFaceAB3C.h"
 #include "TwoFaceAB5C.h"
 
 // A solver that extends a 2x2x2 block to a 2x2x3 block on a 3x3x3 cube.
@@ -26,7 +27,8 @@ public:
               const std::string& cache2x2x2FileName = "",
               const std::string& cache2x2x3FileName = "",
               const std::string& cache2FaceEOFileName = "",
-              const std::string& cache2FaceAB5CFileName = "");
+              const std::string& cache2FaceAB5CFileName = "",
+              const std::string& cache2FaceAB3CFileName = "");
 
   // Returns the move sequence that solve the given scramble.
   std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const override;
@@ -46,5 +48,6 @@ private:
   Solver2x2x3Block solver2x2x3;
   TwoFaceEO solver2FaceEO;
   TwoFaceAB5C solver2FaceAB5C;
+  TwoFaceAB3C solver2FaceAB3C;
 };
 

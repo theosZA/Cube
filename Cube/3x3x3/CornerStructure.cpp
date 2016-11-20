@@ -1,5 +1,7 @@
 #include "CornerStructure.h"
 
+#include <sstream>
+
 namespace CornerStructure {
 
 StickerPosition GetAdjacentCornerStickerPosition(StickerPosition position, bool clockwise)
@@ -152,6 +154,20 @@ std::array<Face, 3> StickerPositionToCorner(StickerPosition sticker)
     GetAdjacentCornerStickerPosition(sticker, true).face,
     GetAdjacentCornerStickerPosition(sticker, false).face
   };
+}
+
+StickerPosition CornerToStickerPosition(Face cornerFace, Face cornerFaceClockwise)
+{
+  const std::array<size_t, 4> cornerIndices{ 0, 2, 6, 8};
+  for (auto index : cornerIndices)
+  {
+    StickerPosition stickerPosition{ cornerFace, index };
+    if (GetAdjacentCornerStickerPosition(stickerPosition, true).face == cornerFaceClockwise)
+      return stickerPosition;
+  }
+  std::ostringstream errorMessage;
+  errorMessage << "Invalid corner specified by faces " << GetFaceChar(cornerFace) << " and " << GetFaceChar(cornerFaceClockwise);
+  throw std::domain_error(errorMessage.str());
 }
 
 bool AreStickersOnSameCubie(StickerPosition pos1, StickerPosition pos2)

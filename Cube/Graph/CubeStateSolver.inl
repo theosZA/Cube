@@ -41,6 +41,12 @@ std::uint32_t CubeStateSolver<CubeType>::GetRequiredMoveCount(const CubeType& cu
 }
 
 template<class CubeType>
+bool CubeStateSolver<CubeType>::CanSolve(const CubeType& cube) const
+{
+  return graph.ContainsVertex(cube);
+}
+
+template<class CubeType>
 void CubeStateSolver<CubeType>::WriteCacheFile(const std::string& cacheFileName) const
 {
   if (!cacheFileName.empty())

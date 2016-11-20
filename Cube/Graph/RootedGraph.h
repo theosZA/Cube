@@ -4,7 +4,7 @@
 #include <istream>
 #include <functional>
 #include <ostream>
-#include <unordered_map>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -27,6 +27,9 @@ public:
   // until there are no more unique vertices or the maximum path length has been reached.
   void Build(const Vertex& root, std::uint32_t maxPathLength);
 
+  // Returns true if the graph contains the specified vertex.
+  bool ContainsVertex(const Vertex&) const;
+
   // Finds the shortest sequence of edges connecting source to root. If there is no such sequence
   // within the maximum path length specified in Build() then an exception is thrown.
   std::vector<DirectedEdge> FindShortestPathToRoot(const Vertex& source) const;
@@ -48,7 +51,7 @@ private:
 
   std::function<Key(const Vertex&)> getKey;
   std::function<std::vector<std::pair<DirectedEdge, Vertex>>(const Vertex&)> getAdjacentVertices;
-  std::unordered_map<Key, std::uint32_t> pathLengthFromVertexKey;
+  std::map<Key, std::uint32_t> pathLengthFromVertexKey;
 };
 
 #include "RootedGraph.inl"
