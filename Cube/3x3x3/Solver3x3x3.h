@@ -17,7 +17,6 @@
 #include "TwoFaceAB3C.h"
 #include "TwoFaceAB5C.h"
 
-// A solver that extends a 2x2x2 block to a 2x2x3 block on a 3x3x3 cube.
 // A block-based solver for 3x3x3 cubes.
 class Solver3x3x3 : public Solver
 {
@@ -35,13 +34,13 @@ public:
 
 private:
   // Returns a solution for when all but 3 faces, F, U and R, are solved (i.e. a 2x2x2 block has been created).
-  Solution Solve3Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve3Faces(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
   // Returns a solution for when all but 2 faces, U and R, are solved.
-  Solution Solve2Faces(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve2Faces(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
   // Returns a solution for when all but 2 faces, U and R, are solved, with U and R edges oriented correctly.
-  Solution Solve2FacesEdgesOriented(const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve2FacesEdgesOriented(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
 
   mutable SolutionLogger solutionLogger;
   Solver2x2x2Block solver2x2x2;
