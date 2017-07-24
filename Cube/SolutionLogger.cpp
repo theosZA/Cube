@@ -19,18 +19,18 @@ void SolutionLogger::LogSolution(const Solution& solution)
   {
     if (!step.moves.empty())
     {
-      size_t oldMoveCount = cumulativeSolution.size();
+      int oldMoveCount = static_cast<int>(cumulativeSolution.size());
       if (step.skeletonPreceedingMoves.empty() && step.skeletonSucceedingMoves.empty())
       {
         cumulativeSolution = cumulativeSolution + step.moves;
-        size_t newMoveCount = cumulativeSolution.size();
+        int newMoveCount = static_cast<int>(cumulativeSolution.size());
         log << step.description << ": " << MoveSequenceToText(step.moves) 
             << " (" << (newMoveCount - oldMoveCount) << '/' << newMoveCount << ")\n";
       }
       else
       {
         cumulativeSolution = step.skeletonPreceedingMoves + step.moves + step.skeletonSucceedingMoves;
-        size_t newMoveCount = cumulativeSolution.size();
+        int newMoveCount = static_cast<int>(cumulativeSolution.size());
         log << step.description << ": Skeleton = " << MoveSequenceToText(step.skeletonPreceedingMoves) << " * " << MoveSequenceToText(step.skeletonSucceedingMoves)
             << "\n  Insert at * = " << MoveSequenceToText(step.moves)
             << " (" << (newMoveCount - oldMoveCount) << '/' << newMoveCount << ")\n";
