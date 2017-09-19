@@ -144,6 +144,7 @@
     <ClInclude Include="Graph\RootedGraph.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="SolutionLogger.h" />
+    <ClInclude Include="SolutionStep.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="SolverFactory.h" />
     <ClInclude Include="StickerPosition.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="SolutionLogger.cpp" />
+    <ClCompile Include="SolutionStep.cpp" />
     <ClCompile Include="SolverFactory.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
   </ItemGroup>

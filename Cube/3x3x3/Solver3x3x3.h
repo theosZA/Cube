@@ -34,13 +34,13 @@ public:
 
 private:
   // Returns a solution for when all but 3 faces, F, U and R, are solved (i.e. a 2x2x2 block has been created).
-  Solution Solve3Faces(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve3Faces(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar) const;
 
   // Returns a solution for when all but 2 faces, U and R, are solved.
-  Solution Solve2Faces(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve2Faces(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar) const;
 
   // Returns a solution for when all but 2 faces, U and R, are solved, with U and R edges oriented correctly.
-  Solution Solve2FacesEdgesOriented(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const;
+  Solution Solve2FacesEdgesOriented(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar) const;
 
   mutable SolutionLogger solutionLogger;
   Solver2x2x2Block solver2x2x2;

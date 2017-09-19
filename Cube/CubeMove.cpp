@@ -163,6 +163,11 @@ std::vector<CubeMove> operator+(const std::vector<CubeMove>& a, const std::vecto
   return SimplifyMoveSequence(sum);
 }
 
+std::vector<CubeMove>& operator+=(std::vector<CubeMove>& a, const std::vector<CubeMove>& b)
+{
+  return a = a + b;
+}
+
 std::vector<CubeMove> Rotate(const std::vector<CubeMove>& moves, std::pair<Face, Face> oldFaces, std::pair<Face, Face> newFaces)
 {
   auto oldFace3 = GetNextFaceClockwise(oldFaces.first, oldFaces.second);

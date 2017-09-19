@@ -17,11 +17,11 @@ std::vector<CubeMove> SolveThreeCorners(const std::array<StickerPosition, 3>& co
 // specified by a sticker on each of their faces. Sticker 0 needs to move to sticker 1; 1 to 2; and 2 to 0.
 // The function finds the best place to cycle these corners within the skeleton solution so as to have the
 // shortest overall move count after simplifying. The combined skeleton plus insertion is returned.
-Solution InsertCorner3CycleInSkeleton(const std::vector<CubeMove>& skeleton,
-                                                   const std::array<StickerPosition, 3>& skeletonCornerPositions);
+Solution InsertCorner3CycleInSkeleton(const Solution& skeleton,
+                                      const std::array<StickerPosition, 3>& skeletonCornerPositions);
 
 // Solves the first 3 corners that form a 3-cycle by inserting the cycle into the skeleton.
 // Returns the new solution.
-Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton);
+Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const Solution& skeleton);
 
 } // Corner3Cycle

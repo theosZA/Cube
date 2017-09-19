@@ -35,6 +35,9 @@ std::vector<CubeMove> SimplifyMoveSequence(const std::vector<CubeMove>& moves);
 // Combines two move sequences into a simplified move sequence.
 std::vector<CubeMove> operator+(const std::vector<CubeMove>&, const std::vector<CubeMove>&);
 
+// Appends a move sequence to another move sequence.
+std::vector<CubeMove>& operator+=(std::vector<CubeMove>&, const std::vector<CubeMove>&);
+
 // Rotates the cube, applying the move sequence to a different set of faces.
 // All moves using the old faces are replaced by the same move the new faces, and similarly
 // for all other corresponding faces.

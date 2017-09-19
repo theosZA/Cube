@@ -40,14 +40,14 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
   Solution bestSolution;
   for (const auto& corner : corners)
   {
-    auto newScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
-    auto step = solver2x2x2.Solve(newScramble, Face::Back, Face::Left);
-    auto solution = Solve3Faces(std::vector<CubeMove>{}, newScramble, step);
-    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+    auto rotatedScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
+    auto rotatedStep = SolutionStep{ "2x2x2", solver2x2x2.Solve(rotatedScramble, Face::Back, Face::Left) };
+    auto rotatedPartialSolution = Solution{} + rotatedStep;
+    auto rotatedSolution = Solve3Faces(rotatedScramble, rotatedPartialSolution);
+    if (!haveSolution || rotatedSolution.Length() < bestSolution.Length())
     {
       haveSolution = true;
-      solution.InsertStep("2x2x2", step);
-      bestSolution = solution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
+      bestSolution = rotatedSolution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
     }
   }
 
@@ -55,25 +55,26 @@ std::vector<CubeMove> Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) 
   auto inverseScramble = InvertMoveSequence(scramble);
   for (const auto& corner : corners)
   {
-    auto newInverseScamble = Rotate(inverseScramble, corner, std::make_pair(Face::Back, Face::Left));
-    auto inverseStep = solver2x2x2.Solve(newInverseScamble, Face::Back, Face::Left);
-    auto stepAsPreMove = InvertMoveSequence(inverseStep);
-
-    auto newScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
-    auto solution = Solve3Faces(stepAsPreMove, newScramble, std::vector<CubeMove>{});
-    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+    auto rotatedScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
+    auto rotatedInverseScamble = Rotate(inverseScramble, corner, std::make_pair(Face::Back, Face::Left));
+    auto rotatedInverseStep = SolutionStep{ "2x2x2", solver2x2x2.Solve(rotatedInverseScamble, Face::Back, Face::Left) };
+    auto rotatedInversePartialSolution = Solution{} + rotatedInverseStep;
+    auto inversePartialSolution = rotatedInversePartialSolution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
+    auto partialSolution = inversePartialSolution.Invert();
+    auto rotatedPartialSolution = partialSolution.Rotate(corner, std::make_pair(Face::Back, Face::Left));
+    auto rotatedSolution = Solve3Faces(rotatedScramble, rotatedPartialSolution);
+    if (!haveSolution || rotatedSolution.Length() < bestSolution.Length())
     {
       haveSolution = true;
-      solution.InsertStep("2x2x2 on inverted scramble", inverseStep);
-      bestSolution = solution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
+      bestSolution = rotatedSolution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
     }
   }
 
   solutionLogger.LogSolution(bestSolution);
-  return bestSolution.moves;
+  return bestSolution.GetMoves();
 }
 
-Solution Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+Solution Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar) const
 {
   // Consider the 3 possible orientations of the solved 2x2x2 BLD block and see which leads to the best solution.
   std::array<Face, 3> newBackFaces { Face::Back, Face::Left, Face::Down };
@@ -82,56 +83,55 @@ Solution Solver3x3x3::Solve3Faces(const std::vector<CubeMove>& preMoves, const s
   Solution bestSolution;
   for (size_t i = 0; i < 3; ++i)
   {
-    auto newPreMoves = Rotate(preMoves, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newScramble = Rotate(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newSolutionSoFar = Rotate(solutionSoFar, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto step = solver2x2x3.Solve(newPreMoves + newScramble + newSolutionSoFar);
-    auto solution = Solve2Faces(newPreMoves, newScramble, newSolutionSoFar + step);
-    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+    auto rotatedScramble = Rotate(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto rotatedSolutionSoFar = solutionSoFar.Rotate(std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto rotatedScramblePlusSolution = rotatedSolutionSoFar.CombineScrambleAndSolution(rotatedScramble);
+    auto rotatedStep = SolutionStep{ "2x2x3", solver2x2x3.Solve(rotatedScramblePlusSolution) };
+    auto rotatedPartialSolution = rotatedSolutionSoFar + rotatedStep;
+    auto rotatedSolution = Solve2Faces(rotatedScramble, rotatedPartialSolution);
+    if (!haveSolution || rotatedSolution.Length() < bestSolution.Length())
     {
       haveSolution = true;
-      solution.InsertStep("2x2x3", step);
-      bestSolution = solution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
+      bestSolution = rotatedSolution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
     }
   }
 
   // Consider the inverse scramble to see if there's a 2x2x3 block that leads to a better solution.
-  auto inversePreMoves = InvertMoveSequence(solutionSoFar);
   auto inverseScramble = InvertMoveSequence(scramble);
-  auto inverseSolutionSoFar = InvertMoveSequence(preMoves);
+  auto inverseSolutionSoFar = solutionSoFar.Invert();
   for (size_t i = 0; i < 3; ++i)
   {
-    auto newInversePreMoves = Rotate(inversePreMoves, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newInverseScramble = Rotate(inverseScramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newInverseSolutionSoFar = Rotate(inverseSolutionSoFar, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto inverseStep = solver2x2x3.Solve(newInversePreMoves + newInverseScramble + newInverseSolutionSoFar);
-    auto stepAsPreMove = InvertMoveSequence(inverseStep);
-
-    auto newPreMoves = Rotate(preMoves, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newScramble = Rotate(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto newSolutionSoFar = Rotate(solutionSoFar, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
-    auto solution = Solve2Faces(stepAsPreMove + newPreMoves, newScramble, newSolutionSoFar);
-    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+    auto rotatedScramble = Rotate(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto rotatedInverseScramble = Rotate(inverseScramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto rotatedInverseSolutionSoFar = inverseSolutionSoFar.Rotate(std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto rotatedInverseScramblePlusSolution = rotatedInverseSolutionSoFar.CombineScrambleAndSolution(rotatedInverseScramble);
+    auto rotatedInverseStep = SolutionStep{ "2x2x3", solver2x2x3.Solve(rotatedInverseScramblePlusSolution) };
+    auto rotatedInversePartialSolution = rotatedInverseSolutionSoFar + rotatedInverseStep;
+    auto inversePartialSolution = rotatedInversePartialSolution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
+    auto partialSolution = inversePartialSolution.Invert();
+    auto rotatedPartialSolution = partialSolution.Rotate(std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
+    auto rotatedSolution = Solve2Faces(rotatedScramble, rotatedPartialSolution);
+    if (!haveSolution || rotatedSolution.Length() < bestSolution.Length())
     {
       haveSolution = true;
-      solution.InsertStep("2x2x3 on inverted scramble", inverseStep);
-      bestSolution = solution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
+      bestSolution = rotatedSolution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
     }
   }
 
   return bestSolution;
 }
 
-Solution Solver3x3x3::Solve2Faces(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+Solution Solver3x3x3::Solve2Faces(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar) const
 {
-  auto edgeOrientationStep = solver2FaceEO.Solve(preMoves + scramble + solutionSoFar);
-  auto solution = Solve2FacesEdgesOriented(preMoves, scramble, solutionSoFar + edgeOrientationStep);
-  solution.InsertStep("EO", edgeOrientationStep);
-  return solution;
+  auto scramblePlusSolution = solutionSoFar.CombineScrambleAndSolution(scramble);
+  Solution partialSolution = solutionSoFar + SolutionStep{ "EO", solver2FaceEO.Solve(scramblePlusSolution) };
+  return Solve2FacesEdgesOriented(scramble, partialSolution);
 }
 
-Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& preMoves, const std::vector<CubeMove>& scramble, const std::vector<CubeMove>& solutionSoFar) const
+Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar) const
 {
+  auto scramblePlusSolution = solutionSoFar.CombineScrambleAndSolution(scramble);
+
   const std::array<std::pair<Face, Face>, 6> corners{
     std::pair<Face, Face>{ Face::Right, Face::Back },
     std::pair<Face, Face>{ Face::Right, Face::Down },
@@ -153,15 +153,14 @@ Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& preM
           TwoFaceAB3C::Corner{ corners[j].first, corners[j].second },
           TwoFaceAB3C::Corner{ corners[k].first, corners[k].second },
         };
-        if (solver2FaceAB3C.CanSolve(preMoves + scramble + solutionSoFar, currentCorners))
+        if (solver2FaceAB3C.CanSolve(scramblePlusSolution, currentCorners))
         {
-          auto ab3cStep = solver2FaceAB3C.Solve(preMoves + scramble + solutionSoFar, currentCorners);
-          auto skeleton = solutionSoFar + ab3cStep + preMoves;
+          auto ab3cStep = solver2FaceAB3C.Solve(scramblePlusSolution, currentCorners);
+          auto skeleton = solutionSoFar + SolutionStep{ "AB3C", ab3cStep, true };
           auto solution = SolverCorners::SolveCorners(scramble, skeleton);
-          if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+          if (!haveSolution || solution.Length() < bestSolution.Length())
           {
             haveSolution = true;
-            solution.InsertStep("AB3C", ab3cStep);
             bestSolution = solution;
           }
         }
@@ -170,13 +169,12 @@ Solution Solver3x3x3::Solve2FacesEdgesOriented(const std::vector<CubeMove>& preM
   // Try AB5C
   for (const auto& corner : corners)
   {
-    auto ab5cStep = solver2FaceAB5C.Solve(preMoves + scramble + solutionSoFar, corner.first, corner.second);
-    auto skeleton = solutionSoFar + ab5cStep + preMoves;
+    auto ab5cStep = solver2FaceAB5C.Solve(scramblePlusSolution, corner.first, corner.second);
+    auto skeleton = solutionSoFar + SolutionStep{ "AB5C", ab5cStep, true };
     auto solution = SolverCorners::SolveCorners(scramble, skeleton);
-    if (!haveSolution || solution.moves.size() < bestSolution.moves.size())
+    if (!haveSolution || solution.Length() < bestSolution.Length())
     {
       haveSolution = true;
-      solution.InsertStep("AB5C", ab5cStep);
       bestSolution = solution;
     }
   }

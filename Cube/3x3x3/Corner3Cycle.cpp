@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "CornerStructure.h"
+#include "..\SolutionStep.h"
 
 namespace Corner3Cycle {
 
@@ -466,20 +467,19 @@ std::vector<CubeMove> SolveThreeCorners(const std::array<StickerPosition, 3>& co
   return moveSequence;
 }
 
-Solution InsertCorner3CycleInSkeleton(const std::vector<CubeMove>& skeleton,
+Solution InsertCorner3CycleInSkeleton(const Solution& skeleton,
                                       const std::array<StickerPosition, 3>& skeletonCornerPositions)
 {
-  if (skeleton.empty())
-    return Solution();
+  auto skeletonMoves = skeleton.GetMoves();
+  auto inverseSkeleton = InvertMoveSequence(skeletonMoves);
 
-  auto inverseSkeleton = InvertMoveSequence(skeleton);
-
+  bool hasSolution = false;
   Solution bestSolution;
 
-  for (size_t insertionIndex = 0; insertionIndex <= skeleton.size(); ++insertionIndex)
+  for (size_t insertionIndex = 0; insertionIndex <= skeletonMoves.size(); ++insertionIndex)
   {
     Cube3x3x3 cube;
-    cube += std::vector<CubeMove>(inverseSkeleton.begin(), inverseSkeleton.begin() + (skeleton.size() - insertionIndex));
+    cube += std::vector<CubeMove>(inverseSkeleton.begin(), inverseSkeleton.begin() + (skeletonMoves.size() - insertionIndex));
 
     // Where are our 3 corners now?
     std::array<StickerPosition, 3> corners
@@ -490,33 +490,20 @@ Solution InsertCorner3CycleInSkeleton(const std::vector<CubeMove>& skeleton,
     };
 
     auto insertionSequence = SolveThreeCorners(corners);
-    std::vector<CubeMove> candidateSolution;
-    std::copy(skeleton.begin(), skeleton.begin() + insertionIndex, std::back_inserter(candidateSolution));
-    std::copy(insertionSequence.begin(), insertionSequence.end(), std::back_inserter(candidateSolution));
-    std::copy(skeleton.begin() + insertionIndex, skeleton.end(), std::back_inserter(candidateSolution));
-    candidateSolution = SimplifyMoveSequence(candidateSolution);
-    if (bestSolution.moves.empty() || candidateSolution.size() < bestSolution.moves.size())
+    Solution candidateSolution = skeleton + SolutionStep{ "Corner cycle", insertionIndex, insertionSequence };
+    if (hasSolution == false || candidateSolution.Length() < bestSolution.Length())
     {
-      bestSolution = Solution{
-        candidateSolution,
-        std::deque<Solution::Step>{
-          Solution::Step{
-            "Corner cycle",
-            insertionSequence,
-            std::vector<CubeMove>(skeleton.begin(), skeleton.begin() + insertionIndex),
-            std::vector<CubeMove>(skeleton.begin() + insertionIndex, skeleton.end()) 
-          }
-        }
-      };
-    }
+      hasSolution = true;
+      bestSolution = candidateSolution;
+    };
   }
 
   return bestSolution;
 }
 
-Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const std::vector<CubeMove>& skeleton)
+Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const Solution& skeleton)
 {
-  scrambledCube += skeleton;
+  scrambledCube += skeleton.GetMoves();
   return InsertCorner3CycleInSkeleton(skeleton, FindCorner3Cycle(scrambledCube));
 }
 

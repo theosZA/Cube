@@ -44,18 +44,19 @@
     <ClInclude Include="3x3x3\TwoFaceAB5C.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="3x3x3\SolverCorners.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
     <ClInclude Include="3x3x3\CornerStructure.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\Corner3Cycle.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
     <ClInclude Include="SolutionLogger.h" />
     <ClInclude Include="Solution.h" />
     <ClInclude Include="3x3x3\TwoFaceAB3C.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="SolutionStep.h" />
+    <ClInclude Include="3x3x3\SolverCorners.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\Corner3Cycle.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,18 +96,19 @@
     <ClCompile Include="3x3x3\TwoFaceAB5C.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
-    <ClCompile Include="3x3x3\SolverCorners.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
     <ClCompile Include="3x3x3\CornerStructure.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\Corner3Cycle.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="SolutionLogger.cpp" />
     <ClCompile Include="Solution.cpp" />
     <ClCompile Include="3x3x3\TwoFaceAB3C.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="SolutionStep.cpp" />
+    <ClCompile Include="3x3x3\SolverCorners.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\Corner3Cycle.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
