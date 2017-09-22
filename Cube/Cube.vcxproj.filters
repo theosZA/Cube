@@ -72,6 +72,9 @@
     <ClInclude Include="Scrambler\Scrambler.h">
       <Filter>Scrambler</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep_2x2x3Block.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -132,6 +135,9 @@
     </ClCompile>
     <ClCompile Include="Scrambler\Scrambler.cpp">
       <Filter>Scrambler</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_2x2x3Block.cpp">
+      <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
