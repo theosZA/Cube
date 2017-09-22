@@ -19,36 +19,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B7395A5A-3FFF-4A48-8EA1-C784D248065E}</ProjectGuid>
-    <RootNamespace>Cube</RootNamespace>
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{C6112138-CD7D-4CC8-8285-A222E73D9575}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>CubeConsole</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -68,122 +70,82 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Cube.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Cube\x64\Release</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>Cube.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>Cube.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Cube\x64\Debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>Console</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>Cube.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="2x2x2\Cube2x2x2.h" />
-    <ClInclude Include="2x2x2\Solver2x2x2.h" />
-    <ClInclude Include="3x3x3\Corner3Cycle.h" />
-    <ClInclude Include="3x3x3\Corners3x3x3.h" />
-    <ClInclude Include="3x3x3\CornerStructure.h" />
-    <ClInclude Include="3x3x3\Cube3x3x3.h" />
-    <ClInclude Include="3x3x3\CubeGroup.h" />
-    <ClInclude Include="3x3x3\Edges3x3x3.h" />
-    <ClInclude Include="3x3x3\Solver2x2x2Block.h" />
-    <ClInclude Include="3x3x3\Solver2x2x3Block.h" />
-    <ClInclude Include="3x3x3\Solver3x3x3.h" />
-    <ClInclude Include="3x3x3\SolverCorners.h" />
-    <ClInclude Include="3x3x3\PartialSolution.h" />
-    <ClInclude Include="3x3x3\SolverStep.h" />
-    <ClInclude Include="3x3x3\SolverStep_2x2x2Block.h" />
-    <ClInclude Include="3x3x3\TwoFaceAB3C.h" />
-    <ClInclude Include="3x3x3\TwoFaceAB5C.h" />
-    <ClInclude Include="3x3x3\TwoFaceEO.h" />
-    <ClInclude Include="BinaryStream.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="CubeMove.h" />
-    <ClInclude Include="Face.h" />
-    <ClInclude Include="Graph\CubeStateSolver.h" />
-    <ClInclude Include="Graph\RootedGraph.h" />
-    <ClInclude Include="Scrambler\Scrambler.h" />
-    <ClInclude Include="Solution.h" />
-    <ClInclude Include="SolutionLogger.h" />
-    <ClInclude Include="SolutionStep.h" />
-    <ClInclude Include="Solver.h" />
-    <ClInclude Include="SolverFactory.h" />
-    <ClInclude Include="StickerPosition.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="2x2x2\Cube2x2x2.cpp" />
-    <ClCompile Include="2x2x2\Solver2x2x2.cpp" />
-    <ClCompile Include="3x3x3\Corner3Cycle.cpp" />
-    <ClCompile Include="3x3x3\Corners3x3x3.cpp" />
-    <ClCompile Include="3x3x3\CornerStructure.cpp" />
-    <ClCompile Include="3x3x3\Cube3x3x3.cpp" />
-    <ClCompile Include="3x3x3\Edges3x3x3.cpp" />
-    <ClCompile Include="3x3x3\Solver2x2x2Block.cpp" />
-    <ClCompile Include="3x3x3\Solver2x2x3Block.cpp" />
-    <ClCompile Include="3x3x3\Solver3x3x3.cpp" />
-    <ClCompile Include="3x3x3\SolverCorners.cpp" />
-    <ClCompile Include="3x3x3\PartialSolution.cpp" />
-    <ClCompile Include="3x3x3\SolverStep_2x2x2Block.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceAB3C.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceAB5C.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceEO.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="CubeMove.cpp" />
-    <ClCompile Include="Face.cpp" />
-    <ClCompile Include="Scrambler\Scrambler.cpp" />
-    <ClCompile Include="Solution.cpp" />
-    <ClCompile Include="SolutionLogger.cpp" />
-    <ClCompile Include="SolutionStep.cpp" />
-    <ClCompile Include="SolverFactory.cpp" />
-    <ClCompile Include="StickerPosition.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graph\CubeStateSolver.inl" />
-    <None Include="Graph\RootedGraph.inl" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -59,6 +59,16 @@
     <ClInclude Include="3x3x3\Corner3Cycle.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\CubeGroup.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\PartialSolution.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep.h" />
+    <ClInclude Include="3x3x3\SolverStep_2x2x2Block.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
     <ClInclude Include="Scrambler\Scrambler.h">
       <Filter>Scrambler</Filter>
     </ClInclude>
@@ -112,6 +122,12 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\Corner3Cycle.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\PartialSolution.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_2x2x2Block.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="Scrambler\Scrambler.cpp">

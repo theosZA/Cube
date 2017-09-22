@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cube", "Cube.vcxproj", "{B7395A5A-3FFF-4A48-8EA1-C784D248065E}"
 EndProject
@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeDemo", "..\CubeDemo\Cub
 	ProjectSection(ProjectDependencies) = postProject
 		{B7395A5A-3FFF-4A48-8EA1-C784D248065E} = {B7395A5A-3FFF-4A48-8EA1-C784D248065E}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeConsole", "..\CubeConsole\CubeConsole.vcxproj", "{C6112138-CD7D-4CC8-8285-A222E73D9575}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,16 @@ Global
 		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x64.Build.0 = Release|x64
 		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x86.ActiveCfg = Release|Win32
 		{0BA71CF0-67D1-4E3B-85EB-A9B6F98C364C}.Release|x86.Build.0 = Release|Win32
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Debug|x64.ActiveCfg = Debug|x64
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Debug|x64.Build.0 = Debug|x64
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Debug|x86.ActiveCfg = Debug|Win32
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Debug|x86.Build.0 = Debug|Win32
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Release|x64.ActiveCfg = Release|x64
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Release|x64.Build.0 = Release|x64
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Release|x86.ActiveCfg = Release|Win32
+		{C6112138-CD7D-4CC8-8285-A222E73D9575}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
