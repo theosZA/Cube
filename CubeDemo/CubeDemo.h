@@ -8,7 +8,7 @@
 #include "CubeDemoStateMachine.h"
 #include "CubeMoveSequenceAnimation.h"
 #include "RenderDevice.h"
-#include "Scrambler.h"
+#include "..\Cube\Scrambler\Scrambler.h"
 #include "..\Cube\CubeMove.h"
 
 class CubeDemo

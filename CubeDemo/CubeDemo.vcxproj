@@ -145,7 +145,6 @@
     <ClCompile Include="CubieFaceMesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderDevice.cpp" />
-    <ClCompile Include="Scrambler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
@@ -155,7 +154,6 @@
     <ClInclude Include="Cubie.h" />
     <ClInclude Include="CubieFaceMesh.h" />
     <ClInclude Include="RenderDevice.h" />
-    <ClInclude Include="Scrambler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

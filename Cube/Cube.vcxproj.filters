@@ -59,6 +59,9 @@
     <ClInclude Include="3x3x3\Corner3Cycle.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="Scrambler\Scrambler.h">
+      <Filter>Scrambler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -111,6 +114,9 @@
     <ClCompile Include="3x3x3\Corner3Cycle.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
+    <ClCompile Include="Scrambler\Scrambler.cpp">
+      <Filter>Scrambler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3x3x3">
@@ -121,6 +127,9 @@
     </Filter>
     <Filter Include="2x2x2">
       <UniqueIdentifier>{6b5ff89e-88be-4a42-b0d7-8d4fa95b3607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scrambler">
+      <UniqueIdentifier>{69010f9e-3f7a-49a8-be10-86388e381f9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
