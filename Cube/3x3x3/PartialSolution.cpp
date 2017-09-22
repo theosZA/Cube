@@ -37,5 +37,5 @@ PartialSolution PartialSolution::Rotate(std::pair<Face, Face> oldFaces, std::pai
 
 PartialSolution PartialSolution::Invert() const
 {
-  return PartialSolution{ solutionSoFar.Invert(), cubeGroup, rotationNewFaces, rotationOldFaces };
+  return PartialSolution{ solutionSoFar.Invert(), cubeGroup, rotationOldFaces, rotationNewFaces };
 }

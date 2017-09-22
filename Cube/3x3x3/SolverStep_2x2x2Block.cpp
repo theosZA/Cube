@@ -26,7 +26,9 @@ std::vector<PartialSolution> SolverStep_2x2x2Block::Solve(const std::vector<Cube
   {
     auto rotatedScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
     auto rotatedStep = SolutionStep{ "2x2x2", solver2x2x2.Solve(rotatedScramble, Face::Back, Face::Left) };
-    partialSolutions.push_back(PartialSolution{ Solution{} + rotatedStep, CubeGroup::Block2x2x3, std::make_pair(Face::Back, Face::Left), corner });
+    auto rotatedPartialSolution = Solution{} + rotatedStep;
+    auto partialSolution = rotatedPartialSolution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
+    partialSolutions.push_back(PartialSolution{ partialSolution, CubeGroup::Block2x2x2, corner, std::make_pair(Face::Back, Face::Left) });
   }
 
   return partialSolutions;
