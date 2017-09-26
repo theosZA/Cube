@@ -103,15 +103,16 @@ std::uint32_t SolverDominoReduction::GetKeyValue(const Cube3x3x3& cube)
   std::uint32_t key = 0;
   for (const auto& edge : edgeCubies)
   {
+    key <<= 1;
     auto cubie = cube[edge];
     if (std::find(equatorEdgeCubies.begin(), equatorEdgeCubies.end(), cubie) != equatorEdgeCubies.end())
     {
       key |= 1;
     }
-    key <<= 1;
   }
   for (const auto& corner : cornerCubies)
   {
+    key <<= 2;
     auto cubie = CornerStructure::StickerPositionToCorner(cube[corner]);
     if (cubie[1] == Face::Up || cubie[1] == Face::Down)
     {
@@ -121,7 +122,6 @@ std::uint32_t SolverDominoReduction::GetKeyValue(const Cube3x3x3& cube)
     {
       key |= 2;
     }
-    key <<= 2;
   }
   return key;
 }

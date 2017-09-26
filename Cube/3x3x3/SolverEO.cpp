@@ -82,12 +82,12 @@ std::uint32_t SolverEO::GetKeyValue(const Cube3x3x3& cube)
   std::uint32_t key = 0;
   for (const auto& edge : edgeCubies)
   {
+    key <<= 1;
     auto cubie = cube[edge];
     if (std::find(edgeCubies.begin(), edgeCubies.end(), cubie) != edgeCubies.end())
     {
       key |= 1;
     }
-    key <<= 1;
   }
   return key;
 }
