@@ -138,6 +138,7 @@
     <ClInclude Include="3x3x3\SolverStep.h" />
     <ClInclude Include="3x3x3\SolverStep_2x2x2Block.h" />
     <ClInclude Include="3x3x3\SolverStep_2x2x3Block.h" />
+    <ClInclude Include="3x3x3\SolverStep_2x2x3EO.h" />
     <ClInclude Include="3x3x3\TwoFaceAB3C.h" />
     <ClInclude Include="3x3x3\TwoFaceAB5C.h" />
     <ClInclude Include="3x3x3\TwoFaceEO.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="3x3x3\PartialSolution.cpp" />
     <ClCompile Include="3x3x3\SolverStep_2x2x2Block.cpp" />
     <ClCompile Include="3x3x3\SolverStep_2x2x3Block.cpp" />
+    <ClCompile Include="3x3x3\SolverStep_2x2x3EO.cpp" />
     <ClCompile Include="3x3x3\TwoFaceAB3C.cpp" />
     <ClCompile Include="3x3x3\TwoFaceAB5C.cpp" />
     <ClCompile Include="3x3x3\TwoFaceEO.cpp" />

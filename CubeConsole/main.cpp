@@ -5,6 +5,7 @@
 
 #include "..\Cube\3x3x3\SolverStep_2x2x2Block.h"
 #include "..\Cube\3x3x3\SolverStep_2x2x3Block.h"
+#include "..\Cube\3x3x3\SolverStep_2x2x3EO.h"
 #include "..\Cube\Scrambler\Scrambler.h"
 
 std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
@@ -38,7 +39,6 @@ PartialSolution SolveRandom(SolverStep& solverStep, const std::vector<CubeMove>&
   auto solutions = GetAllPartialSolutions(solverStep, scramble, partialSolution);
   auto randomIndex = std::uniform_int_distribution<size_t>(0, solutions.size() - 1)(generator);
   return solutions[randomIndex];
-
 }
 
 PartialSolution SolveBest(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
@@ -62,15 +62,17 @@ int main()
 
   SolverStep_2x2x2Block solver2x2x2("block2x2x2.3x3");
   SolverStep_2x2x3Block solver2x2x3("block2x2x3.3x3");
+  SolverStep_2x2x3EO solver2x2x3EO("2faceEO.3x3");
 
   for (size_t i = 0; i < 50000; ++i)
   {
     auto scramble = scrambler.CreateRandomScramble(25);
     
-    auto partialSolution = SolveRandom(solver2x2x2, scramble, PartialSolution{ Solution{}, CubeGroup::Scrambled }, generator);
-    auto solution = SolveBest(solver2x2x3, scramble, partialSolution);
+    auto partialSolution_2x2x2 = SolveRandom(solver2x2x2, scramble, PartialSolution{ Solution{}, CubeGroup::Scrambled }, generator);
+    auto partialSolution_2x2x3 = SolveRandom(solver2x2x3, scramble, partialSolution_2x2x2, generator);
+    auto solution = SolveBest(solver2x2x3EO, scramble, partialSolution_2x2x3);
 
-    int stepLength = solution.solutionSoFar.Length() - partialSolution.solutionSoFar.Length();
+    int stepLength = solution.solutionSoFar.Length() - partialSolution_2x2x3.solutionSoFar.Length();
     auto findIter = solveLengthCounts.find(stepLength);
     if (findIter == solveLengthCounts.end())
     {
