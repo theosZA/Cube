@@ -84,6 +84,12 @@
     <ClInclude Include="3x3x3\SolverStep_EO.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\SolverDominoReduction.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep_DominoReduction.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -155,6 +161,12 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\SolverStep_EO.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverDominoReduction.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_DominoReduction.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
