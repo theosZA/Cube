@@ -78,6 +78,12 @@
     <ClInclude Include="3x3x3\SolverStep_2x2x3EO.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\SolverEO.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep_EO.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -143,6 +149,12 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\SolverStep_2x2x3EO.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverEO.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_EO.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>
