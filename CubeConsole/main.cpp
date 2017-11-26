@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <random>
@@ -54,19 +55,74 @@ PartialSolution SolveBest(SolverStep& solverStep, const std::vector<CubeMove>& s
       });
 }
 
-int main()
+std::map<std::string, std::string> ReadCommandLineParameters(int argc, char* argv[])
 {
-  std::random_device randomSource;
-  Scrambler scrambler(randomSource());
+  std::map<std::string, std::string> commandLineParameters;
+  for (int i = 1; i < argc; ++i)
+  {
+    std::string parameter = argv[i];
+    auto equalsPos = parameter.find('=');
+    if (equalsPos != std::string::npos)
+    {
+      auto key = parameter.substr(0, equalsPos);
+      auto value = parameter.substr(equalsPos + 1);
+      commandLineParameters[key] = value;
+    }
+  }
+  return commandLineParameters;
+}
 
-  std::mt19937 generator;
+int main(int argc, char* argv[])
+{
+  auto commandLineParameters = ReadCommandLineParameters(argc, argv);
+
+  std::vector<std::vector<CubeMove>> scrambles;
+  auto scrambleFileName = commandLineParameters["scrambles"];
+  if (scrambleFileName.empty())
+  {
+    std::random_device randomSource;
+    Scrambler scrambler(randomSource());
+    for (int i = 0; i < 10; ++i)
+    {
+      scrambles.push_back(scrambler.CreateRandomScramble(25));
+    }
+  }
+  else
+  {
+    std::ifstream scrambleFile(scrambleFileName);
+    std::string line;
+    while (std::getline(scrambleFile, line))
+    { // Skip empty lines or comment lines.
+      if (!line.empty() && (line.size() < 2 || line[0] != '/' || line[1] != '/'))
+      {
+        // Skip to the first move on the line.
+        auto firstMovePos = line.find_first_of("UDFRBL");
+        // Ignore whitespace at the end of the line.
+        auto endPos = line.find_last_not_of(" \t\r\n");
+        if (firstMovePos != std::string::npos)
+        {
+          scrambles.push_back(ParseMoveSequence(line.substr(firstMovePos, endPos + 1 - firstMovePos)));
+        }
+      }
+    }
+  }
   
+  std::ostream* out;
+  auto outputFileName = commandLineParameters["output"];
+  if (outputFileName.empty())
+  {
+    out = &std::cout;
+  }
+  else
+  {
+    out = new std::ofstream(outputFileName);
+  }
+
   SolverStep_2x2x2Block solver2x2x2("block2x2x2.3x3");
 
-  for (size_t i = 0; i < 5; ++i)
+  for (const auto& scramble : scrambles)
   {
-    auto scramble = scrambler.CreateRandomScramble(25);
-    std::cout << "Scramble: " << MoveSequenceToText(scramble) << "\n\n";
+    *out << "Scramble: " << MoveSequenceToText(scramble) << "\n\n";
 
     auto partialSolutions_2x2x2 = GetAllPartialSolutions(solver2x2x2, scramble, PartialSolution{ Solution{}, CubeGroup::Scrambled });
     std::sort(partialSolutions_2x2x2.begin(), partialSolutions_2x2x2.end(),
@@ -77,8 +133,13 @@ int main()
     
     for (auto partialSolution : partialSolutions_2x2x2)
     {
-      std::cout << partialSolution.solutionSoFar.Length() << ' ' << partialSolution.solutionSoFar.GetStepsDescription();
+      *out << partialSolution.solutionSoFar.Length() << ' ' << partialSolution.solutionSoFar.GetStepsDescription();
     }
-    std::cout << "============================================================\n";
-  }   
+    *out << "============================================================\n";
+  }
+
+  if (!outputFileName.empty())
+  {
+    delete out;
+  }
 }
