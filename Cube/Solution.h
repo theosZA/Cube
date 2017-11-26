@@ -39,6 +39,9 @@ class Solution
     // Returns the pre-moves plus the scramble plus the forward solve.
     std::vector<CubeMove> CombineScrambleAndSolution(const std::vector<CubeMove>& scramble) const;
 
+    // Returns a string detailing each step of the solution.
+    std::string GetStepsDescription() const;
+
     // Writes the full solution details to the given stream.
     friend std::ostream& operator<<(std::ostream& out, const Solution& solution);
 
@@ -46,6 +49,13 @@ class Solution
     // Returns the index of the last (non-empty) step of the skeleton.
     // If there is no step completing the skeleton then -1 is returned.
     std::vector<SolutionStep>::size_type GetLastSkeletonStep() const;
+
+    // Writes the details of each step to the given stream and sets the cumulative solution on
+    // the forward and inverse solve combining all steps.
+    void GetStepsDescription(std::ostream& out, 
+                             std::vector<CubeMove>& cumulativeSolutionOnForwardSolve,
+                             std::vector<CubeMove>& cumulativeSolutionOnInverseSolve,
+                             bool& isSolutionComplete) const;
 
     std::vector<SolutionStep> steps;
     mutable int length; // -1 if not calculated yet

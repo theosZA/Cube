@@ -1,5 +1,7 @@
 #include "Solution.h"
 
+#include <sstream>
+
 Solution& Solution::operator+=(SolutionStep newStep)
 {
   steps.push_back(std::move(newStep));
@@ -75,35 +77,24 @@ std::vector<CubeMove> Solution::CombineScrambleAndSolution(const std::vector<Cub
   return InvertMoveSequence(cumulativeSolutionOnInverseSolve) + scramble + cumulativeSolutionOnForwardSolve;
 }
 
-std::ostream& operator<<(std::ostream& out, const Solution& solution)
+std::string Solution::GetStepsDescription() const
 {
-  auto lastStepOfSkeleton = solution.GetLastSkeletonStep();
-
+  std::ostringstream stepsDescription;
   std::vector<CubeMove> cumulativeSolutionOnForwardSolve;
   std::vector<CubeMove> cumulativeSolutionOnInverseSolve;
-  for (std::vector<CubeMove>::size_type stepIndex = 0; stepIndex < solution.steps.size(); ++stepIndex)
-  {
-    const auto& step = solution.steps[stepIndex];
-    if (!step.IsEmpty())
-    {
-      int oldMoveCount = static_cast<int>(cumulativeSolutionOnForwardSolve.size() + cumulativeSolutionOnInverseSolve.size());
-      step.AccumulateSolution(cumulativeSolutionOnForwardSolve, cumulativeSolutionOnInverseSolve);
-      
-      if (stepIndex == lastStepOfSkeleton)
-      { // Skeleton complete - combine forward and inverse solution.
-        cumulativeSolutionOnForwardSolve += InvertMoveSequence(cumulativeSolutionOnInverseSolve);
-        cumulativeSolutionOnForwardSolve = SimplifyMoveSequence(cumulativeSolutionOnForwardSolve);
-        cumulativeSolutionOnInverseSolve.clear();
-      }
+  bool isSolutionComplete;
+  GetStepsDescription(stepsDescription, cumulativeSolutionOnForwardSolve, cumulativeSolutionOnInverseSolve, isSolutionComplete);
+  return stepsDescription.str();
+}
 
-      int newMoveCount = static_cast<int>(cumulativeSolutionOnForwardSolve.size() + cumulativeSolutionOnInverseSolve.size());
+std::ostream& operator<<(std::ostream& out, const Solution& solution)
+{
+  std::vector<CubeMove> cumulativeSolutionOnForwardSolve;
+  std::vector<CubeMove> cumulativeSolutionOnInverseSolve;
+  bool isSolutionComplete;
+  solution.GetStepsDescription(out, cumulativeSolutionOnForwardSolve, cumulativeSolutionOnInverseSolve, isSolutionComplete);
 
-      out << step.GetDescription() << ": " << step.GetMoveSequence(cumulativeSolutionOnForwardSolve)
-          << " [" << (newMoveCount - oldMoveCount) << '/' << newMoveCount << "]\n";
-    }
-  }
-
-  if (lastStepOfSkeleton != -1)
+  if (isSolutionComplete)
   {
     out << "\nFinal solution (" << solution.Length() << " moves): " << MoveSequenceToText(solution.GetMoves());
   }
@@ -134,4 +125,35 @@ std::vector<SolutionStep>::size_type Solution::GetLastSkeletonStep() const
     --lastStepOfSkeleton;
   }
   return lastStepOfSkeleton;
+}
+
+void Solution::GetStepsDescription(std::ostream& out, std::vector<CubeMove>& cumulativeSolutionOnForwardSolve, std::vector<CubeMove>& cumulativeSolutionOnInverseSolve, bool& isSolutionComplete) const
+{
+  auto lastStepOfSkeleton = GetLastSkeletonStep();
+  cumulativeSolutionOnForwardSolve.clear();
+  cumulativeSolutionOnInverseSolve.clear();
+  isSolutionComplete = false;
+
+  for (std::vector<CubeMove>::size_type stepIndex = 0; stepIndex < steps.size(); ++stepIndex)
+  {
+    const auto& step = steps[stepIndex];
+    if (!step.IsEmpty())
+    {
+      int oldMoveCount = static_cast<int>(cumulativeSolutionOnForwardSolve.size() + cumulativeSolutionOnInverseSolve.size());
+      step.AccumulateSolution(cumulativeSolutionOnForwardSolve, cumulativeSolutionOnInverseSolve);
+
+      if (stepIndex == lastStepOfSkeleton)
+      { // Skeleton complete - combine forward and inverse solution.
+        cumulativeSolutionOnForwardSolve += InvertMoveSequence(cumulativeSolutionOnInverseSolve);
+        cumulativeSolutionOnForwardSolve = SimplifyMoveSequence(cumulativeSolutionOnForwardSolve);
+        cumulativeSolutionOnInverseSolve.clear();
+        isSolutionComplete = true;
+      }
+
+      int newMoveCount = static_cast<int>(cumulativeSolutionOnForwardSolve.size() + cumulativeSolutionOnInverseSolve.size());
+
+      out << step.GetDescription() << ": " << step.GetMoveSequence(cumulativeSolutionOnForwardSolve)
+          << " [" << (newMoveCount - oldMoveCount) << '/' << newMoveCount << "]\n";
+    }
+  }
 }

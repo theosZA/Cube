@@ -61,47 +61,24 @@ int main()
 
   std::mt19937 generator;
   
-  std::map<int, int> solveLengthCounts;
-/*
   SolverStep_2x2x2Block solver2x2x2("block2x2x2.3x3");
-  SolverStep_2x2x3Block solver2x2x3("block2x2x3.3x3");
-  SolverStep_2x2x3EO solver2x2x3EO("2faceEO.3x3");
-*/
-  SolverStep_EO solverEO("EO.3x3");
-  SolverStep_DominoReduction solverDominoReduction("DominoReduction.3x3");
-  SolverStep_DominoToDoubleTurns solverDominoToDoubleTurns("DominoToDoubleTurns.3x3");
 
-  for (size_t i = 0; i < 100000; ++i)
+  for (size_t i = 0; i < 5; ++i)
   {
     auto scramble = scrambler.CreateRandomScramble(25);
+    std::cout << "Scramble: " << MoveSequenceToText(scramble) << "\n\n";
+
+    auto partialSolutions_2x2x2 = GetAllPartialSolutions(solver2x2x2, scramble, PartialSolution{ Solution{}, CubeGroup::Scrambled });
+    std::sort(partialSolutions_2x2x2.begin(), partialSolutions_2x2x2.end(),
+              [](const PartialSolution& a, const PartialSolution& b)
+              {
+                return a.solutionSoFar.Length() < b.solutionSoFar.Length();
+              });
     
-    /*auto partialSolution_2x2x2 = SolveRandom(solver2x2x2, scramble, PartialSolution{ Solution{}, CubeGroup::Scrambled }, generator);
-    auto partialSolution_2x2x3 = SolveRandom(solver2x2x3, scramble, partialSolution_2x2x2, generator);
-    auto solution = SolveBest(solver2x2x3EO, scramble, partialSolution_2x2x3);*/
-    auto partialSolution_EO = SolveRandom(solverEO, scramble, PartialSolution{ Solution{}, CubeGroup::Scrambled }, generator);
-    auto partialSolution_Domino = SolveRandom(solverDominoReduction, scramble, partialSolution_EO, generator);
-    auto solution = SolveBest(solverDominoToDoubleTurns, scramble, partialSolution_Domino);
-
-    int stepLength = solution.solutionSoFar.Length() - partialSolution_Domino.solutionSoFar.Length();
-    auto findIter = solveLengthCounts.find(stepLength);
-    if (findIter == solveLengthCounts.end())
+    for (auto partialSolution : partialSolutions_2x2x2)
     {
-      solveLengthCounts.insert(std::make_pair(stepLength, 1));
+      std::cout << partialSolution.solutionSoFar.Length() << ' ' << partialSolution.solutionSoFar.GetStepsDescription();
     }
-    else
-    {
-      ++(findIter->second);
-    }
-
-    if (i % 1000 == 0)
-    {
-      std::cout << i << ' ';
-    }
-  }
-  std::cout << "\n\n";
-
-  for (const auto& solveLengthCount : solveLengthCounts)
-  {
-    std::cout << solveLengthCount.first << ": " << solveLengthCount.second << '\n';   
-  }
+    std::cout << "============================================================\n";
+  }   
 }
