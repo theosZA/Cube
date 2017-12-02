@@ -20,33 +20,12 @@ int main()
     std::map<int, int> solveLengthCounts;
     AnalysisSolver solver;
 
-    for (size_t i = 0; i < 100; ++i)
-    {
-      solver.SetScramble(scrambler.CreateRandomScramble(25));
-      auto solution = solver.BestSolve(CubeGroup::Block2x2x3);
+    auto scramble = scrambler.CreateRandomScramble(25);
+    solver.SetScramble(scramble);
+    std::cout << MoveSequenceToText(scramble) << "\n\n";
 
-      int stepLength = solution.Length();
-      auto findIter = solveLengthCounts.find(stepLength);
-      if (findIter == solveLengthCounts.end())
-      {
-        solveLengthCounts.insert(std::make_pair(stepLength, 1));
-      }
-      else
-      {
-        ++(findIter->second);
-      }
-
-      if (i % 1000 == 0)
-      {
-        std::cout << i << ' ';
-      }
-    }
-    std::cout << "\n\n";
-
-    for (const auto& solveLengthCount : solveLengthCounts)
-    {
-      std::cout << solveLengthCount.first << ": " << solveLengthCount.second << '\n';   
-    }
+    auto solution = solver.BestSolve(CubeGroup::Block2x2x3);
+    std::cout <<solution << '\n';
   }
   catch (const std::exception& e)
   {
