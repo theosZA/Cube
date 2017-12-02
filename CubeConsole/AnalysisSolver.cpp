@@ -6,6 +6,7 @@
 #include "..\Cube\3x3x3\PartialSolution.h"
 #include "..\Cube\3x3x3\SolverStep_2x2x2Block.h"
 #include "..\Cube\3x3x3\SolverStep_2x2x3Block.h"
+#include "..\Cube\3x3x3\SolverStep_2x2x3EO.h"
 
 std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
 {
@@ -54,6 +55,7 @@ AnalysisSolver::AnalysisSolver()
 {
   solverSteps[CubeGroup::Scrambled].reset(new SolverStep_2x2x2Block("block2x2x2.3x3"));
   solverSteps[CubeGroup::Block2x2x2].reset(new SolverStep_2x2x3Block("block2x2x3.3x3"));
+  solverSteps[CubeGroup::Block2x2x3].reset(new SolverStep_2x2x3EO("2faceEO.3x3"));
 }
 
 void AnalysisSolver::SetScramble(const std::vector<CubeMove>& scramble)
