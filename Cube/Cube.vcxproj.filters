@@ -105,6 +105,18 @@
     <ClInclude Include="3x3x3\SolverF2LMinusBackSlot.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\SolverEdgesBackSlot.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep_SkeletonBackSlot.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverEdgesFrontSlot.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep_SkeletonFrontSlot.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -197,6 +209,18 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\SolverF2LMinusBackSlot.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverEdgesBackSlot.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_SkeletonBackSlot.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverEdgesFrontSlot.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_SkeletonFrontSlot.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>

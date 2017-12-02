@@ -8,6 +8,8 @@
 #include "..\Cube\3x3x3\SolverStep_2x2x3Block.h"
 #include "..\Cube\3x3x3\SolverStep_2x2x3EO.h"
 #include "..\Cube\3x3x3\SolverStep_F2LMinus1.h"
+#include "..\Cube\3x3x3\SolverStep_SkeletonBackSlot.h"
+#include "..\Cube\3x3x3\SolverStep_SkeletonFrontSlot.h"
 
 std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
 {
@@ -58,6 +60,8 @@ AnalysisSolver::AnalysisSolver()
   solverSteps[CubeGroup::Block2x2x2].reset(new SolverStep_2x2x3Block("block2x2x3.3x3"));
   solverSteps[CubeGroup::Block2x2x3].reset(new SolverStep_2x2x3EO("2faceEO.3x3"));
   solverSteps[CubeGroup::Block2x2x3_EO].reset(new SolverStep_F2LMinus1("f2l-1_front.3x3", "f2l-1_back.3x3"));
+  solverSteps[CubeGroup::F2L_BSlot_EO].reset(new SolverStep_SkeletonBackSlot("edges_back.3x3"));
+  solverSteps[CubeGroup::F2L_FSlot_EO].reset(new SolverStep_SkeletonFrontSlot("edges_front.3x3"));
 }
 
 void AnalysisSolver::SetScramble(const std::vector<CubeMove>& scramble)
