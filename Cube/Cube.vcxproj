@@ -138,6 +138,8 @@
     <ClInclude Include="3x3x3\SolverDominoReduction.h" />
     <ClInclude Include="3x3x3\SolverDominoToDoubleTurns.h" />
     <ClInclude Include="3x3x3\SolverEO.h" />
+    <ClInclude Include="3x3x3\SolverF2LMinusBackSlot.h" />
+    <ClInclude Include="3x3x3\SolverF2LMinusFrontSlot.h" />
     <ClInclude Include="3x3x3\SolverStep.h" />
     <ClInclude Include="3x3x3\SolverStep_2x2x2Block.h" />
     <ClInclude Include="3x3x3\SolverStep_2x2x3Block.h" />
@@ -145,6 +147,7 @@
     <ClInclude Include="3x3x3\SolverStep_DominoReduction.h" />
     <ClInclude Include="3x3x3\SolverStep_DominoToDoubleTurns.h" />
     <ClInclude Include="3x3x3\SolverStep_EO.h" />
+    <ClInclude Include="3x3x3\SolverStep_F2LMinus1.h" />
     <ClInclude Include="3x3x3\TwoFaceAB3C.h" />
     <ClInclude Include="3x3x3\TwoFaceAB5C.h" />
     <ClInclude Include="3x3x3\TwoFaceEO.h" />
@@ -178,12 +181,15 @@
     <ClCompile Include="3x3x3\SolverDominoReduction.cpp" />
     <ClCompile Include="3x3x3\SolverDominoToDoubleTurns.cpp" />
     <ClCompile Include="3x3x3\SolverEO.cpp" />
+    <ClCompile Include="3x3x3\SolverF2LMinusBackSlot.cpp" />
+    <ClCompile Include="3x3x3\SolverF2LMinusFrontSlot.cpp" />
     <ClCompile Include="3x3x3\SolverStep_2x2x2Block.cpp" />
     <ClCompile Include="3x3x3\SolverStep_2x2x3Block.cpp" />
     <ClCompile Include="3x3x3\SolverStep_2x2x3EO.cpp" />
     <ClCompile Include="3x3x3\SolverStep_DominoReduction.cpp" />
     <ClCompile Include="3x3x3\SolverStep_DominoToDoubleTurns.cpp" />
     <ClCompile Include="3x3x3\SolverStep_EO.cpp" />
+    <ClCompile Include="3x3x3\SolverStep_F2LMinus1.cpp" />
     <ClCompile Include="3x3x3\TwoFaceAB3C.cpp" />
     <ClCompile Include="3x3x3\TwoFaceAB5C.cpp" />
     <ClCompile Include="3x3x3\TwoFaceEO.cpp" />

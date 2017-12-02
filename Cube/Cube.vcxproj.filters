@@ -96,6 +96,15 @@
     <ClInclude Include="3x3x3\SolverStep_DominoToDoubleTurns.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
+    <ClInclude Include="3x3x3\SolverF2LMinusFrontSlot.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverStep_F2LMinus1.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
+    <ClInclude Include="3x3x3\SolverF2LMinusBackSlot.h">
+      <Filter>3x3x3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubeMove.cpp" />
@@ -179,6 +188,15 @@
       <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\SolverStep_DominoToDoubleTurns.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverF2LMinusFrontSlot.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverStep_F2LMinus1.cpp">
+      <Filter>3x3x3</Filter>
+    </ClCompile>
+    <ClCompile Include="3x3x3\SolverF2LMinusBackSlot.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>

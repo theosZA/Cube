@@ -7,6 +7,7 @@
 #include "..\Cube\3x3x3\SolverStep_2x2x2Block.h"
 #include "..\Cube\3x3x3\SolverStep_2x2x3Block.h"
 #include "..\Cube\3x3x3\SolverStep_2x2x3EO.h"
+#include "..\Cube\3x3x3\SolverStep_F2LMinus1.h"
 
 std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
 {
@@ -56,6 +57,7 @@ AnalysisSolver::AnalysisSolver()
   solverSteps[CubeGroup::Scrambled].reset(new SolverStep_2x2x2Block("block2x2x2.3x3"));
   solverSteps[CubeGroup::Block2x2x2].reset(new SolverStep_2x2x3Block("block2x2x3.3x3"));
   solverSteps[CubeGroup::Block2x2x3].reset(new SolverStep_2x2x3EO("2faceEO.3x3"));
+  solverSteps[CubeGroup::Block2x2x3_EO].reset(new SolverStep_F2LMinus1("f2l-1_front.3x3", "f2l-1_back.3x3"));
 }
 
 void AnalysisSolver::SetScramble(const std::vector<CubeMove>& scramble)
@@ -63,7 +65,7 @@ void AnalysisSolver::SetScramble(const std::vector<CubeMove>& scramble)
   this->scramble = scramble;
 }
 
-Solution AnalysisSolver::BestSolve(CubeGroup targetState)
+Solution AnalysisSolver::BestSolve(const std::set<CubeGroup>& targetStates)
 {
   auto priorityFunction = [](const PartialSolution& a, const PartialSolution& b)
   {
@@ -72,7 +74,7 @@ Solution AnalysisSolver::BestSolve(CubeGroup targetState)
   std::priority_queue<PartialSolution, std::vector<PartialSolution>, decltype(priorityFunction)> partialSolutions(priorityFunction);
   partialSolutions.push(PartialSolution{ Solution{}, CubeGroup::Scrambled });
   
-  while (!partialSolutions.empty() && partialSolutions.top().cubeGroup != targetState)
+  while (!partialSolutions.empty() && targetStates.find(partialSolutions.top().cubeGroup) == targetStates.end())
   {
     auto currentPartialSolution = partialSolutions.top();
     partialSolutions.pop();

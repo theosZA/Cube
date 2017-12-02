@@ -24,8 +24,8 @@ int main()
     solver.SetScramble(scramble);
     std::cout << MoveSequenceToText(scramble) << "\n\n";
 
-    auto solution = solver.BestSolve(CubeGroup::Block2x2x3_EO);
-    std::cout <<solution << '\n';
+    auto solution = solver.BestSolve(std::set<CubeGroup>{ CubeGroup::F2L_FSlot_EO, CubeGroup::F2L_BSlot_EO });
+    std::cout << solution << '\n';
   }
   catch (const std::exception& e)
   {
