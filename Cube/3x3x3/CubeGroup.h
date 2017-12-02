@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <stdexcept>
+
 // A descriptive element describing the general (non-mathematical) group that the cube belongs to.
 // This can be used to determine what solver steps can be applied to it. For groups that have
 // rotations, reflections, etc., there is exactly one canonical group.
@@ -68,5 +71,8 @@ inline int EstimateMovesRequired(CubeGroup cubeGroup)
     case DoubleTurns:   return 4;
     case Domino:        return 8;
     case EO:            return 12;
+
+    default:
+      throw std::domain_error("Unexpected cube group " + std::to_string(static_cast<int>(cubeGroup)));
   }
 }
