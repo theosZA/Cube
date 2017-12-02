@@ -83,6 +83,7 @@ std::ostream& operator<<(std::ostream& out, const Solution& solution)
   std::vector<CubeMove> cumulativeSolutionOnInverseSolve;
   for (std::vector<CubeMove>::size_type stepIndex = 0; stepIndex < solution.steps.size(); ++stepIndex)
   {
+    auto priorCumulativeSolutionOnForwardSolve = cumulativeSolutionOnForwardSolve;
     const auto& step = solution.steps[stepIndex];
     if (!step.IsEmpty())
     {
@@ -98,7 +99,7 @@ std::ostream& operator<<(std::ostream& out, const Solution& solution)
 
       int newMoveCount = static_cast<int>(cumulativeSolutionOnForwardSolve.size() + cumulativeSolutionOnInverseSolve.size());
 
-      out << step.GetDescription() << ": " << step.GetMoveSequence(cumulativeSolutionOnForwardSolve)
+      out << step.GetDescription() << ": " << step.GetMoveSequence(priorCumulativeSolutionOnForwardSolve)
           << " [" << (newMoveCount - oldMoveCount) << '/' << newMoveCount << "]\n";
     }
   }
