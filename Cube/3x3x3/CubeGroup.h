@@ -201,7 +201,7 @@ inline CubeGroup GetCubeGroupForSkeleton(const Cube3x3x3& cube)
           switch (*cycleLengths.rbegin())
           {
             case 2:   return CubeGroup::AB5C_2cycles;
-            case 3:   return CubeGroup::AB4C_3cycle;
+            case 3:   return CubeGroup::AB5C_3cycle;
             default:  throw std::runtime_error("Unhandled largest cycle length for 3 cycles on 5 wrong corners:" + std::to_string(*cycleLengths.rbegin()));
           }
         case 5:   return CubeGroup::AB5C_twisted;
