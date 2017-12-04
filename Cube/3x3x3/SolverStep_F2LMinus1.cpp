@@ -1,10 +1,13 @@
 #include "SolverStep_F2LMinus1.h"
 
-#include <array>
+#include "CubeStateSolver3x3x3Factory.h"
 
 SolverStep_F2LMinus1::SolverStep_F2LMinus1(const std::string& cacheFileNameFrontSlot, const std::string& cacheFileNameBackSlot)
-: solverF2LMinusBackSlot(20, cacheFileNameBackSlot),
-  solverF2LMinusFrontSlot(20, cacheFileNameFrontSlot)
+: solvers 
+  {
+    CubeStateSolver3x3x3Factory::CreateSolver(cacheFileNameBackSlot, CubeGroup::Block2x2x3_EO, CubeGroup::F2L_BSlot_EO),
+    CubeStateSolver3x3x3Factory::CreateSolver(cacheFileNameFrontSlot, CubeGroup::Block2x2x3_EO, CubeGroup::F2L_FSlot_EO),
+  }
 {}
 
 std::vector<PartialSolution> SolverStep_F2LMinus1::Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar)
@@ -22,20 +25,14 @@ std::vector<PartialSolution> SolverStep_F2LMinus1::Solve(const std::vector<CubeM
     auto rotatedSolutionSoFar = solutionSoFar.Rotate(std::make_pair(Face::Up, Face::Right), std::make_pair(newUpFaces[i], newRightFaces[i]));
     auto rotatedScramblePlusSolution = rotatedSolutionSoFar.CombineScrambleAndSolution(rotatedScramble);
 
-    // Front slot
+    // Consider solutions for both the FDR and BDR slots.
+    for (size_t slot = 0; slot < 2; ++slot)
     {
-      auto rotatedStep = SolutionStep{ "F2L-1", solverF2LMinusFrontSlot.Solve(rotatedScramblePlusSolution) };
+      auto rotatedStep = SolutionStep{ "F2L-1", solvers[slot]->Solve(rotatedScramblePlusSolution) };
       auto rotatedPartialSolution = rotatedSolutionSoFar + rotatedStep;
       auto partialSolution = rotatedPartialSolution.Rotate(std::make_pair(newUpFaces[i], newRightFaces[i]), std::make_pair(Face::Up, Face::Right));
-      partialSolutions.push_back(PartialSolution{ partialSolution, CubeGroup::F2L_FSlot_EO, std::make_pair(Face::Up, Face::Right), std::make_pair(newUpFaces[i], newRightFaces[i]) });
-    }
-
-    // Back slot
-    {
-      auto rotatedStep = SolutionStep{ "F2L-1", solverF2LMinusBackSlot.Solve(rotatedScramblePlusSolution) };
-      auto rotatedPartialSolution = rotatedSolutionSoFar + rotatedStep;
-      auto partialSolution = rotatedPartialSolution.Rotate(std::make_pair(newUpFaces[i], newRightFaces[i]), std::make_pair(Face::Up, Face::Right));
-      partialSolutions.push_back(PartialSolution{ partialSolution, CubeGroup::F2L_BSlot_EO, std::make_pair(Face::Up, Face::Right), std::make_pair(newUpFaces[i], newRightFaces[i]) });
+      auto cubeGroup = (i == 0 ? CubeGroup::F2L_BSlot_EO : CubeGroup::F2L_FSlot_EO);
+      partialSolutions.push_back(PartialSolution{ partialSolution, cubeGroup, std::make_pair(Face::Up, Face::Right), std::make_pair(newUpFaces[i], newRightFaces[i]) });
     }
   }
 

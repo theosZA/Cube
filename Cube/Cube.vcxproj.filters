@@ -14,9 +14,6 @@
     <ClInclude Include="3x3x3\Edges3x3x3.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="3x3x3\Solver2x2x2Block.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
     <ClInclude Include="Graph\RootedGraph.h">
       <Filter>Graph</Filter>
     </ClInclude>
@@ -30,12 +27,6 @@
     </ClInclude>
     <ClInclude Include="2x2x2\Solver2x2x2.h">
       <Filter>2x2x2</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\Solver2x2x3Block.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\Solver3x3x3.h">
-      <Filter>3x3x3</Filter>
     </ClInclude>
     <ClInclude Include="3x3x3\TwoFaceEO.h">
       <Filter>3x3x3</Filter>
@@ -96,25 +87,13 @@
     <ClInclude Include="3x3x3\SolverStep_DominoToDoubleTurns.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="3x3x3\SolverF2LMinusFrontSlot.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
     <ClInclude Include="3x3x3\SolverStep_F2LMinus1.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="3x3x3\SolverF2LMinusBackSlot.h">
+    <ClInclude Include="3x3x3\CubeStateSolver3x3x3Factory.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="3x3x3\SolverEdgesBackSlot.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\SolverStep_SkeletonBackSlot.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\SolverEdgesFrontSlot.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\SolverStep_SkeletonFrontSlot.h">
+    <ClInclude Include="3x3x3\SolverStep_Skeleton.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
   </ItemGroup>
@@ -132,21 +111,12 @@
     <ClCompile Include="3x3x3\Corners3x3x3.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
-    <ClCompile Include="3x3x3\Solver2x2x2Block.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
     <ClCompile Include="SolverFactory.cpp" />
     <ClCompile Include="2x2x2\Cube2x2x2.cpp">
       <Filter>2x2x2</Filter>
     </ClCompile>
     <ClCompile Include="2x2x2\Solver2x2x2.cpp">
       <Filter>2x2x2</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\Solver2x2x3Block.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\Solver3x3x3.cpp">
-      <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\TwoFaceEO.cpp">
       <Filter>3x3x3</Filter>
@@ -202,25 +172,10 @@
     <ClCompile Include="3x3x3\SolverStep_DominoToDoubleTurns.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
-    <ClCompile Include="3x3x3\SolverF2LMinusFrontSlot.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
     <ClCompile Include="3x3x3\SolverStep_F2LMinus1.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
-    <ClCompile Include="3x3x3\SolverF2LMinusBackSlot.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\SolverEdgesBackSlot.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\SolverStep_SkeletonBackSlot.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\SolverEdgesFrontSlot.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\SolverStep_SkeletonFrontSlot.cpp">
+    <ClCompile Include="3x3x3\CubeStateSolver3x3x3Factory.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
   </ItemGroup>

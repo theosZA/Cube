@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "..\Cube\3x3x3\CubeGroup.h"
+#include "..\Cube\3x3x3\SolverCorners.h"
 #include "..\Cube\Scrambler\Scrambler.h"
 
 #include "AnalysisSolver.h"
@@ -25,7 +26,7 @@ int main()
     std::cout << MoveSequenceToText(scramble) << "\n\n";
 
     auto solution = solver.BestSolve(std::set<CubeGroup>
-    { 
+    {
       CubeGroup::Solved, 
       CubeGroup::AB5C_twisted,
       CubeGroup::AB5C_2cycles,
@@ -40,7 +41,12 @@ int main()
       CubeGroup::AB3C_3cycle,
       CubeGroup::AB2C_twisted
     });
-    std::cout << solution << '\n';
+    std::cout << solution << "\n\n";
+
+    // Solve corners separately.
+    std::cout << "Inserting corners...\n\n";
+    auto fullSolution = SolverCorners::SolveCorners(scramble, solution);
+    std::cout << fullSolution << '\n';
   }
   catch (const std::exception& e)
   {

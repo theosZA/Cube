@@ -2,8 +2,10 @@
 
 #include <array>
 
+#include "CubeStateSolver3x3x3Factory.h"
+
 SolverStep_2x2x3Block::SolverStep_2x2x3Block(const std::string& cacheFileName)
-  : solver2x2x3(20, cacheFileName)
+: solver2x2x3(CubeStateSolver3x3x3Factory::CreateSolver(cacheFileName, CubeGroup::Block2x2x2, CubeGroup::Block2x2x3))
 {}
 
 std::vector<PartialSolution> SolverStep_2x2x3Block::Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar)
@@ -24,7 +26,7 @@ std::vector<PartialSolution> SolverStep_2x2x3Block::Solve(const std::vector<Cube
     auto rotatedScramble = Rotate(scramble, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
     auto rotatedSolutionSoFar = solutionSoFar.Rotate(std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]));
     auto rotatedScramblePlusSolution = rotatedSolutionSoFar.CombineScrambleAndSolution(rotatedScramble);
-    auto rotatedStep = SolutionStep{ "2x2x3", solver2x2x3.Solve(rotatedScramblePlusSolution) };
+    auto rotatedStep = SolutionStep{ "2x2x3", solver2x2x3->Solve(rotatedScramblePlusSolution) };
     auto rotatedPartialSolution = rotatedSolutionSoFar + rotatedStep;
     auto partialSolution = rotatedPartialSolution.Rotate(std::make_pair(newBackFaces[i], newLeftFaces[i]), std::make_pair(Face::Back, Face::Left));
     partialSolutions.push_back(PartialSolution{ partialSolution, CubeGroup::Block2x2x3, std::make_pair(Face::Back, Face::Left), std::make_pair(newBackFaces[i], newLeftFaces[i]) });
@@ -33,7 +35,7 @@ std::vector<PartialSolution> SolverStep_2x2x3Block::Solve(const std::vector<Cube
     for (const auto& preMove : preMoves)
     {
       auto rotatedScramblePlusSolutionWithPreMove = std::vector<CubeMove>{ preMove } +rotatedScramblePlusSolution;
-      auto stepMoves = solver2x2x3.Solve(rotatedScramblePlusSolutionWithPreMove);
+      auto stepMoves = solver2x2x3->Solve(rotatedScramblePlusSolutionWithPreMove);
       std::vector<bool> isStepMoveOnInverseSolve(stepMoves.size(), false);
       stepMoves.push_back(InvertMove(preMove));
       isStepMoveOnInverseSolve.push_back(true); // only the pre-move is on the inverse solve

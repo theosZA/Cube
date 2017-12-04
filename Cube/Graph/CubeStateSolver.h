@@ -22,13 +22,21 @@ public:
   CubeStateSolver(std::uint32_t maxMoves, const std::function<std::uint32_t(const CubeType&)> getKey,
                   const std::vector<CubeMove>& possibleMoves, const std::string& cacheFileName = "");
 
-  // Returns the move sequence that will solve the given cube. If the cube can't be solved within the number
-  // of moves specified in the constructor then an exception is thrown.
+  // Returns the move sequence that will solve the given cube. If the cube can't be solved within
+  // the number of moves specified in the constructor then an exception is thrown.
   std::vector<CubeMove> Solve(const CubeType&) const;
+
+  // Returns the move sequence that will solve the given scramble. If the cube can't be solved within
+  // the number of moves specified in the constructor then an exception is thrown.
+  std::vector<CubeMove> Solve(const std::vector<CubeMove>& scramble) const;
   
-  // Returns the number of moves required to solve the given cube. If the cube can't be solved within the
-  // number of moves specified in the constructor then an exception is thrown.
+  // Returns the number of moves required to solve the given cube. If the cube can't be solved within
+  // the number of moves specified in the constructor then an exception is thrown.
   std::uint32_t GetRequiredMoveCount(const CubeType&) const;
+
+  // Returns the number of moves required to solve the given scramble. If the cube can't be solved within 
+  // the number of moves specified in the constructor then an exception is thrown.
+  std::uint32_t GetRequiredMoveCount(const std::vector<CubeMove>& scramble) const;
 
   // Returns true if the given cube can be solved within the number of moves specified in the constructor.
   bool CanSolve(const CubeType&) const;

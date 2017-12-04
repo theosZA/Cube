@@ -35,9 +35,25 @@ std::vector<CubeMove> CubeStateSolver<CubeType>::Solve(const CubeType& cube) con
 }
 
 template<class CubeType>
+std::vector<CubeMove> CubeStateSolver<CubeType>::Solve(const std::vector<CubeMove>& scramble) const
+{
+  CubeType cube;
+  cube += scramble;
+  return Solve(cube);
+}
+
+template<class CubeType>
 std::uint32_t CubeStateSolver<CubeType>::GetRequiredMoveCount(const CubeType& cube) const
 {
   return graph.GetShortestPathLength(cube);
+}
+
+template<class CubeType>
+std::uint32_t CubeStateSolver<CubeType>::GetRequiredMoveCount(const std::vector<CubeMove>& scramble) const
+{
+  CubeType cube;
+  cube += scramble;
+  return GetRequiredMoveCount(cube);
 }
 
 template<class CubeType>

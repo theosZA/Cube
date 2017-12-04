@@ -1,8 +1,9 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
-#include "Solver2x2x3Block.h"
+#include "..\Graph\CubeStateSolver.h"
 #include "SolverStep.h"
 
 class SolverStep_2x2x3Block : public SolverStep
@@ -15,5 +16,5 @@ public:
   std::vector<PartialSolution> Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar);
 
 private:
-  Solver2x2x3Block solver2x2x3;
+  std::unique_ptr<CubeStateSolver<Cube3x3x3>> solver2x2x3;
 };

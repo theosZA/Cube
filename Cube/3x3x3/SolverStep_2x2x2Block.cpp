@@ -2,8 +2,10 @@
 
 #include <array>
 
+#include "CubeStateSolver3x3x3Factory.h"
+
 SolverStep_2x2x2Block::SolverStep_2x2x2Block(const std::string& cacheFileName)
-: solver2x2x2(20, cacheFileName)
+: solver2x2x2(CubeStateSolver3x3x3Factory::CreateSolver(cacheFileName, CubeGroup::Scrambled, CubeGroup::Block2x2x2))
 {}
 
 std::vector<PartialSolution> SolverStep_2x2x2Block::Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar)
@@ -32,7 +34,7 @@ std::vector<PartialSolution> SolverStep_2x2x2Block::Solve(const std::vector<Cube
   for (const auto& corner : corners)
   {
     auto rotatedScramble = Rotate(scramble, corner, std::make_pair(Face::Back, Face::Left));
-    auto rotatedStep = SolutionStep{ "2x2x2", solver2x2x2.Solve(rotatedScramble, Face::Back, Face::Left) };
+    auto rotatedStep = SolutionStep{ "2x2x2", solver2x2x2->Solve(rotatedScramble) };
     auto rotatedPartialSolution = Solution{} + rotatedStep;
     auto partialSolution = rotatedPartialSolution.Rotate(std::make_pair(Face::Back, Face::Left), corner);
     partialSolutions.push_back(PartialSolution{ partialSolution, CubeGroup::Block2x2x2, corner, std::make_pair(Face::Back, Face::Left) });
@@ -41,7 +43,7 @@ std::vector<PartialSolution> SolverStep_2x2x2Block::Solve(const std::vector<Cube
     for (const auto& preMove : preMoves)
     {
       auto rotatedScrambleWithPreMove = std::vector<CubeMove>{ preMove } + rotatedScramble;
-      auto stepMoves = solver2x2x2.Solve(rotatedScrambleWithPreMove, Face::Back, Face::Left);
+      auto stepMoves = solver2x2x2->Solve(rotatedScrambleWithPreMove);
       std::vector<bool> isStepMoveOnInverseSolve(stepMoves.size(), false);
       stepMoves.push_back(InvertMove(preMove));
       isStepMoveOnInverseSolve.push_back(true); // only the pre-move is on the inverse solve

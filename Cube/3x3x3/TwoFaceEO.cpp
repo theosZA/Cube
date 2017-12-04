@@ -7,7 +7,7 @@
 #include <unordered_set>
 
 #include "..\BinaryStream.h"
-#include "Solver2x2x2Block.h"
+#include "CubeStateSolver3x3x3Factory.h"
 
 TwoFaceEO::TwoFaceEO(const std::string& cacheFileName, const std::string& cacheFileName2x2x2)
 {
@@ -52,7 +52,7 @@ void TwoFaceEO::GenerateSolutions(std::uint8_t maxMoves, const std::string& cach
 
   // We need a block solver to tell us when our move sequences have grown so long
   // that we can't possible reach a 2-face case within the maximum moves specified.
-  Solver2x2x2Block solver2x2x2(20, cacheFileName2x2x2);
+  auto solver2x2x2 = CubeStateSolver3x3x3Factory::CreateSolver(cacheFileName2x2x2, CubeGroup::Scrambled, CubeGroup::Block2x2x2);
 
   // Now go through the move sequences.
   std::queue<std::vector<CubeMove>> scrambles;
@@ -78,15 +78,19 @@ void TwoFaceEO::GenerateSolutions(std::uint8_t maxMoves, const std::string& cach
     {
       auto face = static_cast<Face>(faceValue);
       if (scramble.empty() || scramble.back().face != face)
+      {
         for (int quarterRotationsClockwise = 1; quarterRotationsClockwise <= 3; ++quarterRotationsClockwise)
         {
           auto newScramble = scramble;
           newScramble.push_back(CubeMove{ face, quarterRotationsClockwise < 3 ? quarterRotationsClockwise : -1 });
           // Check that we can reach a 2-face case within the moves allowed.
-          if (newScramble.size() + solver2x2x2.GetRequiredMoveCount(newScramble, Face::Back, Face::Left) <= maxMoves &&
-              newScramble.size() + solver2x2x2.GetRequiredMoveCount(newScramble, Face::Front, Face::Down) <= maxMoves)
+          if (newScramble.size() + solver2x2x2->GetRequiredMoveCount(newScramble) <= maxMoves &&
+              newScramble.size() + solver2x2x2->GetRequiredMoveCount(Rotate(newScramble, std::make_pair(Face::Front, Face::Down), std::make_pair(Face::Back, Face::Left))) <= maxMoves)
+          {
             scrambles.push(std::move(newScramble));
+          }
         }
+      }
     }
   }
 }

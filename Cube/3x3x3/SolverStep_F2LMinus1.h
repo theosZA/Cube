@@ -1,10 +1,11 @@
 #pragma once
 
+#include <array>
+#include <memory>
 #include <string>
 
+#include "..\Graph\CubeStateSolver.h"
 #include "SolverStep.h"
-#include "SolverF2LMinusBackSlot.h"
-#include "SolverF2LMinusFrontSlot.h"
 
 class SolverStep_F2LMinus1 : public SolverStep
 {
@@ -16,6 +17,5 @@ public:
   std::vector<PartialSolution> Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar);
 
 private:
-  SolverF2LMinusBackSlot solverF2LMinusBackSlot;
-  SolverF2LMinusFrontSlot solverF2LMinusFrontSlot;
+  std::array<std::unique_ptr<CubeStateSolver<Cube3x3x3>>, 2> solvers;
 };
