@@ -35,8 +35,11 @@ std::vector<PartialSolution> SolverStep_Corner5Cycle::Solve(const std::vector<Cu
     }
 
     auto cycle = std::array<StickerPosition, 3>{ corner1, corner2, corner3 };
-    auto cycleSolution = Corner3Cycle::InsertCorner3CycleInSkeleton(solutionSoFar, cycle);
-    partialSolutions.push_back(PartialSolution{ cycleSolution, CubeGroup::AB3C_3cycle });
+    auto cycleSolutions = Corner3Cycle::FindAllCorner3CycleInsertions(solutionSoFar, cycle);
+    for (const auto& cycleSolution : cycleSolutions)
+    {
+      partialSolutions.push_back(PartialSolution{ cycleSolution, CubeGroup::AB3C_3cycle });
+    }
   }
   return partialSolutions;
 }
