@@ -2,6 +2,8 @@
 
 #include <array>
 
+#include "Cube\3x3x3\CornerStructure.h"
+
 namespace Corners {
 
 static const std::array<StickerPosition, 8> allCorners
@@ -27,6 +29,32 @@ std::vector<StickerPosition> FindWrongCorners(const Cube3x3x3& scrambledCube)
     }
   }
   return wrongCorners;
+}
+
+std::vector<StickerPosition> FindMispermutedCorners(const Cube3x3x3& scrambledCube)
+{
+  std::vector<StickerPosition> mispermutedCorners;
+  for (const auto& corner : allCorners)
+  {
+    if (scrambledCube[corner] != corner && !CornerStructure::AreStickersOnSameCubie(corner, scrambledCube[corner]))
+    {
+      mispermutedCorners.push_back(corner);
+    }
+  }
+  return mispermutedCorners;
+}
+
+std::vector<StickerPosition> FindMisorientedCorners(const Cube3x3x3& scrambledCube)
+{
+  std::vector<StickerPosition> misorientedCorners;
+  for (const auto& corner : allCorners)
+  {
+    if (scrambledCube[corner] != corner && CornerStructure::AreStickersOnSameCubie(corner, scrambledCube[corner]))
+    {
+      misorientedCorners.push_back(corner);
+    }
+  }
+  return misorientedCorners;
 }
 
 // Returns the number of wrong corners in ABnC cases. All other cases (except solved) will throw an exception.
