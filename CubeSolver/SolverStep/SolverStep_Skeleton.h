@@ -28,7 +28,15 @@ public:
     cube += stepMoves;
     auto cubeGroup = GetCubeGroupForSkeleton(cube);
     auto wrongCornerCount = GetNumberOfWrongCorners(cubeGroup);
-    auto stepName = "AB" + std::to_string(wrongCornerCount) + "C";
+    std::string stepName;
+    if (wrongCornerCount == 0)
+    {
+      stepName = "Finish solve";
+    }
+    else
+    {
+      stepName = "AB" + std::to_string(wrongCornerCount) + "C";
+    }
 
     auto step = SolutionStep{ stepName, stepMoves, true };
     auto partialSolution = PartialSolution{ solutionSoFar + step, cubeGroup };
