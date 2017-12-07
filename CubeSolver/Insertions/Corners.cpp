@@ -40,14 +40,12 @@ int GetNumberOfWrongCorners(CubeGroup cubeGroup)
   case CubeGroup::AB5C_twisted:
   case CubeGroup::AB5C_2cycles:
   case CubeGroup::AB5C_3cycle:
-  case CubeGroup::AB5C_4cycle:
   case CubeGroup::AB5C_5cycle:
     return 5;
 
   case CubeGroup::AB4C_twisted:
   case CubeGroup::AB4C_3cycle:
   case CubeGroup::AB4C_2cycles:
-  case CubeGroup::AB4C_4cycle:
     return 4;
 
   case CubeGroup::AB3C_twisted:
@@ -116,7 +114,6 @@ CubeGroup GetCubeGroupForWrongCorners(const Cube3x3x3& cube)
     case 4:
       switch (cycleLengths.size())
       {
-        case 1: return CubeGroup::AB4C_4cycle;
         case 2:
           switch (*cycleLengths.begin())
           {
@@ -132,7 +129,6 @@ CubeGroup GetCubeGroupForWrongCorners(const Cube3x3x3& cube)
       switch (cycleLengths.size())
       {
         case 1:   return CubeGroup::AB5C_5cycle;
-        case 2:   return CubeGroup::AB5C_4cycle;
         case 3:
           switch (*cycleLengths.rbegin())
           {

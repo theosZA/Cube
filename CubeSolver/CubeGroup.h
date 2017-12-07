@@ -23,12 +23,10 @@ enum CubeGroup
   AB5C_twisted,   // all 5 corners twisted in place
   AB5C_2cycles,   // 4 of the 5 corners form two distinct 2-cycle while the 5th corner is twisted in place
   AB5C_3cycle,    // 3 of the 5 corners form a 3-cycle while the other 2 corners are twisted in place
-  AB5C_4cycle,    // 4 of the 5 corners form a 4-cycle while the 5th corner is twisted in place
   AB5C_5cycle,    // all 5 corners form a 5-cycle
   AB4C_twisted,   // all 4 corners twisted in place
   AB4C_3cycle,    // 3 of the 4 corners form a 3-cycle while the 4th corner is twisted in place
   AB4C_2cycles,   // the corners form two distinct 2-cycles
-  AB4C_4cycle,    // all 4 corners form a 4-cycle
   AB3C_twisted,   // all 3 corners twisted in place
   AB3C_3cycle,    // all 3 corners form a 3-cycle
   AB2C_twisted    // both corners twisted in place
@@ -47,14 +45,12 @@ inline int EstimateMovesRequired(CubeGroup cubeGroup)
     // 2 corner cycle insertions
     case AB2C_twisted:
     case AB3C_twisted:
-    case AB4C_4cycle:
     case AB4C_2cycles:
     case AB4C_3cycle:
     case AB5C_5cycle:   return 4;
 
     // 3 corner cycle insertions
     case AB4C_twisted:
-    case AB5C_4cycle:
     case AB5C_3cycle:
     case AB5C_2cycles:  return 6;
 
