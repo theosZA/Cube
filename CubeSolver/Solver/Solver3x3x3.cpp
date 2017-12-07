@@ -1,8 +1,8 @@
 #include "Solver3x3x3.h"
 
-#include <queue>
 #include <stdexcept>
 
+#include "Graph\GraphAlgorithms.h"
 #include "Solution\PartialSolution.h"
 #include "SolverStep\SolverStep_2x2x2Block.h"
 #include "SolverStep\SolverStep_2x2x3Block.h"
@@ -70,38 +70,28 @@ void Solver3x3x3::SetScramble(const std::vector<CubeMove>& scramble)
 
 Solution Solver3x3x3::BestSolve(const std::set<CubeGroup>& targetStates)
 {
-  auto priorityFunction = [](const PartialSolution& a, const PartialSolution& b)
+  auto isSolved = [=](const PartialSolution& partialSolution)
   {
-    return a.solutionSoFar.Length() + EstimateMovesRequired(a.cubeGroup) > b.solutionSoFar.Length() + EstimateMovesRequired(b.cubeGroup);
+    return targetStates.find(partialSolution.cubeGroup) != targetStates.end();
   };
-  std::priority_queue<PartialSolution, std::vector<PartialSolution>, decltype(priorityFunction)> partialSolutions(priorityFunction);
-  partialSolutions.push(PartialSolution{ Solution{}, CubeGroup::Scrambled });
-  
-  while (!partialSolutions.empty() && targetStates.find(partialSolutions.top().cubeGroup) == targetStates.end())
+  auto movesSoFar = [](const PartialSolution& partialSolution)
   {
-    auto currentPartialSolution = partialSolutions.top();
-    partialSolutions.pop();
-    
-    // Get the solver step for this state. If we don't have a solver for it, then skip it.
-    auto findIter = solverSteps.find(currentPartialSolution.cubeGroup);
+    return partialSolution.solutionSoFar.Length();
+  };
+  auto estimatedMovesToSolve = [](const PartialSolution& partialSolution)
+  {
+    return EstimateMovesRequired(partialSolution.cubeGroup);
+  };
+  auto generateSuccessorStates = [this](const PartialSolution& partialSolution)
+  {
+    // Use the solver step for this state. If we don't have a solver for it, then no successor states.
+    auto findIter = solverSteps.find(partialSolution.cubeGroup);
     if (findIter == solverSteps.end())
     {
-      continue;
+      return std::vector<PartialSolution>{};
     }
     auto& solverStep = *findIter->second;
-
-    // Now solve to get all successor states and add them to our priority queue.
-    auto successorPartialSolutions = GetAllPartialSolutions(solverStep, scramble, currentPartialSolution);
-    for (const auto& partialSolution : successorPartialSolutions)
-    {
-      partialSolutions.push(partialSolution);
-    }
-  }
-
-  if (partialSolutions.empty())
-  {
-    throw std::runtime_error("Failed to find solution");
-  }
-
-  return partialSolutions.top().solutionSoFar;
+    return GetAllPartialSolutions(solverStep, scramble, partialSolution);
+  };
+  return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(PartialSolution{ Solution{}, CubeGroup::Scrambled }, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates).solutionSoFar;
 }

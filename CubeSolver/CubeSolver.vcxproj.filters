@@ -85,6 +85,9 @@
     <ClInclude Include="Solver\Solver2x2x2.h">
       <Filter>Solver</Filter>
     </ClInclude>
+    <ClInclude Include="Graph\GraphAlgorithms.h">
+      <Filter>Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CubeStateSolver\CubeStateSolver.inl">

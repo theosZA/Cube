@@ -122,6 +122,7 @@
     <ClInclude Include="CubeGroup.h" />
     <ClInclude Include="CubeStateSolver\CubeStateSolver.h" />
     <ClInclude Include="CubeStateSolver\CubeStateSolver3x3x3Factory.h" />
+    <ClInclude Include="Graph\GraphAlgorithms.h" />
     <ClInclude Include="Graph\RootedGraph.h" />
     <ClInclude Include="Insertions\Corner3Cycle.h" />
     <ClInclude Include="Insertions\SolverCorners.h" />
