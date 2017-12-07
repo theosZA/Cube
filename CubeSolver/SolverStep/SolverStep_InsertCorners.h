@@ -11,7 +11,8 @@ template <CubeGroup InputCubeGroup>
 class SolverStep_InsertCorners : public SolverStep
 {
 public:
-  CubeGroup GetInputCubeGroup() { return InputCubeGroup; }
+  CubeGroup GetInputCubeGroup() const { return InputCubeGroup; }
+  bool IsInsertionStep() const { return true; }
 
   std::vector<PartialSolution> Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar)
   {

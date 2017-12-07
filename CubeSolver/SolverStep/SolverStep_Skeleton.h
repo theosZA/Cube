@@ -15,7 +15,8 @@ public:
   : solver(CubeStateSolver3x3x3Factory::CreateSolver(cacheFileName, InputCubeGroup))
   {}
 
-  CubeGroup GetInputCubeGroup() { return InputCubeGroup; }
+  CubeGroup GetInputCubeGroup() const { return InputCubeGroup; }
+  bool IsInsertionStep() const { return false; }
 
   std::vector<PartialSolution> Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar)
   {

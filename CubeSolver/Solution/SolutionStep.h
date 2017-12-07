@@ -43,6 +43,7 @@ class SolutionStep
 
     // Returns the solution step such that the normal scramble and solve are swapped with the inverted scramble and solve, i.e. what was
     // originally considered the inverse solve is now the normal solve.
+    // Inverting an insertion step will thrown an exception.
     SolutionStep Invert() const;
 
   private:

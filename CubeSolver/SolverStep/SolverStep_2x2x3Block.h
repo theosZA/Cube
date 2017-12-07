@@ -11,7 +11,8 @@ class SolverStep_2x2x3Block : public SolverStep
 public:
   SolverStep_2x2x3Block(const std::string& cacheFileName);
 
-  CubeGroup GetInputCubeGroup() { return CubeGroup::Block2x2x2; }
+  CubeGroup GetInputCubeGroup() const { return CubeGroup::Block2x2x2; }
+  bool IsInsertionStep() const { return false; }
 
   std::vector<PartialSolution> Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar);
 

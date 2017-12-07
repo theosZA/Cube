@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <stdexcept>
 
 SolutionStep::SolutionStep(std::string description, std::vector<CubeMove> stepMoves, bool isSkeletonComplete)
 : description(std::move(description)),
@@ -130,6 +131,11 @@ SolutionStep SolutionStep::Rotate(std::pair<Face, Face> oldFaces, std::pair<Face
 
 SolutionStep SolutionStep::Invert() const
 {
+  if (insertionIndex != -1)
+  {
+    throw std::domain_error("May not invert an insertion step");
+  }
+
   std::vector<bool> isStepMoveOnForwardSolve(isStepMoveOnInverseSolve.size());
   for (std::vector<bool>::size_type i = 0; i < isStepMoveOnInverseSolve.size(); ++i)
   {

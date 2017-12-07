@@ -91,6 +91,9 @@
     <ClInclude Include="SolverStep\SolverStep_InsertCorners.h">
       <Filter>SolverStep</Filter>
     </ClInclude>
+    <ClInclude Include="SolverStep\SolverStep_Corner3Cycle.h">
+      <Filter>SolverStep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CubeStateSolver\CubeStateSolver.inl">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="Solver\Solver2x2x2.cpp">
       <Filter>Solver</Filter>
+    </ClCompile>
+    <ClCompile Include="SolverStep\SolverStep_Corner3Cycle.cpp">
+      <Filter>SolverStep</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

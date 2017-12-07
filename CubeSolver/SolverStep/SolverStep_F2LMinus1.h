@@ -12,7 +12,8 @@ class SolverStep_F2LMinus1 : public SolverStep
 public:
   SolverStep_F2LMinus1(const std::string& cacheFileNameFrontSlot, const std::string& cacheFileNameBackSlot);
 
-  CubeGroup GetInputCubeGroup() { return CubeGroup::Block2x2x3_EO; }
+  CubeGroup GetInputCubeGroup() const { return CubeGroup::Block2x2x3_EO; }
+  bool IsInsertionStep() const { return false; }
 
   std::vector<PartialSolution> Solve(const std::vector<CubeMove>& scramble, const Solution& solutionSoFar);
 

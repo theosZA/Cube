@@ -7,8 +7,8 @@
 #include "SolverStep\SolverStep_2x2x2Block.h"
 #include "SolverStep\SolverStep_2x2x3Block.h"
 #include "SolverStep\SolverStep_2x2x3EO.h"
+#include "SolverStep\SolverStep_Corner3Cycle.h"
 #include "SolverStep\SolverStep_F2LMinus1.h"
-#include "SolverStep\SolverStep_InsertCorners.h"
 #include "SolverStep\SolverStep_Skeleton.h"
 
 std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
@@ -19,10 +19,13 @@ std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, cons
 
   // Get solutions.
   auto rotatedSolutions = solverStep.Solve(rotatedScramble, rotatedSolutionSoFar);
-  auto inverseRotatedSolutions = solverStep.Solve(InvertMoveSequence(rotatedScramble), rotatedSolutionSoFar.Invert());
-  for (auto& inverseRotatedSolution : inverseRotatedSolutions)
-  {
-    rotatedSolutions.push_back(inverseRotatedSolution.Invert());
+  if (!solverStep.IsInsertionStep())
+  { // Get inverse solutions for non-insertion steps.
+    auto inverseRotatedSolutions = solverStep.Solve(InvertMoveSequence(rotatedScramble), rotatedSolutionSoFar.Invert());
+    for (auto& inverseRotatedSolution : inverseRotatedSolutions)
+    {
+      rotatedSolutions.push_back(inverseRotatedSolution.Invert());
+    }
   }
 
   // Rotate back to original orientation.
@@ -36,24 +39,6 @@ std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, cons
   return solutions;
 }
 
-template <class Random>
-PartialSolution SolveRandom(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution, Random& generator)
-{
-  auto solutions = GetAllPartialSolutions(solverStep, scramble, partialSolution);
-  auto randomIndex = std::uniform_int_distribution<size_t>(0, solutions.size() - 1)(generator);
-  return solutions[randomIndex];
-}
-
-PartialSolution SolveBest(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
-{
-  auto solutions = GetAllPartialSolutions(solverStep, scramble, partialSolution);
-  return *std::min_element(solutions.begin(), solutions.end(),
-    [](const PartialSolution& a, const PartialSolution& b)
-  {
-    return a.solutionSoFar.Length() < b.solutionSoFar.Length();
-  });
-}
-
 Solver3x3x3::Solver3x3x3()
 {
   solverSteps[CubeGroup::Scrambled].reset(new SolverStep_2x2x2Block("block2x2x2.3x3"));
@@ -62,18 +47,7 @@ Solver3x3x3::Solver3x3x3()
   solverSteps[CubeGroup::Block2x2x3_EO].reset(new SolverStep_F2LMinus1("f2l-1_front.3x3", "f2l-1_back.3x3"));
   solverSteps[CubeGroup::F2L_BSlot_EO].reset(new SolverStep_Skeleton<CubeGroup::F2L_BSlot_EO>("edges_back.3x3"));
   solverSteps[CubeGroup::F2L_FSlot_EO].reset(new SolverStep_Skeleton<CubeGroup::F2L_FSlot_EO>("edges_front.3x3"));
-  solverSteps[CubeGroup::AB2C_twisted].reset(new SolverStep_InsertCorners<CubeGroup::AB2C_twisted>());
-  solverSteps[CubeGroup::AB3C_3cycle].reset(new SolverStep_InsertCorners<CubeGroup::AB3C_3cycle>());
-  solverSteps[CubeGroup::AB3C_twisted].reset(new SolverStep_InsertCorners<CubeGroup::AB3C_twisted>());
-  solverSteps[CubeGroup::AB4C_4cycle].reset(new SolverStep_InsertCorners<CubeGroup::AB4C_4cycle>());
-  solverSteps[CubeGroup::AB4C_2cycles].reset(new SolverStep_InsertCorners<CubeGroup::AB4C_2cycles>());
-  solverSteps[CubeGroup::AB4C_3cycle].reset(new SolverStep_InsertCorners<CubeGroup::AB4C_3cycle>());
-  solverSteps[CubeGroup::AB4C_twisted].reset(new SolverStep_InsertCorners<CubeGroup::AB4C_twisted>());
-  solverSteps[CubeGroup::AB5C_5cycle].reset(new SolverStep_InsertCorners<CubeGroup::AB5C_5cycle>());
-  solverSteps[CubeGroup::AB5C_4cycle].reset(new SolverStep_InsertCorners<CubeGroup::AB5C_4cycle>());
-  solverSteps[CubeGroup::AB5C_3cycle].reset(new SolverStep_InsertCorners<CubeGroup::AB5C_3cycle>());
-  solverSteps[CubeGroup::AB5C_2cycles].reset(new SolverStep_InsertCorners<CubeGroup::AB5C_2cycles>());
-  solverSteps[CubeGroup::AB5C_twisted].reset(new SolverStep_InsertCorners<CubeGroup::AB5C_twisted>());
+  solverSteps[CubeGroup::AB3C_3cycle].reset(new SolverStep_Corner3Cycle);
 }
 
 void Solver3x3x3::SetScramble(const std::vector<CubeMove>& scramble)
