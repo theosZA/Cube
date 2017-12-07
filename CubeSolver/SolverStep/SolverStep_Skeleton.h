@@ -4,6 +4,7 @@
 #include <string>
 
 #include "CubeStateSolver\CubeStateSolver3x3x3Factory.h"
+#include "Insertions\Corners.h"
 #include "SolverStep.h"
 
 // Step for taking an F2L-1 state to a skeleton (ABnC).
@@ -27,8 +28,8 @@ public:
     Cube3x3x3 cube;
     cube += scramblePlusSolution;
     cube += stepMoves;
-    auto cubeGroup = GetCubeGroupForSkeleton(cube);
-    auto wrongCornerCount = GetNumberOfWrongCorners(cubeGroup);
+    auto cubeGroup = Corners::GetCubeGroupForWrongCorners(cube);
+    auto wrongCornerCount = Corners::GetNumberOfWrongCorners(cubeGroup);
     std::string stepName;
     if (wrongCornerCount == 0)
     {

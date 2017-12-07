@@ -125,6 +125,7 @@
     <ClInclude Include="Graph\GraphAlgorithms.h" />
     <ClInclude Include="Graph\RootedGraph.h" />
     <ClInclude Include="Insertions\Corner3Cycle.h" />
+    <ClInclude Include="Insertions\Corners.h" />
     <ClInclude Include="Insertions\SolverCorners.h" />
     <ClInclude Include="Solution\PartialSolution.h" />
     <ClInclude Include="Solution\Solution.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="SolverStep\SolverStep_2x2x3Block.h" />
     <ClInclude Include="SolverStep\SolverStep_2x2x3EO.h" />
     <ClInclude Include="SolverStep\SolverStep_Corner3Cycle.h" />
+    <ClInclude Include="SolverStep\SolverStep_Corner5Cycle.h" />
     <ClInclude Include="SolverStep\SolverStep_F2LMinus1.h" />
     <ClInclude Include="SolverStep\SolverStep_InsertCorners.h" />
     <ClInclude Include="SolverStep\SolverStep_Skeleton.h" />
@@ -150,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="CubeStateSolver\CubeStateSolver3x3x3Factory.cpp" />
     <ClCompile Include="Insertions\Corner3Cycle.cpp" />
+    <ClCompile Include="Insertions\Corners.cpp" />
     <ClCompile Include="Insertions\SolverCorners.cpp" />
     <ClCompile Include="Solution\PartialSolution.cpp" />
     <ClCompile Include="Solution\Solution.cpp" />
@@ -159,6 +162,7 @@
     <ClCompile Include="SolverStep\SolverStep_2x2x3Block.cpp" />
     <ClCompile Include="SolverStep\SolverStep_2x2x3EO.cpp" />
     <ClCompile Include="SolverStep\SolverStep_Corner3Cycle.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_Corner5Cycle.cpp" />
     <ClCompile Include="SolverStep\SolverStep_F2LMinus1.cpp" />
     <ClCompile Include="Solver\Solver2x2x2.cpp" />
     <ClCompile Include="Solver\Solver3x3x3.cpp" />
