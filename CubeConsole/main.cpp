@@ -3,11 +3,10 @@
 #include <random>
 #include <stdexcept>
 
-#include "..\Cube\3x3x3\CubeGroup.h"
-#include "..\Cube\3x3x3\SolverCorners.h"
-#include "..\Cube\Scrambler\Scrambler.h"
-
-#include "AnalysisSolver.h"
+#include "Cube\Scrambler\Scrambler.h"
+#include "CubeSolver\CubeGroup.h"
+#include "CubeSolver\Insertions\SolverCorners.h"
+#include "CubeSolver\Solver\Solver3x3x3.h"
 
 int main()
 {
@@ -19,7 +18,7 @@ int main()
     std::mt19937 generator;
   
     std::map<int, int> solveLengthCounts;
-    AnalysisSolver solver;
+    Solver3x3x3 solver;
 
     auto scramble = scrambler.CreateRandomScramble(25);
     solver.SetScramble(scramble);
