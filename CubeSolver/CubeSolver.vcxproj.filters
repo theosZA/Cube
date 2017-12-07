@@ -88,6 +88,9 @@
     <ClInclude Include="Graph\GraphAlgorithms.h">
       <Filter>Graph</Filter>
     </ClInclude>
+    <ClInclude Include="SolverStep\SolverStep_InsertCorners.h">
+      <Filter>SolverStep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CubeStateSolver\CubeStateSolver.inl">

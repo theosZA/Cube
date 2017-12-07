@@ -24,28 +24,8 @@ int main()
     solver.SetScramble(scramble);
     std::cout << MoveSequenceToText(scramble) << "\n\n";
 
-    auto solution = solver.BestSolve(std::set<CubeGroup>
-    {
-      CubeGroup::Solved, 
-      CubeGroup::AB5C_twisted,
-      CubeGroup::AB5C_2cycles,
-      CubeGroup::AB5C_3cycle,
-      CubeGroup::AB5C_4cycle,
-      CubeGroup::AB5C_5cycle,
-      CubeGroup::AB4C_twisted,
-      CubeGroup::AB4C_3cycle,
-      CubeGroup::AB4C_2cycles,
-      CubeGroup::AB4C_4cycle,
-      CubeGroup::AB3C_twisted,
-      CubeGroup::AB3C_3cycle,
-      CubeGroup::AB2C_twisted
-    });
+    auto solution = solver.BestSolve(std::set<CubeGroup>{ CubeGroup::Solved });
     std::cout << solution << "\n\n";
-
-    // Solve corners separately.
-    std::cout << "Inserting corners...\n\n";
-    auto fullSolution = SolverCorners::SolveCorners(scramble, solution);
-    std::cout << fullSolution << '\n';
   }
   catch (const std::exception& e)
   {

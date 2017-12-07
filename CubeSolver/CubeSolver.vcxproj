@@ -135,6 +135,7 @@
     <ClInclude Include="SolverStep\SolverStep_2x2x3Block.h" />
     <ClInclude Include="SolverStep\SolverStep_2x2x3EO.h" />
     <ClInclude Include="SolverStep\SolverStep_F2LMinus1.h" />
+    <ClInclude Include="SolverStep\SolverStep_InsertCorners.h" />
     <ClInclude Include="SolverStep\SolverStep_Skeleton.h" />
     <ClInclude Include="Solver\Solver2x2x2.h" />
     <ClInclude Include="Solver\Solver3x3x3.h" />
