@@ -56,8 +56,16 @@ std::string SolutionStep::GetMoveSequence(const std::vector<CubeMove>& forwardSo
   { // Insertion step - indicate where the insertion happens.
     std::vector<CubeMove> movesBeforeInsertion{ forwardSolution.begin(), forwardSolution.begin() + insertionIndex };
     std::vector<CubeMove> movesAfterInsertion{ forwardSolution.begin() + insertionIndex, forwardSolution.end() };
-    moveSequenceText << MoveSequenceToText(movesBeforeInsertion) << " * " << MoveSequenceToText(movesAfterInsertion)
-      << "\n  Insert at * = ";
+    if (!movesBeforeInsertion.empty())
+    {
+      moveSequenceText << MoveSequenceToText(movesBeforeInsertion) << ' ';
+    }
+    moveSequenceText << '*';
+    if (!movesAfterInsertion.empty())
+    {
+      moveSequenceText << ' ' << MoveSequenceToText(movesAfterInsertion);
+    }
+    moveSequenceText << "\n  Insert at * = ";
   }
 
   for (std::vector<CubeMove>::size_type i = 0; i < stepMoves.size(); ++i)
