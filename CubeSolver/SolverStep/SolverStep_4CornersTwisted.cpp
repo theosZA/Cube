@@ -34,7 +34,7 @@ std::vector<PartialSolution> SolverStep_4CornersTwisted::Solve(const std::vector
 
   std::vector<PartialSolution> partialSolutions;
   // We can use any 3 corners in any orientation. The first of the corners (in order in the array of wrong corners)
-  // will be in it's default orientation to ensure we don't duplicate cycles.
+  // will be in its default orientation to ensure we don't duplicate cycles.
   for (size_t corner1Index = 0; corner1Index < 2; ++corner1Index)
   {
     const auto& corner1 = wrongCorners[corner1Index];

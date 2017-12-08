@@ -7,6 +7,7 @@
 #include "SolverStep\SolverStep_2x2x2Block.h"
 #include "SolverStep\SolverStep_2x2x3Block.h"
 #include "SolverStep\SolverStep_2x2x3EO.h"
+#include "SolverStep\SolverStep_3CornersTwisted.h"
 #include "SolverStep\SolverStep_4Corners2Cycles.h"
 #include "SolverStep\SolverStep_4Corners3Cycle.h"
 #include "SolverStep\SolverStep_4CornersTwisted.h"
@@ -51,6 +52,7 @@ Solver3x3x3::Solver3x3x3()
   solverSteps[CubeGroup::Block2x2x3_EO].reset(new SolverStep_F2LMinus1("f2l-1_front.3x3", "f2l-1_back.3x3"));
   solverSteps[CubeGroup::F2L_BSlot_EO].reset(new SolverStep_Skeleton<CubeGroup::F2L_BSlot_EO>("edges_back.3x3"));
   solverSteps[CubeGroup::F2L_FSlot_EO].reset(new SolverStep_Skeleton<CubeGroup::F2L_FSlot_EO>("edges_front.3x3"));
+  solverSteps[CubeGroup::AB3C_twisted].reset(new SolverStep_3CornersTwisted);
   solverSteps[CubeGroup::AB3C_3cycle].reset(new SolverStep_Corner3Cycle);
   solverSteps[CubeGroup::AB4C_3cycle].reset(new SolverStep_4Corners3Cycle);
   solverSteps[CubeGroup::AB4C_2cycles].reset(new SolverStep_4Corners2Cycles);
