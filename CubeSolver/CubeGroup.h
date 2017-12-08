@@ -21,11 +21,11 @@ enum CubeGroup
   F2L_FSlot_EO,   // F2L-1, free slot positioned at FR-FDR, U face free, and edges oriented with respect to F and B faces.
   F2L_BSlot_EO,   // F2L-1, free slot positioned at BR-BDR, U face free, and edges oriented with respect to F and B faces.
   AB5C_twisted,   // all 5 corners twisted in place
-  AB5C_2cycles,   // 4 of the 5 corners form two distinct 2-cycle while the 5th corner is twisted in place
-  AB5C_3cycle,    // 3 of the 5 corners form a 3-cycle while the other 2 corners are twisted in place
+  AB5C_2cycles,   // 4 of the 5 corners form two distinct 2-cycles while the 5th corner is twisted in place
+  AB5C_3cycle,    // 3 of the 5 corners form a (twisted or non-twisted) 3-cycle while the other 2 corners are twisted in place
   AB5C_5cycle,    // all 5 corners form a 5-cycle
   AB4C_twisted,   // all 4 corners twisted in place
-  AB4C_3cycle,    // 3 of the 4 corners form a 3-cycle while the 4th corner is twisted in place
+  AB4C_3cycle,    // 3 of the 4 corners form a twisted 3-cycle while the 4th corner is twisted in place
   AB4C_2cycles,   // the corners form two distinct 2-cycles
   AB3C_twisted,   // all 3 corners twisted in place
   AB3C_3cycle,    // all 3 corners form a 3-cycle
