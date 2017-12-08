@@ -140,6 +140,7 @@
     <ClInclude Include="SolverStep\SolverStep_4Corners2Cycles.h" />
     <ClInclude Include="SolverStep\SolverStep_4Corners3Cycle.h" />
     <ClInclude Include="SolverStep\SolverStep_4CornersTwisted.h" />
+    <ClInclude Include="SolverStep\SolverStep_5Corners2Cycles.h" />
     <ClInclude Include="SolverStep\SolverStep_5Corners3Cycle.h" />
     <ClInclude Include="SolverStep\SolverStep_Corner3Cycle.h" />
     <ClInclude Include="SolverStep\SolverStep_Corner5Cycle.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="SolverStep\SolverStep_4Corners2Cycles.cpp" />
     <ClCompile Include="SolverStep\SolverStep_4Corners3Cycle.cpp" />
     <ClCompile Include="SolverStep\SolverStep_4CornersTwisted.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_5Corners2Cycles.cpp" />
     <ClCompile Include="SolverStep\SolverStep_5Corners3Cycle.cpp" />
     <ClCompile Include="SolverStep\SolverStep_Corner3Cycle.cpp" />
     <ClCompile Include="SolverStep\SolverStep_Corner5Cycle.cpp" />

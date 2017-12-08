@@ -11,6 +11,7 @@
 #include "SolverStep\SolverStep_3CornersTwisted.h"
 #include "SolverStep\SolverStep_4Corners2Cycles.h"
 #include "SolverStep\SolverStep_4Corners3Cycle.h"
+#include "SolverStep\SolverStep_5Corners2Cycles.h"
 #include "SolverStep\SolverStep_5Corners3Cycle.h"
 #include "SolverStep\SolverStep_4CornersTwisted.h"
 #include "SolverStep\SolverStep_Corner3Cycle.h"
@@ -60,6 +61,7 @@ Solver3x3x3::Solver3x3x3()
   solverSteps[CubeGroup::AB4C_3cycle].reset(new SolverStep_4Corners3Cycle);
   solverSteps[CubeGroup::AB4C_2cycles].reset(new SolverStep_4Corners2Cycles);
   solverSteps[CubeGroup::AB4C_twisted].reset(new SolverStep_4CornersTwisted);
+  solverSteps[CubeGroup::AB5C_2cycles].reset(new SolverStep_5Corners2Cycles);
   solverSteps[CubeGroup::AB5C_3cycle].reset(new SolverStep_5Corners3Cycle);
   solverSteps[CubeGroup::AB5C_5cycle].reset(new SolverStep_Corner5Cycle);
 }
