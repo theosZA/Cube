@@ -18,6 +18,19 @@ static const std::array<StickerPosition, 8> allCorners
   StickerPosition{ Face::Up, 8 }
 };
 
+std::vector<StickerPosition> FindCorrectCorners(const Cube3x3x3& scrambledCube)
+{
+  std::vector<StickerPosition> correctCorners;
+  for (const auto& corner : allCorners)
+  {
+    if (scrambledCube[corner] == corner)
+    {
+      correctCorners.push_back(corner);
+    }
+  }
+  return correctCorners;
+}
+
 std::vector<StickerPosition> FindWrongCorners(const Cube3x3x3& scrambledCube)
 {
   std::vector<StickerPosition> wrongCorners;

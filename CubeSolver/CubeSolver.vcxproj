@@ -132,6 +132,7 @@
     <ClInclude Include="Solution\SolutionLogger.h" />
     <ClInclude Include="Solution\SolutionStep.h" />
     <ClInclude Include="SolverStep\SolverStep.h" />
+    <ClInclude Include="SolverStep\SolverStep_2CornersTwisted.h" />
     <ClInclude Include="SolverStep\SolverStep_2x2x2Block.h" />
     <ClInclude Include="SolverStep\SolverStep_2x2x3Block.h" />
     <ClInclude Include="SolverStep\SolverStep_2x2x3EO.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="Solution\Solution.cpp" />
     <ClCompile Include="Solution\SolutionLogger.cpp" />
     <ClCompile Include="Solution\SolutionStep.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_2CornersTwisted.cpp" />
     <ClCompile Include="SolverStep\SolverStep_2x2x2Block.cpp" />
     <ClCompile Include="SolverStep\SolverStep_2x2x3Block.cpp" />
     <ClCompile Include="SolverStep\SolverStep_2x2x3EO.cpp" />
