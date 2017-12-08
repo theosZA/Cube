@@ -103,6 +103,9 @@
     <ClInclude Include="SolverStep\SolverStep_4Corners3Cycle.h">
       <Filter>SolverStep</Filter>
     </ClInclude>
+    <ClInclude Include="SolverStep\SolverStep_4Corners2Cycles.h">
+      <Filter>SolverStep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CubeStateSolver\CubeStateSolver.inl">
@@ -165,6 +168,9 @@
       <Filter>SolverStep</Filter>
     </ClCompile>
     <ClCompile Include="SolverStep\SolverStep_4Corners3Cycle.cpp">
+      <Filter>SolverStep</Filter>
+    </ClCompile>
+    <ClCompile Include="SolverStep\SolverStep_4Corners2Cycles.cpp">
       <Filter>SolverStep</Filter>
     </ClCompile>
   </ItemGroup>
