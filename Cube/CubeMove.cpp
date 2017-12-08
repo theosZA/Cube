@@ -124,7 +124,7 @@ std::vector<CubeMove> SimplifyMoveSequence(const std::vector<CubeMove>& moves)
   std::vector<CubeMove> simplified;
   for (auto move : moves)
   {
-    if (simplified.size() > 2 && 
+    if (simplified.size() >= 2 && 
         move.face == GetOppositeFace(simplified.back().face) &&
         (simplified.end() - 1)->face == GetOppositeFace((simplified.end() - 2)->face))
     { // Re-order moves to allow us to simplify.

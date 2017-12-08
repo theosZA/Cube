@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B7395A5A-3FFF-4A48-8EA1-C784D248065E}</ProjectGuid>
-    <RootNamespace>Cube</RootNamespace>
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{4BD1527C-4C20-41EA-B12F-907201717736}</ProjectGuid>
+    <RootNamespace>CubeSolver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -69,29 +70,38 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -100,54 +110,79 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.;..</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>Console</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="2x2x2\Cube2x2x2.h" />
-    <ClInclude Include="3x3x3\Corners3x3x3.h" />
-    <ClInclude Include="3x3x3\CornerStructure.h" />
-    <ClInclude Include="3x3x3\Cube3x3x3.h" />
-    <ClInclude Include="3x3x3\Edges3x3x3.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="CubeMove.h" />
-    <ClInclude Include="Face.h" />
-    <ClInclude Include="Scrambler\Scrambler.h" />
-    <ClInclude Include="StickerPosition.h" />
+    <ClInclude Include="CubeGroup.h" />
+    <ClInclude Include="CubeStateSolver\CubeStateSolver.h" />
+    <ClInclude Include="CubeStateSolver\CubeStateSolver3x3x3Factory.h" />
+    <ClInclude Include="Graph\GraphAlgorithms.h" />
+    <ClInclude Include="Graph\RootedGraph.h" />
+    <ClInclude Include="Insertions\Corner3Cycle.h" />
+    <ClInclude Include="Insertions\Corners.h" />
+    <ClInclude Include="Insertions\SolverCorners.h" />
+    <ClInclude Include="Solution\PartialSolution.h" />
+    <ClInclude Include="Solution\Solution.h" />
+    <ClInclude Include="Solution\SolutionLogger.h" />
+    <ClInclude Include="Solution\SolutionStep.h" />
+    <ClInclude Include="SolverStep\SolverStep.h" />
+    <ClInclude Include="SolverStep\SolverStep_2CornersTwisted.h" />
+    <ClInclude Include="SolverStep\SolverStep_2x2x2Block.h" />
+    <ClInclude Include="SolverStep\SolverStep_2x2x3Block.h" />
+    <ClInclude Include="SolverStep\SolverStep_2x2x3EO.h" />
+    <ClInclude Include="SolverStep\SolverStep_3CornersTwisted.h" />
+    <ClInclude Include="SolverStep\SolverStep_4Corners2Cycles.h" />
+    <ClInclude Include="SolverStep\SolverStep_4Corners3Cycle.h" />
+    <ClInclude Include="SolverStep\SolverStep_4CornersTwisted.h" />
+    <ClInclude Include="SolverStep\SolverStep_5Corners2Cycles.h" />
+    <ClInclude Include="SolverStep\SolverStep_5Corners3Cycle.h" />
+    <ClInclude Include="SolverStep\SolverStep_5CornersTwisted.h" />
+    <ClInclude Include="SolverStep\SolverStep_Corner3Cycle.h" />
+    <ClInclude Include="SolverStep\SolverStep_Corner5Cycle.h" />
+    <ClInclude Include="SolverStep\SolverStep_F2LMinus1.h" />
+    <ClInclude Include="SolverStep\SolverStep_InsertCorners.h" />
+    <ClInclude Include="SolverStep\SolverStep_Skeleton.h" />
+    <ClInclude Include="Solver\Solver2x2x2.h" />
+    <ClInclude Include="Solver\Solver3x3x3.h" />
+    <ClInclude Include="Stream\BinaryStream.h" />
+    <ClInclude Include="TreeSearch\TwoFaceEO.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2x2x2\Cube2x2x2.cpp" />
-    <ClCompile Include="3x3x3\Corners3x3x3.cpp" />
-    <ClCompile Include="3x3x3\CornerStructure.cpp" />
-    <ClCompile Include="3x3x3\Cube3x3x3.cpp" />
-    <ClCompile Include="3x3x3\Edges3x3x3.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="CubeMove.cpp" />
-    <ClCompile Include="Face.cpp" />
-    <ClCompile Include="Scrambler\Scrambler.cpp" />
-    <ClCompile Include="StickerPosition.cpp" />
+    <None Include="CubeStateSolver\CubeStateSolver.inl" />
+    <None Include="Graph\RootedGraph.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CubeStateSolver\CubeStateSolver3x3x3Factory.cpp" />
+    <ClCompile Include="Insertions\Corner3Cycle.cpp" />
+    <ClCompile Include="Insertions\Corners.cpp" />
+    <ClCompile Include="Insertions\SolverCorners.cpp" />
+    <ClCompile Include="Solution\PartialSolution.cpp" />
+    <ClCompile Include="Solution\Solution.cpp" />
+    <ClCompile Include="Solution\SolutionLogger.cpp" />
+    <ClCompile Include="Solution\SolutionStep.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_2CornersTwisted.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_2x2x2Block.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_2x2x3Block.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_2x2x3EO.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_3CornersTwisted.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_4Corners2Cycles.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_4Corners3Cycle.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_4CornersTwisted.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_5Corners2Cycles.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_5Corners3Cycle.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_5CornersTwisted.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_Corner3Cycle.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_Corner5Cycle.cpp" />
+    <ClCompile Include="SolverStep\SolverStep_F2LMinus1.cpp" />
+    <ClCompile Include="Solver\Solver2x2x2.cpp" />
+    <ClCompile Include="Solver\Solver3x3x3.cpp" />
+    <ClCompile Include="TreeSearch\TwoFaceEO.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
