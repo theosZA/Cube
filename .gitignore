@@ -310,3 +310,7 @@ __pycache__/
 
 ### VisualStudio Patch ###
 build/
+
+CubeConsole/results\.txt
+
+CubeConsole/scrambles\.txt
