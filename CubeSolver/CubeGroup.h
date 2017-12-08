@@ -54,7 +54,7 @@ inline int EstimateMovesRequired(CubeGroup cubeGroup)
     case AB5C_3cycle:
     case AB5C_2cycles:  return 6;
 
-    // 4 corner cycle incertions
+    // 4 corner cycle insertions
     case AB5C_twisted:  return 8;
 
     // Petrus block building
