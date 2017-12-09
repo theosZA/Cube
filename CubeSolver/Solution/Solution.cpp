@@ -14,6 +14,10 @@ Solution Solution::operator+(SolutionStep newStep) const
 
 int Solution::Length() const
 {
+  if (length != -1)
+  {
+    return length;
+  }
   std::vector<CubeMove> cumulativeSolutionOnForwardSolve;
   std::vector<CubeMove> cumulativeSolutionOnInverseSolve;
   for (const auto& step : steps)
