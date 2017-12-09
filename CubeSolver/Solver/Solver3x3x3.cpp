@@ -1,5 +1,6 @@
 #include "Solver3x3x3.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "Graph\GraphAlgorithms.h"
@@ -19,6 +20,12 @@
 #include "SolverStep\SolverStep_Corner5Cycle.h"
 #include "SolverStep\SolverStep_F2LMinus1.h"
 #include "SolverStep\SolverStep_Skeleton.h"
+
+template <class T>
+inline bool IsElementOfSet(const T& element, const std::set<T>& set)
+{
+  return set.find(element) != set.end();
+}
 
 std::vector<PartialSolution> GetAllPartialSolutions(SolverStep& solverStep, const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
 {
@@ -73,11 +80,11 @@ Solution Solver3x3x3::Solve(const std::vector<CubeMove>& scramble)
   return SolveToState(scramble).solutionSoFar;
 }
 
-PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble, const std::set<CubeGroup>& targetStates)
+PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates)
 {
   auto isSolved = [=](const PartialSolution& partialSolution)
   {
-    return targetStates.find(partialSolution.cubeGroup) != targetStates.end();
+    return IsElementOfSet(partialSolution.cubeGroup, targetStates);
   };
   auto movesSoFar = [](const PartialSolution& partialSolution)
   {
@@ -89,14 +96,51 @@ PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble,
   };
   auto generateSuccessorStates = [=](const PartialSolution& partialSolution)
   {
-    // Use the solver step for this state. If we don't have a solver for it, then no successor states.
-    auto findIter = solverSteps.find(partialSolution.cubeGroup);
-    if (findIter == solverSteps.end())
-    {
-      return std::vector<PartialSolution>{};
-    }
-    auto& solverStep = *findIter->second;
-    return GetAllPartialSolutions(solverStep, scramble, partialSolution);
+    return GenerateAllSuccessorStates(scramble, partialSolution);
   };
-  return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(PartialSolution{ Solution{}, CubeGroup::Scrambled }, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
+  return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(solutionSoFar, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
+}
+
+std::optional<PartialSolution> Solver3x3x3::LinearBestSolveToState(const std::vector<CubeMove>& scramble, const std::set<CubeGroup>& targetStates)
+{
+  PartialSolution currentPartialSolution = PartialSolution{ Solution{}, CubeGroup::Scrambled };
+  while (true)
+  {
+    auto successorStates = GenerateAllSuccessorStates(scramble, currentPartialSolution);
+    if (successorStates.empty())
+    {
+      return std::optional<PartialSolution>{};
+    }
+    // Find the successor state in our target state that has the shortest length.
+    std::optional<PartialSolution> bestSolution;
+    for (const auto& successorState : successorStates)
+    {
+      if (IsElementOfSet(successorState.cubeGroup, targetStates) && (!bestSolution || successorState.solutionSoFar.Length() < bestSolution->solutionSoFar.Length()))
+      {
+        bestSolution = successorState;
+      }
+    }
+    if (bestSolution)
+    {
+      return bestSolution;
+    }
+    // No successor states in our target state. Find the successor state that has the shortest length.
+    currentPartialSolution = *std::min_element(successorStates.begin(), successorStates.end(),
+        [](const PartialSolution& a, const PartialSolution& b)
+        {
+          return a.solutionSoFar.Length() < b.solutionSoFar.Length();
+        });
+  }
+}
+
+std::vector<PartialSolution> Solver3x3x3::GenerateAllSuccessorStates(const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
+{
+  // Use the solver step for this state. If we don't have a solver for it, then no successor states.
+  auto findIter = solverSteps.find(partialSolution.cubeGroup);
+  if (findIter == solverSteps.end())
+  {
+    return std::vector<PartialSolution>{};
+  }
+  auto& solverStep = *findIter->second;
+  return GetAllPartialSolutions(solverStep, scramble, partialSolution);
 }
