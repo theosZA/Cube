@@ -68,12 +68,12 @@ Solver3x3x3::Solver3x3x3()
   solverSteps[CubeGroup::AB5C_twisted].reset(new SolverStep_5CornersTwisted);
 }
 
-void Solver3x3x3::SetScramble(const std::vector<CubeMove>& scramble)
+Solution Solver3x3x3::Solve(const std::vector<CubeMove>& scramble)
 {
-  this->scramble = scramble;
+  return SolveToState(scramble).solutionSoFar;
 }
 
-Solution Solver3x3x3::BestSolve(const std::set<CubeGroup>& targetStates)
+PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble, const std::set<CubeGroup>& targetStates)
 {
   auto isSolved = [=](const PartialSolution& partialSolution)
   {
@@ -87,7 +87,7 @@ Solution Solver3x3x3::BestSolve(const std::set<CubeGroup>& targetStates)
   {
     return EstimateMovesRequired(partialSolution.cubeGroup);
   };
-  auto generateSuccessorStates = [this](const PartialSolution& partialSolution)
+  auto generateSuccessorStates = [=](const PartialSolution& partialSolution)
   {
     // Use the solver step for this state. If we don't have a solver for it, then no successor states.
     auto findIter = solverSteps.find(partialSolution.cubeGroup);
@@ -98,5 +98,5 @@ Solution Solver3x3x3::BestSolve(const std::set<CubeGroup>& targetStates)
     auto& solverStep = *findIter->second;
     return GetAllPartialSolutions(solverStep, scramble, partialSolution);
   };
-  return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(PartialSolution{ Solution{}, CubeGroup::Scrambled }, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates).solutionSoFar;
+  return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(PartialSolution{ Solution{}, CubeGroup::Scrambled }, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
 }

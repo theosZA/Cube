@@ -92,8 +92,7 @@ int main(int argc, char* argv[])
     {
       *outputStream << MoveSequenceToText(scramble) << "\n\n";
 
-      solver.SetScramble(scramble);
-      auto solution = solver.BestSolve(std::set<CubeGroup>{ CubeGroup::Solved });
+      auto solution = solver.SolveToState(scramble, std::set<CubeGroup>{ CubeGroup::Solved }).solutionSoFar;
       *outputStream << solution << "\n\n===============================================================================\n\n";
     }
   }

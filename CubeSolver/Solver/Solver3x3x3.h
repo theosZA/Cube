@@ -17,14 +17,13 @@ class Solver3x3x3
   public:
     Solver3x3x3();
       
-    // Starts a new analysis by starting with a new scramble.
-    void SetScramble(const std::vector<CubeMove>& scramble);
+    // Find the shortest solution for the given scramble using an A* search.
+    Solution Solve(const std::vector<CubeMove>& scramble);
 
-    // Find the best solution we can using an A* search.
-    Solution BestSolve(const std::set<CubeGroup>& targetStates = std::set<CubeGroup>{ CubeGroup::Solved });
+    // Find the shortest solution reaching one of the target states from the given scramble using an A* search.
+    PartialSolution SolveToState(const std::vector<CubeMove>& scramble, const std::set<CubeGroup>& targetStates = std::set<CubeGroup>{ CubeGroup::Solved });
 
   private:
-    std::vector<CubeMove> scramble;
     std::map<CubeGroup, std::unique_ptr<SolverStep>> solverSteps;
 };
 
