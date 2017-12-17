@@ -33,6 +33,7 @@ enum CubeGroup
 };
 
 // Returns a reasonable lower bound on the number of moves that would be required to solve most cubes in the given group.
+// These estimates are the number of moves that 99% of solves from that position require.
 inline int EstimateMovesRequired(CubeGroup cubeGroup)
 {
   switch (cubeGroup)
@@ -40,30 +41,30 @@ inline int EstimateMovesRequired(CubeGroup cubeGroup)
     case Solved:        return 0;
 
     // 1 corner cycle insertion
-    case AB3C_3cycle:   return 2;
+    case AB3C_3cycle:   return 4;
 
     // 2 corner cycle insertions
-    case AB2C_twisted:
-    case AB3C_twisted:
-    case AB4C_2cycles:
-    case AB4C_3cycle:
-    case AB5C_5cycle:   return 4;
+    case AB2C_twisted:  return 4;
+    case AB3C_twisted:  return 6;
+    case AB4C_2cycles:  return 5;
+    case AB4C_3cycle:   return 6;
+    case AB5C_5cycle:   return 6;
 
     // 3 corner cycle insertions
-    case AB4C_twisted:
-    case AB5C_3cycle:
-    case AB5C_2cycles:  return 6;
+    case AB4C_twisted:  return 8;
+    case AB5C_3cycle:   return 8;
+    case AB5C_2cycles:  return 8;
 
     // 4 corner cycle insertions
-    case AB5C_twisted:  return 8;
+    case AB5C_twisted:  return 11;
 
     // Petrus block building
     case F2L_FSlot_EO:  
-    case F2L_BSlot_EO:  return 6;   // 2 moves to permute remaining edges
-    case Block2x2x3_EO: return 9;   // 3 moves to build another block with restricted movement
-    case Block2x2x3:    return 11;  // 2 moves to orient edges
-    case Block2x2x2:    return 13;  // 2 moves to extend to a 2x2x3
-    case Scrambled:     return 15;  // 2 moves to build a 2x2x2
+    case F2L_BSlot_EO:  return 10;
+    case Block2x2x3_EO: return 13;
+    case Block2x2x3:    return 16;
+    case Block2x2x2:    return 19;
+    case Scrambled:     return 21;
 
     default:
       throw std::domain_error("Unexpected cube group " + std::to_string(static_cast<int>(cubeGroup)));
