@@ -1,6 +1,7 @@
 #include "Solver3x3x3.h"
 
 #include <algorithm>
+#include <limits>
 #include <stdexcept>
 
 #include "Graph\GraphAlgorithms.h"
@@ -92,7 +93,7 @@ PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble,
   };
   auto estimatedMovesToSolve = [](const PartialSolution& partialSolution)
   {
-    return EstimateMovesRequired(partialSolution.cubeGroup);
+    return LowerBoundMovesRequired(partialSolution.cubeGroup);
   };
   auto generateSuccessorStates = [=](const PartialSolution& partialSolution)
   {
@@ -101,36 +102,25 @@ PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble,
   return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(solutionSoFar, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
 }
 
-std::optional<PartialSolution> Solver3x3x3::LinearBestSolveToState(const std::vector<CubeMove>& scramble, const std::set<CubeGroup>& targetStates)
+std::optional<PartialSolution> Solver3x3x3::LinearBestSolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates)
 {
-  PartialSolution currentPartialSolution = PartialSolution{ Solution{}, CubeGroup::Scrambled };
-  while (true)
+  auto isSolved = [=](const PartialSolution& partialSolution)
   {
-    auto successorStates = GenerateAllSuccessorStates(scramble, currentPartialSolution);
-    if (successorStates.empty())
-    {
-      return std::optional<PartialSolution>{};
-    }
-    // Find the successor state in our target state that has the shortest length.
-    std::optional<PartialSolution> bestSolution;
-    for (const auto& successorState : successorStates)
-    {
-      if (IsElementOfSet(successorState.cubeGroup, targetStates) && (!bestSolution || successorState.solutionSoFar.Length() < bestSolution->solutionSoFar.Length()))
-      {
-        bestSolution = successorState;
-      }
-    }
-    if (bestSolution)
-    {
-      return bestSolution;
-    }
-    // No successor states in our target state. Find the successor state that has the shortest length.
-    currentPartialSolution = *std::min_element(successorStates.begin(), successorStates.end(),
-        [](const PartialSolution& a, const PartialSolution& b)
-        {
-          return a.solutionSoFar.Length() < b.solutionSoFar.Length();
-        });
-  }
+    return IsElementOfSet(partialSolution.cubeGroup, targetStates);
+  };
+  auto movesSoFar = [](const PartialSolution& partialSolution)
+  {
+    return partialSolution.solutionSoFar.Length();
+  };
+  auto estimatedMovesToSolve = [](const PartialSolution& partialSolution)
+  {
+    return MeanMovesRequiredForLinearSolve(partialSolution.cubeGroup);
+  };
+  auto generateSuccessorStates = [=](const PartialSolution& partialSolution)
+  {
+    return GenerateAllSuccessorStates(scramble, partialSolution);
+  };
+  return GraphAlgorithms::GreedySearchForClosestTargetNode<PartialSolution, double>(solutionSoFar, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
 }
 
 std::vector<PartialSolution> Solver3x3x3::GenerateAllSuccessorStates(const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)

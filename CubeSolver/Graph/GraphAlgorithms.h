@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <queue>
 #include <stdexcept>
 #include <vector>
@@ -40,6 +41,35 @@ Node AStarSearchForClosestTargetNode(const Node& startNode,
   }
 
   return nodes.top();
+}
+
+template <class Node, class Score>
+std::optional<Node> GreedySearchForClosestTargetNode(const Node& startNode,
+  std::function<bool(const Node&)> isTargetNode,
+  std::function<Score(const Node&)> getCostSoFar,
+  std::function<Score(const Node&)> getEstimatedCostToTarget,
+  std::function<std::vector<Node>(const Node&)> getSuccessorNodes)
+{
+  Node currentNode = startNode;
+  while (true)
+  {
+    std::optional<Node> bestNode;
+    auto successorNodes = getSuccessorNodes(currentNode);
+    for (const auto& successorNode : successorNodes)
+    {
+      if (!bestNode || 
+          getCostSoFar(successorNode) + getEstimatedCostToTarget(successorNode) < getCostSoFar(*bestNode) + getEstimatedCostToTarget(*bestNode) ||
+          (!isTargetNode(*bestNode) && isTargetNode(successorNode)))
+      {
+        bestNode = successorNode;
+      }
+    }
+    if (!bestNode || isTargetNode(*bestNode))
+    {
+      return bestNode;
+    }
+    currentNode = *bestNode;
+  }
 }
 
 };

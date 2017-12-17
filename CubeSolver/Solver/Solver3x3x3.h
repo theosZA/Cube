@@ -24,9 +24,9 @@ class Solver3x3x3
     // Find the shortest solution reaching one of the target states from the given scramble using an A* search.
     PartialSolution SolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar = PartialSolution{ Solution{}, CubeGroup::Scrambled }, const std::set<CubeGroup>& targetStates = std::set<CubeGroup>{ CubeGroup::Solved });
 
-    // Find a solution reaching one of the target states by taking only the shortest move sequence each step.
+    // Find a solution reaching one of the target states by taking only the move sequence each step with the best total move count estimate.
     // If the target state can't be reached using this method then no solution is returned.
-    std::optional<PartialSolution> LinearBestSolveToState(const std::vector<CubeMove>& scramble, const std::set<CubeGroup>& targetStates = std::set<CubeGroup>{ CubeGroup::Solved });
+    std::optional<PartialSolution> LinearBestSolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar = PartialSolution{ Solution{}, CubeGroup::Scrambled }, const std::set<CubeGroup>& targetStates = std::set<CubeGroup>{ CubeGroup::Solved });
 
   private:
     std::vector<PartialSolution> GenerateAllSuccessorStates(const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution);

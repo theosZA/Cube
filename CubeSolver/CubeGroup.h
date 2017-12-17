@@ -34,7 +34,7 @@ enum CubeGroup
 
 // Returns a reasonable lower bound on the number of moves that would be required to solve most cubes in the given group.
 // These estimates are the number of moves that 99% of solves from that position require.
-inline int EstimateMovesRequired(CubeGroup cubeGroup)
+inline int LowerBoundMovesRequired(CubeGroup cubeGroup)
 {
   switch (cubeGroup)
   {
@@ -65,6 +65,44 @@ inline int EstimateMovesRequired(CubeGroup cubeGroup)
     case Block2x2x3:    return 16;
     case Block2x2x2:    return 19;
     case Scrambled:     return 21;
+
+    default:
+      throw std::domain_error("Unexpected cube group " + std::to_string(static_cast<int>(cubeGroup)));
+  }
+}
+
+// Returns the expected number of moves to solve a cube from the given group.
+inline double MeanMovesRequiredForLinearSolve(CubeGroup cubeGroup)
+{
+  switch (cubeGroup)
+  {
+    case Solved:        return 0.0;
+
+      // 1 corner cycle insertion
+    case AB3C_3cycle:   return 5.9;
+
+      // 2 corner cycle insertions
+    case AB2C_twisted:  return 7.8;
+    case AB3C_twisted:  return 9.4;
+    case AB4C_2cycles:  return 8.8;
+    case AB4C_3cycle:   return 9.8;
+    case AB5C_5cycle:   return 10.4;
+
+      // 3 corner cycle insertions
+    case AB4C_twisted:  return 12.1;
+    case AB5C_3cycle:   return 12.9;
+    case AB5C_2cycles:  return 12.1;
+
+      // 4 corner cycle insertions
+    case AB5C_twisted:  return 15.0;
+
+      // Petrus block building
+    case F2L_FSlot_EO:
+    case F2L_BSlot_EO:  return 16.7;
+    case Block2x2x3_EO: return 21.1;
+    case Block2x2x3:    return 25.5;
+    case Block2x2x2:    return 30.3;
+    case Scrambled:     return 34.7;
 
     default:
       throw std::domain_error("Unexpected cube group " + std::to_string(static_cast<int>(cubeGroup)));
