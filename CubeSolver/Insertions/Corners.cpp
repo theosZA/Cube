@@ -1,6 +1,6 @@
 #include "Corners.h"
 
-#include <array>
+#include <stdexcept>
 
 #include "Cube\3x3x3\CornerStructure.h"
 
@@ -185,4 +185,17 @@ CubeGroup GetCubeGroupForWrongCorners(const Cube3x3x3& cube)
   }
 }
 
+std::array<StickerPosition, 3> FindCorner3Cycle(const Cube3x3x3& cube)
+{
+  for (const auto& startCorner : allCorners)
+  {
+    auto cycle = CornerStructure::GetCornerCycle(cube, startCorner);
+    if (cycle.size() == 3 && !CornerStructure::AreStickersOnOneOfCubies(cycle[0], cycle.begin() + 1, cycle.end()))
+    {
+      return std::array<StickerPosition, 3>{ cycle[0], cycle[1], cycle[2] };
+    }
+  }
+  throw std::domain_error("No corner 3-cycle in given cube");
 }
+
+} // namespace Corners

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 
 #include "Cube\3x3x3\Cube3x3x3.h"
@@ -24,5 +25,9 @@ int GetNumberOfWrongCorners(CubeGroup cubeGroup);
 
 // Determines which cube group the given cube belongs to based only on the corners which are incorrectly permuted or oriented.
 CubeGroup GetCubeGroupForWrongCorners(const Cube3x3x3& cube);
+
+// Returns the first corner 3-cycle if one is present on the cube.
+// Throws an exception if there are no corner 3-cycles.
+std::array<StickerPosition, 3> FindCorner3Cycle(const Cube3x3x3& cube);
 
 }

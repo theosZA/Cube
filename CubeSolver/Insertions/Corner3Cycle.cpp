@@ -8,75 +8,107 @@
 #include "Cube\3x3x3\CornerStructure.h"
 
 #include "Solution\SolutionStep.h"
+#include "Corners.h"
 
 namespace Corner3Cycle {
 
-static const std::array<StickerPosition, 8> allCorners
+class Optimal3Cycles
 {
-  StickerPosition{ Face::Down, 0 },
-  StickerPosition{ Face::Down, 2 },
-  StickerPosition{ Face::Down, 6 },
-  StickerPosition{ Face::Down, 8 },
-  StickerPosition{ Face::Up, 0 },
-  StickerPosition{ Face::Up, 2 },
-  StickerPosition{ Face::Up, 6 },
-  StickerPosition{ Face::Up, 8 }
-};
+public:
+  typedef std::array<StickerPosition, 2> URB_Cycle;
 
-// Returns the first corner 3-cycle if one is present on the cube.
-// Throws an exception if there are no corner 3-cycles.
-std::array<StickerPosition, 3> FindCorner3Cycle(const Cube3x3x3& cube)
+  Optimal3Cycles();
+  const std::vector<CubeMove>& operator[](const URB_Cycle&) const;
+
+private:
+  std::map<URB_Cycle, std::vector<CubeMove>> cycleAlgorithms;
+};
+static const Optimal3Cycles optimal3Cycles;
+
+typedef std::array<Face, 6> FaceRemapping;
+std::array<Face, 6> CreateFaceRemapping(StickerPosition source, StickerPosition destination)
 {
-  for (const auto& startCorner : allCorners)
-  {
-    auto cycle = CornerStructure::GetCornerCycle(cube, startCorner);
-    if (cycle.size() == 3 && !CornerStructure::AreStickersOnOneOfCubies(cycle[0], cycle.begin() + 1, cycle.end()))
-    {
-      return std::array<StickerPosition, 3>{ cycle[0], cycle[1], cycle[2] };
-    }
-  }
-  throw std::domain_error("No corner 3-cycle in given cube");
+  auto clockwiseSource = CornerStructure::GetAdjacentCornerStickerPosition(source, true);
+  auto clockwiseDestination = CornerStructure::GetAdjacentCornerStickerPosition(destination, true);
+  auto anticlockwiseSource = CornerStructure::GetAdjacentCornerStickerPosition(source, false);
+  auto anticlockwiseDestination = CornerStructure::GetAdjacentCornerStickerPosition(destination, false);
+
+  std::array<Face, 6> faceRemapping;
+  faceRemapping[static_cast<int>(source.face)] = destination.face;
+  faceRemapping[static_cast<int>(clockwiseSource.face)] = clockwiseDestination.face;
+  faceRemapping[static_cast<int>(anticlockwiseSource.face)] = anticlockwiseDestination.face;
+  faceRemapping[static_cast<int>(GetOppositeFace(source.face))] = GetOppositeFace(destination.face);
+  faceRemapping[static_cast<int>(GetOppositeFace(clockwiseSource.face))] = GetOppositeFace(clockwiseDestination.face);
+  faceRemapping[static_cast<int>(GetOppositeFace(anticlockwiseSource.face))] = GetOppositeFace(anticlockwiseDestination.face);
+  return faceRemapping;
 }
 
 std::vector<CubeMove> SolveThreeCorners(const std::array<StickerPosition, 3>& cornerStickers)
 {
-  std::vector<std::array<Face, 3>> corners;
-  for (auto sticker : cornerStickers)
-  {
-    corners.push_back(CornerStructure::StickerPositionToCorner(sticker));
-  }
-
   // We do a face remapping such that our first corner is at URB.
-  std::map<Face, Face> algorithmToReal;
-  algorithmToReal[Face::Up] = corners[0][0];
-  algorithmToReal[Face::Back] = corners[0][1];
-  algorithmToReal[Face::Right] = corners[0][2];
-  algorithmToReal[Face::Down] = GetOppositeFace(corners[0][0]);
-  algorithmToReal[Face::Front] = GetOppositeFace(corners[0][1]);
-  algorithmToReal[Face::Left] = GetOppositeFace(corners[0][2]);
-  std::map<Face, Face> realToAlgorithm;
-  for (auto& facePair : algorithmToReal)
+  auto realToAlgorithm = CreateFaceRemapping(cornerStickers[0], StickerPosition{ Face::Up, 2 });
+  auto algorithmToReal = CreateFaceRemapping(StickerPosition{ Face::Up, 2 }, cornerStickers[0]);
+
+  // Find the algorithm for this remapped cycle.
+  auto algorithm = optimal3Cycles[Optimal3Cycles::URB_Cycle
   {
-    realToAlgorithm[facePair.second] = facePair.first;
+    CornerStructure::CornerToStickerPosition(realToAlgorithm[static_cast<int>(cornerStickers[1].face)], realToAlgorithm[static_cast<int>(CornerStructure::GetAdjacentCornerStickerPosition(cornerStickers[1], true).face)]),
+    CornerStructure::CornerToStickerPosition(realToAlgorithm[static_cast<int>(cornerStickers[2].face)], realToAlgorithm[static_cast<int>(CornerStructure::GetAdjacentCornerStickerPosition(cornerStickers[2], true).face)])
+  }];
+
+  // Translate this algorithm back to our actual faces.
+  for (auto& move : algorithm)
+  {
+    move.face = algorithmToReal[static_cast<int>(move.face)];
   }
 
-  // We translate all three corners into the algorithm faces and represent this
-  // by a text description of the corner 3-cycle, e.g. (URB UBL ULF)
-  std::ostringstream cycleStream;
-  cycleStream << '(';
-  for (size_t i = 0; i < corners.size(); ++i)
-  {
-    if (i != 0)
-      cycleStream << ' ';
-    cycleStream << GetFaceChar(realToAlgorithm[corners[i][0]])
-                << GetFaceChar(realToAlgorithm[corners[i][2]])
-                << GetFaceChar(realToAlgorithm[corners[i][1]]);
-  }
-  cycleStream << ')';
-  auto cycle = cycleStream.str();
+  return algorithm;
+}
 
-  // We can now look up the solution by this cycle.
-  static const std::map<std::string, std::string> cycleAlgorithms
+Solution InsertCorner3CycleInSkeleton(const Solution& skeleton, const std::array<StickerPosition, 3>& skeletonCornerPositions)
+{
+  auto solutions = FindAllCorner3CycleInsertions(skeleton, skeletonCornerPositions);
+  return *std::min_element(solutions.begin(), solutions.end(), 
+      [](const Solution& a, const Solution& b)
+      {
+        return a.Length() < b.Length();
+      });
+}
+
+std::vector<Solution> FindAllCorner3CycleInsertions(const Solution& skeleton, const std::array<StickerPosition, 3>& skeletonCornerPositions)
+{
+  auto skeletonMoves = skeleton.GetMoves();
+  auto inverseSkeleton = InvertMoveSequence(skeletonMoves);
+
+  std::vector<Solution> solutions;
+  for (size_t insertionIndex = 0; insertionIndex <= skeletonMoves.size(); ++insertionIndex)
+  {
+    Cube3x3x3 cube;
+    cube += std::vector<CubeMove>(inverseSkeleton.begin(), inverseSkeleton.begin() + (skeletonMoves.size() - insertionIndex));
+
+    // Where are our 3 corners now?
+    std::array<StickerPosition, 3> corners
+    {
+      cube.Find(skeletonCornerPositions[0]),
+      cube.Find(skeletonCornerPositions[1]),
+      cube.Find(skeletonCornerPositions[2])
+    };
+
+    auto insertionSequence = SolveThreeCorners(corners);
+    solutions.push_back(skeleton + SolutionStep{ "Corner cycle", insertionIndex, insertionSequence });
+  }
+  return solutions;
+}
+
+Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const Solution& skeleton)
+{
+  scrambledCube += skeleton.GetMoves();
+  return InsertCorner3CycleInSkeleton(skeleton, Corners::FindCorner3Cycle(scrambledCube));
+}
+
+Optimal3Cycles::Optimal3Cycles()
+{
+  const std::map<std::string, std::string> cycleAlgorithmsText
   { // Source of all algorithms: http://www.speedcubing.com/chris/bhcorners.html
     { "(URB UBL ULF)", "L F' L B2 L' F L B2 L2" }, // 	A9
     { "(URB UBL UFR)", "R2 B2 R F R' B2 R F' R" }, // 	A9
@@ -457,57 +489,24 @@ std::vector<CubeMove> SolveThreeCorners(const std::array<StickerPosition, 3>& co
     { "(URB DBR DRF)", "U2 F2 U B2 U' F2 U B2 U" }, // 	A9
     { "(URB DBR DLB)", "U2 L2 U' R2 U L2 U' R2 U'" }, // 	A9    
   };
-  const auto& algorithm = cycleAlgorithms.at(cycle);
-
-  // Translate this algorithm back to our actual faces.
-  auto moveSequence = ParseMoveSequence(algorithm);
-  for (auto& move : moveSequence)
+  for (const auto& cycleAlgorithmText : cycleAlgorithmsText)
   {
-    move.face = algorithmToReal[move.face];
-  }
-
-  return moveSequence;
-}
-
-Solution InsertCorner3CycleInSkeleton(const Solution& skeleton, const std::array<StickerPosition, 3>& skeletonCornerPositions)
-{
-  auto solutions = FindAllCorner3CycleInsertions(skeleton, skeletonCornerPositions);
-  return *std::min_element(solutions.begin(), solutions.end(), 
-      [](const Solution& a, const Solution& b)
-      {
-        return a.Length() < b.Length();
-      });
-}
-
-std::vector<Solution> FindAllCorner3CycleInsertions(const Solution& skeleton, const std::array<StickerPosition, 3>& skeletonCornerPositions)
-{
-  auto skeletonMoves = skeleton.GetMoves();
-  auto inverseSkeleton = InvertMoveSequence(skeletonMoves);
-
-  std::vector<Solution> solutions;
-  for (size_t insertionIndex = 0; insertionIndex <= skeletonMoves.size(); ++insertionIndex)
-  {
-    Cube3x3x3 cube;
-    cube += std::vector<CubeMove>(inverseSkeleton.begin(), inverseSkeleton.begin() + (skeletonMoves.size() - insertionIndex));
-
-    // Where are our 3 corners now?
-    std::array<StickerPosition, 3> corners
+    // Parse the 2 sticker positions other than URB.
+    const auto& cycleStickers = cycleAlgorithmText.first;
+    URB_Cycle cycle
     {
-      cube.Find(skeletonCornerPositions[0]),
-      cube.Find(skeletonCornerPositions[1]),
-      cube.Find(skeletonCornerPositions[2])
+      CornerStructure::CornerToStickerPosition(GetFace(cycleStickers[5]), GetFace(cycleStickers[7])),
+      CornerStructure::CornerToStickerPosition(GetFace(cycleStickers[9]), GetFace(cycleStickers[11]))
     };
-
-    auto insertionSequence = SolveThreeCorners(corners);
-    solutions.push_back(skeleton + SolutionStep{ "Corner cycle", insertionIndex, insertionSequence });
+    auto algorithm = ParseMoveSequence(cycleAlgorithmText.second);
+    cycleAlgorithms.emplace(cycle, std::move(algorithm));
   }
-  return solutions;
 }
 
-Solution SolveCorner3Cycle(Cube3x3x3 scrambledCube, const Solution& skeleton)
+const std::vector<CubeMove>& Optimal3Cycles::operator[](const URB_Cycle& cycle) const
 {
-  scrambledCube += skeleton.GetMoves();
-  return InsertCorner3CycleInSkeleton(skeleton, FindCorner3Cycle(scrambledCube));
+  return cycleAlgorithms.find(cycle)->second;
 }
+
 
 } // Corner3Cycle
