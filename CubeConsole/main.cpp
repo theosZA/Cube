@@ -75,6 +75,63 @@ std::unique_ptr<std::ostream> GetOutputStream(std::map<std::string, std::string>
   }
 }
 
+enum SolveStrategy
+{
+  AStar,
+  Exhaustive,
+  LinearBest
+};
+
+SolveStrategy GetSolveStrategy(std::map<std::string, std::string>& commandLineParameters)
+{
+  auto solveStrategyName = commandLineParameters["strategy"];
+  const std::map<std::string, SolveStrategy> strategies
+  {
+    std::pair<std::string, SolveStrategy>{ "", SolveStrategy::AStar },
+    std::pair<std::string, SolveStrategy>{ "AStar", SolveStrategy::AStar },
+    std::pair<std::string, SolveStrategy>{ "Exhaustive", SolveStrategy::Exhaustive },
+    std::pair<std::string, SolveStrategy>{ "LinearBest", SolveStrategy::LinearBest }
+  };
+  auto findIter = strategies.find(solveStrategyName);
+  if (findIter == strategies.end())
+  {
+    throw std::runtime_error("Unknown strategy: " + solveStrategyName);
+  }
+  return findIter->second;
+}
+
+Solution Solve(const std::vector<CubeMove>& scramble, const Solver3x3x3& solver, SolveStrategy solveStrategy)
+{
+  switch (solveStrategy)
+  {
+    case AStar:
+      return solver.Solve(scramble);
+
+    case Exhaustive:
+      return solver.ExhaustiveSolveToState(scramble).solutionSoFar;
+
+    case LinearBest:
+    {
+      auto solutionSoFar = PartialSolution{ Solution{}, CubeGroup::Scrambled };
+      const std::array<std::set<CubeGroup>, 3> targetStatesPerStep
+      {
+        std::set<CubeGroup>{ CubeGroup::Block2x2x2 },
+        std::set<CubeGroup>{ CubeGroup::Block2x2x3_EO },
+        std::set<CubeGroup>{ CubeGroup::AB5C_twisted, CubeGroup::AB5C_2cycles, CubeGroup::AB5C_3cycle, CubeGroup::AB5C_5cycle, CubeGroup::AB4C_twisted, CubeGroup::AB4C_3cycle, CubeGroup::AB4C_2cycles, CubeGroup::AB3C_twisted, CubeGroup::AB3C_3cycle, CubeGroup::AB2C_twisted },
+      };
+      for (const auto& targetStates : targetStatesPerStep)
+      {
+        solutionSoFar = solver.ExhaustiveSolveToState(scramble, solutionSoFar, targetStates);
+      }
+      auto finalSolution = solver.LinearBestSolveToState(scramble, solutionSoFar);
+      return finalSolution->solutionSoFar;
+    }
+
+    default:
+      throw std::domain_error("Unhandled solve strategy " + std::to_string(static_cast<int>(solveStrategy)));
+  }
+}
+
 int main(int argc, char* argv[])
 {
   try
@@ -86,13 +143,14 @@ int main(int argc, char* argv[])
     auto scrambles = GetScrambles(scrambler, commandLineParameters);
 
     auto outputStream = GetOutputStream(commandLineParameters);
+    auto solveStrategy = GetSolveStrategy(commandLineParameters);
 
     Solver3x3x3 solver;
     for (const auto& scramble : scrambles)
     {
       *outputStream << MoveSequenceToText(scramble) << "\n\n";
-
-      auto solution = solver.SolveToState(scramble, std::set<CubeGroup>{ CubeGroup::Solved }).solutionSoFar;
+      
+      auto solution = Solve(scramble, solver, solveStrategy);
       *outputStream << solution << "\n\n===============================================================================\n\n";
     }
   }
