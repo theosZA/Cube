@@ -76,12 +76,12 @@ Solver3x3x3::Solver3x3x3()
   solverSteps[CubeGroup::AB5C_twisted].reset(new SolverStep_5CornersTwisted);
 }
 
-Solution Solver3x3x3::Solve(const std::vector<CubeMove>& scramble)
+Solution Solver3x3x3::Solve(const std::vector<CubeMove>& scramble) const
 {
   return SolveToState(scramble).solutionSoFar;
 }
 
-PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates)
+PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates) const
 {
   auto isSolved = [=](const PartialSolution& partialSolution)
   {
@@ -102,7 +102,7 @@ PartialSolution Solver3x3x3::SolveToState(const std::vector<CubeMove>& scramble,
   return GraphAlgorithms::AStarSearchForClosestTargetNode<PartialSolution, int>(solutionSoFar, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
 }
 
-PartialSolution Solver3x3x3::ExhaustiveSolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates)
+PartialSolution Solver3x3x3::ExhaustiveSolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates) const
 {
   auto isSolved = [=](const PartialSolution& partialSolution)
   {
@@ -123,7 +123,7 @@ PartialSolution Solver3x3x3::ExhaustiveSolveToState(const std::vector<CubeMove>&
   return GraphAlgorithms::ExhaustiveSearchForClosestTargetNode<PartialSolution, double>(solutionSoFar, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
 }
 
-std::optional<PartialSolution> Solver3x3x3::LinearBestSolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates)
+std::optional<PartialSolution> Solver3x3x3::LinearBestSolveToState(const std::vector<CubeMove>& scramble, const PartialSolution& solutionSoFar, const std::set<CubeGroup>& targetStates) const
 {
   auto isSolved = [=](const PartialSolution& partialSolution)
   {
@@ -144,7 +144,7 @@ std::optional<PartialSolution> Solver3x3x3::LinearBestSolveToState(const std::ve
   return GraphAlgorithms::GreedySearchForClosestTargetNode<PartialSolution, double>(solutionSoFar, isSolved, movesSoFar, estimatedMovesToSolve, generateSuccessorStates);
 }
 
-std::vector<PartialSolution> Solver3x3x3::GenerateAllSuccessorStates(const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution)
+std::vector<PartialSolution> Solver3x3x3::GenerateAllSuccessorStates(const std::vector<CubeMove>& scramble, const PartialSolution& partialSolution) const
 {
   // Use the solver step for this state. If we don't have a solver for it, then no successor states.
   auto findIter = solverSteps.find(partialSolution.cubeGroup);
