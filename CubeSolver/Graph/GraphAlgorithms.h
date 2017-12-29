@@ -50,21 +50,23 @@ Node ExhaustiveSearchForClosestTargetNode(const Node& startNode,
                                           std::function<Score(const Node&)> getEstimatedCostToTarget,
                                           std::function<std::vector<Node>(const Node&)> getSuccessorNodes)
 {
+  // Use an A* search to choose a preliminary best node. This allows us to quickly find a decent target node and
+  // ignore nodes in our exhaustive search that are over this one's cost.
+  auto bestTargetNode = AStarSearchForClosestTargetNode(startNode, isTargetNode, getCostSoFar, getEstimatedCostToTarget, getSuccessorNodes);
+  Score bestCost = getCostSoFar(bestTargetNode) + getEstimatedCostToTarget(bestTargetNode);
+
   std::queue<Node> nodes;
   nodes.push(startNode);
-  std::optional<Node> bestTargetNode;
-  Score bestScore{};
   while (!nodes.empty())
   {
     auto currentNode = nodes.front();
     nodes.pop();
     if (isTargetNode(currentNode))
     {
-      if (!bestTargetNode ||
-          getCostSoFar(currentNode) + getEstimatedCostToTarget(currentNode) < bestScore)
+      if (getCostSoFar(currentNode) + getEstimatedCostToTarget(currentNode) < bestCost)
       {
         bestTargetNode = currentNode;
-        bestScore = getCostSoFar(currentNode) + getEstimatedCostToTarget(currentNode);
+        bestCost = getCostSoFar(currentNode) + getEstimatedCostToTarget(currentNode);
       }
     }
     else
@@ -73,7 +75,7 @@ Node ExhaustiveSearchForClosestTargetNode(const Node& startNode,
       for (const auto& successorNode : successorNodes)
       {
         // Only add it to the queue if it has a chance of beating the best target node so far.
-        if (!bestTargetNode || getCostSoFar(successorNode) < bestScore)
+        if (getCostSoFar(successorNode) < bestCost)
         {
           nodes.push(successorNode);
         }
@@ -81,12 +83,7 @@ Node ExhaustiveSearchForClosestTargetNode(const Node& startNode,
     }
   }
 
-  if (!bestTargetNode)
-  {
-    throw std::runtime_error("Failed to find target node");
-  }
-
-  return *bestTargetNode;
+  return bestTargetNode;
 }
 
 template <class Node, class Score>
