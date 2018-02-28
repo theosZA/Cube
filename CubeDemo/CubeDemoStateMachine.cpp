@@ -1,6 +1,5 @@
 #include "CubeDemoStateMachine.h"
 
-#include "..\Cube\SolverFactory.h"
 #include "CubeMoveSequenceAnimation.h"
 
 CubeDemoStateMachine::CubeDemoStateMachine(
@@ -88,16 +87,34 @@ void CubeDemoStateMachine::StartScramble()
 
 void CubeDemoStateMachine::Solve()
 {
-  if (!solver)
-    solver = SolverFactory::CreateSolver(cubeSize);
+  switch (cubeSize)
+  {
+    case 2:
+      if (!solver2x2x2)
+      {
+        solver2x2x2.reset(new Solver2x2x2(20, "solution.2x2"));
+      }
+      solvingThread = std::thread{
+        [this]
+        {
+          solution = solver2x2x2->Solve(scramble);
+          hasSolution = true;
+        }};
+      break;
 
-  solvingThread = std::thread{
-    [this]
-    {
-      solution = solver->Solve(scramble);
-      hasSolution = true;
+    case 3:
+      if (!solver3x3x3)
+      {
+        solver3x3x3.reset(new Solver3x3x3);
+      }
+      solvingThread = std::thread{
+        [this]
+        {
+          solution = solver3x3x3->Solve(scramble).GetMoves();
+          hasSolution = true;
+        }};
+      break;
     }
-  };
 }
 
 void CubeDemoStateMachine::PlaySolve()

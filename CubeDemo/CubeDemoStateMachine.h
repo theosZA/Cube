@@ -7,8 +7,9 @@
 #include <thread>
 #include <vector>
 
-#include "..\Cube\CubeMove.h"
-#include "..\Cube\Solver.h"
+#include "Cube\CubeMove.h"
+#include "Solver\Solver3x3x3.h"
+#include "Solver\Solver2x2x2.h"
 
 class CubeMoveSequenceAnimation;
 
@@ -61,7 +62,8 @@ private:
   std::function<std::vector<CubeMove>()> getScramble;
   std::function<void(const std::vector<CubeMove>&)> onSolving;
 
-  std::unique_ptr<Solver> solver;
+  std::unique_ptr<Solver2x2x2> solver2x2x2;
+  std::unique_ptr<Solver3x3x3> solver3x3x3;
   std::thread solvingThread;
   std::vector<CubeMove> scramble;
   std::vector<CubeMove> solution;

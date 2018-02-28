@@ -6,9 +6,9 @@
 
 #include <irrlicht.h>
 
-#include "Cubie.h"
+#include "Cube\Face.h"
 
-#include "..\Cube\Face.h"
+#include "Cubie.h"
 
 class CubeRenderer
 {

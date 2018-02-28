@@ -4,9 +4,9 @@
 
 #include <irrlicht.h>
 
-#include "CubieFaceMesh.h"
+#include "Cube\CubeMove.h"
 
-#include "..\Cube\CubeMove.h"
+#include "CubieFaceMesh.h"
 
 class Cubie
 {

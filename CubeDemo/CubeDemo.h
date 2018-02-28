@@ -5,11 +5,12 @@
 
 #include <irrlicht.h>
 
+#include "Cube\Scrambler\Scrambler.h"
+#include "Cube\CubeMove.h"
+
 #include "CubeDemoStateMachine.h"
 #include "CubeMoveSequenceAnimation.h"
 #include "RenderDevice.h"
-#include "..\Cube\Scrambler\Scrambler.h"
-#include "..\Cube\CubeMove.h"
 
 class CubeDemo
 {
