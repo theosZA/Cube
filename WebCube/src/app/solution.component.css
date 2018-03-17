@@ -1,0 +1,17 @@
+.solution {
+    background-color: #eac8c8;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    height: 60px;
+    width: 40%;
+    font-family: monospace;
+}
+
+.solution-steps {
+    background-color: #c8c8ea;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    font-family: monospace;
+}

@@ -1,0 +1,15 @@
+.scramble-input {
+    background-color: #c8eac8;
+    height: 100px;
+    width: 40%;
+}
+
+.submit-scramble {
+    background-color: #647564;
+    color: lightgray;
+}
+
+.submit-scramble:hover {
+    background-color: #c8eac8;
+    color: black;
+}
