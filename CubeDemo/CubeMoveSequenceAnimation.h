@@ -7,7 +7,7 @@
 
 #include <irrlicht.h>
 
-#include "..\Cube\CubeMove.h"
+#include "Cube\CubeMove.h"
 
 #include "CubeRenderer.h"
 

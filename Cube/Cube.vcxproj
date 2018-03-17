@@ -74,6 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -85,6 +86,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -98,6 +100,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -113,6 +116,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -123,59 +127,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="2x2x2\Cube2x2x2.h" />
-    <ClInclude Include="2x2x2\Solver2x2x2.h" />
-    <ClInclude Include="3x3x3\Corner3Cycle.h" />
     <ClInclude Include="3x3x3\Corners3x3x3.h" />
     <ClInclude Include="3x3x3\CornerStructure.h" />
     <ClInclude Include="3x3x3\Cube3x3x3.h" />
     <ClInclude Include="3x3x3\Edges3x3x3.h" />
-    <ClInclude Include="3x3x3\Solver2x2x2Block.h" />
-    <ClInclude Include="3x3x3\Solver2x2x3Block.h" />
-    <ClInclude Include="3x3x3\Solver3x3x3.h" />
-    <ClInclude Include="3x3x3\SolverCorners.h" />
-    <ClInclude Include="3x3x3\TwoFaceAB3C.h" />
-    <ClInclude Include="3x3x3\TwoFaceAB5C.h" />
-    <ClInclude Include="3x3x3\TwoFaceEO.h" />
-    <ClInclude Include="BinaryStream.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeMove.h" />
     <ClInclude Include="Face.h" />
-    <ClInclude Include="Graph\CubeStateSolver.h" />
-    <ClInclude Include="Graph\RootedGraph.h" />
-    <ClInclude Include="Solution.h" />
-    <ClInclude Include="SolutionLogger.h" />
-    <ClInclude Include="SolutionStep.h" />
-    <ClInclude Include="Solver.h" />
-    <ClInclude Include="SolverFactory.h" />
+    <ClInclude Include="Scrambler\Scrambler.h" />
     <ClInclude Include="StickerPosition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2x2x2\Cube2x2x2.cpp" />
-    <ClCompile Include="2x2x2\Solver2x2x2.cpp" />
-    <ClCompile Include="3x3x3\Corner3Cycle.cpp" />
     <ClCompile Include="3x3x3\Corners3x3x3.cpp" />
     <ClCompile Include="3x3x3\CornerStructure.cpp" />
     <ClCompile Include="3x3x3\Cube3x3x3.cpp" />
     <ClCompile Include="3x3x3\Edges3x3x3.cpp" />
-    <ClCompile Include="3x3x3\Solver2x2x2Block.cpp" />
-    <ClCompile Include="3x3x3\Solver2x2x3Block.cpp" />
-    <ClCompile Include="3x3x3\Solver3x3x3.cpp" />
-    <ClCompile Include="3x3x3\SolverCorners.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceAB3C.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceAB5C.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceEO.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeMove.cpp" />
     <ClCompile Include="Face.cpp" />
-    <ClCompile Include="Solution.cpp" />
-    <ClCompile Include="SolutionLogger.cpp" />
-    <ClCompile Include="SolutionStep.cpp" />
-    <ClCompile Include="SolverFactory.cpp" />
+    <ClCompile Include="Scrambler\Scrambler.cpp" />
     <ClCompile Include="StickerPosition.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graph\CubeStateSolver.inl" />
-    <None Include="Graph\RootedGraph.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,50 +14,14 @@
     <ClInclude Include="3x3x3\Edges3x3x3.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="3x3x3\Solver2x2x2Block.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\RootedGraph.h">
-      <Filter>Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph\CubeStateSolver.h">
-      <Filter>Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Solver.h" />
-    <ClInclude Include="SolverFactory.h" />
     <ClInclude Include="2x2x2\Cube2x2x2.h">
       <Filter>2x2x2</Filter>
-    </ClInclude>
-    <ClInclude Include="2x2x2\Solver2x2x2.h">
-      <Filter>2x2x2</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\Solver2x2x3Block.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\Solver3x3x3.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\TwoFaceEO.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="BinaryStream.h" />
-    <ClInclude Include="3x3x3\TwoFaceAB5C.h">
-      <Filter>3x3x3</Filter>
     </ClInclude>
     <ClInclude Include="3x3x3\CornerStructure.h">
       <Filter>3x3x3</Filter>
     </ClInclude>
-    <ClInclude Include="SolutionLogger.h" />
-    <ClInclude Include="Solution.h" />
-    <ClInclude Include="3x3x3\TwoFaceAB3C.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="SolutionStep.h" />
-    <ClInclude Include="3x3x3\SolverCorners.h">
-      <Filter>3x3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="3x3x3\Corner3Cycle.h">
-      <Filter>3x3x3</Filter>
+    <ClInclude Include="Scrambler\Scrambler.h">
+      <Filter>Scrambler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -74,61 +38,25 @@
     <ClCompile Include="3x3x3\Corners3x3x3.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
-    <ClCompile Include="3x3x3\Solver2x2x2Block.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="SolverFactory.cpp" />
     <ClCompile Include="2x2x2\Cube2x2x2.cpp">
       <Filter>2x2x2</Filter>
-    </ClCompile>
-    <ClCompile Include="2x2x2\Solver2x2x2.cpp">
-      <Filter>2x2x2</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\Solver2x2x3Block.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\Solver3x3x3.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\TwoFaceEO.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\TwoFaceAB5C.cpp">
-      <Filter>3x3x3</Filter>
     </ClCompile>
     <ClCompile Include="3x3x3\CornerStructure.cpp">
       <Filter>3x3x3</Filter>
     </ClCompile>
-    <ClCompile Include="SolutionLogger.cpp" />
-    <ClCompile Include="Solution.cpp" />
-    <ClCompile Include="3x3x3\TwoFaceAB3C.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="SolutionStep.cpp" />
-    <ClCompile Include="3x3x3\SolverCorners.cpp">
-      <Filter>3x3x3</Filter>
-    </ClCompile>
-    <ClCompile Include="3x3x3\Corner3Cycle.cpp">
-      <Filter>3x3x3</Filter>
+    <ClCompile Include="Scrambler\Scrambler.cpp">
+      <Filter>Scrambler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="3x3x3">
       <UniqueIdentifier>{d7a10f2b-ed96-4584-acf2-1b20d762f06c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graph">
-      <UniqueIdentifier>{590f5646-8a43-4cca-a473-31b0579ace81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2x2x2">
       <UniqueIdentifier>{6b5ff89e-88be-4a42-b0d7-8d4fa95b3607}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Graph\RootedGraph.inl">
-      <Filter>Graph</Filter>
-    </None>
-    <None Include="Graph\CubeStateSolver.inl">
-      <Filter>Graph</Filter>
-    </None>
+    <Filter Include="Scrambler">
+      <UniqueIdentifier>{69010f9e-3f7a-49a8-be10-86388e381f9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
