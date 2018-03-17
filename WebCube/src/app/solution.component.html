@@ -1,13 +1,14 @@
-<div class="solution">Solution will appear here.</div>
+<div class ="moveCount">{{GetTotalMoveCount()}} moves</div>
+<div class="solution">{{solution}}</div>
 <table class="solution-steps">
     <thead>
         <th>Step</th>
         <th>Moves</th>
-        <th>Cumulative move count</th>
+        <th>Count</th>
     </thead>
-    <tr>
-        <td>2x2x2</td>
-        <td>F R U R' U' F'</td>
-        <td>[6/6]</td>
+    <tr *ngFor="let solutionStep of solutionSteps; let stepIndex = index">
+        <td>{{solutionStep.step}}</td>
+        <td>{{solutionStep.moves.join(" ")}}</td>
+        <td>[{{solutionStep.moves.length}}/{{GetCumulativeMoveCount(stepIndex)}}]</td>
     </tr>
 </table>
