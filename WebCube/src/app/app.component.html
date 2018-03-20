@@ -1,5 +1,5 @@
 <div>
-    <textarea class="scramble-input">Enter scramble here...</textarea>
+    <textarea class="scramble-input" [(ngModel)]="scramble"></textarea>
 </div>
 <div>
     <button class="submit-scramble" (click)="onSolve(solutionDest)">Solve</button>

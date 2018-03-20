@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SolutionComponent } from './solution.component';
+import { SolverService } from './solver.service';
 
 @Component({
   selector: 'fmc-solver-app',
@@ -7,20 +8,15 @@ import { SolutionComponent } from './solution.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent  {
+
+  scramble: string;
+
+  constructor(private _solverService: SolverService) {
+    this.scramble = "Enter the scramble here...";
+  }
+
   onSolve(solutionComponent: SolutionComponent): void {
-    solutionComponent.solution = "F R U R' U' F'";
-    solutionComponent.solutionSteps = [
-      {
-          step: "Setup",
-          moves: ["F"]
-      },
-      {
-          step: "Apply alg",
-          moves: ["R", "U", "R'", "U'"]
-      },
-      {
-          step: "Undo setup",
-          moves: ["F'"]
-      }];
+    this._solverService.solve(this.scramble)
+        .subscribe(solution => solutionComponent.solution = solution);
   }
 }
