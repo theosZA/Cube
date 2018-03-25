@@ -1,28 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import 'rxjs/add/operator/map';
 
 import { ISolution } from './ISolution';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class SolverService {
 
+  constructor(private http: HttpClient) {}
+
   solve(scramble: string) : Observable<ISolution> {
-    return of({
-      solution: "Just do " + scramble + " backwards",
-      steps: [
-        {
-            step: "Setup",
-            moves: ["F"]
-        },
-        {
-            step: "Apply alg",
-            moves: ["R", "U", "R'", "U'"]
-        },
-        {
-            step: "Undo setup",
-            moves: ["F'"]
-        }]
-    });
+    return this.http.get('app/sample.json').map(data => <ISolution>data);
   }
 }

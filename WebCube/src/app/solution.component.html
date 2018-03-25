@@ -1,14 +1,16 @@
-<div class ="moveCount">{{GetTotalMoveCount()}} moves</div>
-<div class="solution">{{solution.solution}}</div>
-<table class="solution-steps">
-    <thead>
-        <th>Step</th>
-        <th>Moves</th>
-        <th>Count</th>
-    </thead>
-    <tr *ngFor="let step of solution.steps; let stepIndex = index">
-        <td>{{step.step}}</td>
-        <td>{{step.moves.join(" ")}}</td>
-        <td>[{{step.moves.length}}/{{GetCumulativeMoveCount(stepIndex)}}]</td>
-    </tr>
-</table>
+<div *ngIf="solution">
+    <div class ="moveCount">{{GetTotalMoveCount()}} moves</div>
+    <div class="solution">{{solution.solution}}</div>
+    <table class="solution-steps">
+        <thead>
+            <th>Step</th>
+            <th>Moves</th>
+            <th>Count</th>
+        </thead>
+        <tr *ngFor="let step of solution.steps; let stepIndex = index">
+            <td>{{step.step}}</td>
+            <td>{{step.moves.join(" ")}}</td>
+            <td>[{{step.moves.length}}/{{GetCumulativeMoveCount(stepIndex)}}]</td>
+        </tr>
+    </table>
+</div>
