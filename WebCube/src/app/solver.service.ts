@@ -12,6 +12,6 @@ export class SolverService {
   constructor(private http: HttpClient) {}
 
   solve(scramble: string) : Observable<ISolution> {
-    return this.http.get('app/sample.json').map(data => <ISolution>data);
+    return this.http.post('http://localhost:1337/solve', { scramble: scramble }).map(data => <ISolution>data);
   }
 }

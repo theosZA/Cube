@@ -4,9 +4,11 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 var app = express();
 
+app.use(cors({ origin: '*' }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,7 +22,22 @@ app.post('/solve', function (req, res) {
   if (!req.body) {
     return res.sendStatus(400);
   }
-  res.send('Scramble: ' + req.body.scramble);
+  res.json({
+    "solution": "Solution from the API",
+    "steps": [
+      {
+        "step": "Conjugate",
+        "moves": ["D"]
+      },
+      {
+        "step": "Commutator",
+        "moves": ["L", "F", "L'", "B2", "L", "F'", "L'", "B2"]
+      },
+      {
+        "step": "Undo conjugate",
+        "moves": ["D'"]
+      }]
+  });
 });
 
 // Development error handler - will print stack trace
