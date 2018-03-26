@@ -16,6 +16,7 @@ export class SolutionComponent  {
     GetCumulativeMoveCount(stepIndex: number): number {
         let cumulativeMoveCount: number = 0;
         for (let i: number = 0; i <= stepIndex; ++i) {
+            // This does not yet take into account move cancellations.
             cumulativeMoveCount += this.solution.steps[i].moves.length;
         }
         return cumulativeMoveCount;
