@@ -54,16 +54,37 @@ app.post('/solve', function (req, res) {
             for (var lineIndex = 2; lineIndex <= solutionLineIndex - 2; ++lineIndex) {
               if (lines[lineIndex].length > 0 && lines[lineIndex][0] !== ' ') { // Skip empty lines and indented lines (which are continuations of the previous line)
                 var colonIndex = lines[lineIndex].indexOf(':');
-                var openBracketIndex = lines[lineIndex].indexOf('[');
                 // The step name is before the colon.
                 var stepName = lines[lineIndex].substr(0, colonIndex);
-                // The moves are after the colon but before the move count in square brackets. (Ignore colon and the leading and trailing space.)
-                // This doesn't handle insertions yet.
-                var movesText = lines[lineIndex].substr(colonIndex + 2, openBracketIndex - colonIndex - 3);
-                solution.steps.push({
-                  step: stepName,
-                  moves: movesText.split(' ')
-                });
+
+                var openBracketIndex = lines[lineIndex].indexOf('[');
+                if (openBracketIndex === -1) {
+                  // This is an insertion step - the skeleton is on this line and the moves are on the next line.
+                  var equalsIndex = lines[lineIndex + 1].indexOf('=');
+                  openBracketIndex = lines[lineIndex + 1].indexOf('[');
+                  // The moves are after the equals sign but before the move count in square brackets. (Ignore equals and the leading and trailing spaces.)
+                  var movesText = lines[lineIndex + 1].substr(equalsIndex + 2, openBracketIndex - equalsIndex - 3);
+                  // The skeleton is everything after the colon. (Ignore and colon and leading space.)
+                  var skeletonText = lines[lineIndex].substr(colonIndex + 2);
+                  var skeletonMoves = skeletonText.split(' ');
+                  var insertionIndex = skeletonMoves.indexOf('*');
+                  skeletonMoves.splice(insertionIndex, 1);  // Removes the * from the skeleton.
+                  solution.steps.push({
+                    step: stepName,
+                    moves: movesText.split(' '),
+                    skeleton: skeletonMoves,
+                    insertionIndex: insertionIndex
+                  });
+                }
+                else {
+                  // This is a normal (non-insertion) step.
+                  // The moves are after the colon but before the move count in square brackets. (Ignore colon and the leading and trailing space.)
+                  var movesText = lines[lineIndex].substr(colonIndex + 2, openBracketIndex - colonIndex - 3);
+                  solution.steps.push({
+                    step: stepName,
+                    moves: movesText.split(' ')
+                  });
+                }
               }
             }
             res.json(solution);

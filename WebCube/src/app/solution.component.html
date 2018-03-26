@@ -9,7 +9,11 @@
         </thead>
         <tr *ngFor="let step of solution.steps; let stepIndex = index">
             <td>{{step.step}}</td>
-            <td>{{step.moves.join(" ")}}</td>
+            <td>
+                <span class="skeleton">{{GetPreInsertionMoves(stepIndex)}}</span>
+                {{step.moves.join(" ")}}
+                <span class="skeleton">{{GetPostInsertionMoves(stepIndex)}}</span>
+            </td>
             <td>[{{step.moves.length}}/{{GetCumulativeMoveCount(stepIndex)}}]</td>
         </tr>
     </table>
