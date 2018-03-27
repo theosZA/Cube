@@ -62,8 +62,13 @@ app.post('/solve', function (req, res) {
                   // This is an insertion step - the skeleton is on this line and the moves are on the next line.
                   var equalsIndex = lines[lineIndex + 1].indexOf('=');
                   openBracketIndex = lines[lineIndex + 1].indexOf('[');
+                  var slashIndex = lines[lineIndex + 1].indexOf('/');
+                  var closeBracketIndex = lines[lineIndex + 1].indexOf(']');
                   // The moves are after the equals sign but before the move count in square brackets. (Ignore equals and the leading and trailing spaces.)
                   var movesText = lines[lineIndex + 1].substr(equalsIndex + 2, openBracketIndex - equalsIndex - 3);
+                  // The move count is between the square brackets.
+                  var stepMoveCount = parseInt(lines[lineIndex + 1].substr(openBracketIndex + 1, slashIndex - openBracketIndex - 1));
+                  var cumulativeMoveCount = parseInt(lines[lineIndex + 1].substr(slashIndex + 1, closeBracketIndex - slashIndex - 1));
                   // The skeleton is everything after the colon. (Ignore and colon and leading space.)
                   var skeletonText = lines[lineIndex].substr(colonIndex + 2);
                   var skeletonMoves = skeletonText.split(' ');
@@ -72,17 +77,26 @@ app.post('/solve', function (req, res) {
                   solution.steps.push({
                     step: stepName,
                     moves: movesText.split(' '),
+                    stepMoveCount: stepMoveCount,
+                    cumulativeMoveCount: cumulativeMoveCount,
                     skeleton: skeletonMoves,
                     insertionIndex: insertionIndex
                   });
                 }
                 else {
                   // This is a normal (non-insertion) step.
+                  var slashIndex = lines[lineIndex].indexOf('/');
+                  var closeBracketIndex = lines[lineIndex].indexOf(']');
+                  // The move count is between the square brackets.
+                  var stepMoveCount = parseInt(lines[lineIndex].substr(openBracketIndex + 1, slashIndex - openBracketIndex - 1));
+                  var cumulativeMoveCount = parseInt(lines[lineIndex].substr(slashIndex + 1, closeBracketIndex - slashIndex - 1));
                   // The moves are after the colon but before the move count in square brackets. (Ignore colon and the leading and trailing space.)
                   var movesText = lines[lineIndex].substr(colonIndex + 2, openBracketIndex - colonIndex - 3);
                   solution.steps.push({
                     step: stepName,
-                    moves: movesText.split(' ')
+                    moves: movesText.split(' '),
+                    stepMoveCount: stepMoveCount,
+                    cumulativeMoveCount: cumulativeMoveCount
                   });
                 }
               }
